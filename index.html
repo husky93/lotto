@@ -10,702 +10,155 @@
 <title>🎰 Lotto Analyzer Pro</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
 :root {
-  --bg: #0a0f1e;
-  --bg2: #0d1424;
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.08);
-  --glass-hover: rgba(255,255,255,0.07);
-  --primary: #38bdf8;
-  --primary-dim: rgba(56,189,248,0.15);
-  --primary-glow: rgba(56,189,248,0.3);
-  --success: #10b981;
-  --success-dim: rgba(16,185,129,0.15);
-  --warning: #f59e0b;
-  --warning-dim: rgba(245,158,11,0.15);
-  --danger: #f43f5e;
-  --danger-dim: rgba(244,63,94,0.15);
-  --purple: #a78bfa;
-  --purple-dim: rgba(167,139,250,0.15);
-  --pink: #f472b6;
-  --text: #f1f5f9;
-  --text-muted: #64748b;
-  --text-dim: #94a3b8;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --bg:#0a0f1e;--bg2:#0d1424;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08);
+  --glass-hover:rgba(255,255,255,0.07);--primary:#38bdf8;--primary-dim:rgba(56,189,248,0.15);
+  --primary-glow:rgba(56,189,248,0.3);--success:#10b981;--success-dim:rgba(16,185,129,0.15);
+  --warning:#f59e0b;--warning-dim:rgba(245,158,11,0.15);--danger:#f43f5e;
+  --danger-dim:rgba(244,63,94,0.15);--purple:#a78bfa;--purple-dim:rgba(167,139,250,0.15);
+  --pink:#f472b6;--text:#f1f5f9;--text-muted:#64748b;--text-dim:#94a3b8;
+  --radius:16px;--radius-sm:10px;--shadow:0 8px 32px rgba(0,0,0,0.4);
 }
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* Animated background */
-body::before {
-  content:'';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(56,189,248,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(167,139,250,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.03) 0%, transparent 60%);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.page { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: 24px 20px 60px; }
-
-/* HEADER */
-.header {
-  text-align: center;
-  padding: 40px 20px 30px;
-  margin-bottom: 32px;
-}
-.header-icon {
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 12px;
-  filter: drop-shadow(0 0 20px rgba(56,189,248,0.5));
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-.header h1 {
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, #38bdf8, #a78bfa, #f472b6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
-  line-height: 1.1;
-}
-.header p { color: var(--text-dim); margin-top: 8px; font-size: 0.95rem; }
-
-/* GLASS CARD */
-.glass {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow);
-}
-
-/* UPLOAD SECTION */
-.upload-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 16px;
-  align-items: end;
-  padding: 24px;
-  margin-bottom: 24px;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(ellipse at 20% 20%,rgba(56,189,248,0.06) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 80%,rgba(167,139,250,0.06) 0%,transparent 50%),
+  radial-gradient(ellipse at 50% 50%,rgba(16,185,129,0.03) 0%,transparent 60%);z-index:0;pointer-events:none;}
+.page{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:24px 20px 60px;}
+.header{text-align:center;padding:40px 20px 30px;margin-bottom:32px;}
+.header-icon{font-size:3rem;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(56,189,248,0.5));animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.header h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;background:linear-gradient(135deg,#38bdf8,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;line-height:1.1;}
+.header p{color:var(--text-dim);margin-top:8px;font-size:0.95rem;}
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--shadow);}
+.upload-section{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;padding:24px;margin-bottom:24px;}
 @media(max-width:700px){.upload-section{grid-template-columns:1fr;}}
-
-.field-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
-}
-
-.file-input-wrap {
-  position: relative;
-  border: 2px dashed rgba(56,189,248,0.3);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: var(--primary-dim);
-  text-align: center;
-}
-.file-input-wrap:hover { border-color: var(--primary); background: rgba(56,189,248,0.1); }
-.file-input-wrap input[type="file"] { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%; }
-.file-input-text { font-size: 0.88rem; color: var(--primary); font-weight: 500; pointer-events: none; }
-
-.number-input-wrap input {
-  width: 100%;
-  padding: 14px 16px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 1rem;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-.number-input-wrap input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-dim); }
-
-.btn-analyze {
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #38bdf8, #818cf8);
-  border: none;
-  border-radius: var(--radius-sm);
-  color: #0a0f1e;
-  font-size: 1rem;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.3s;
-  white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(56,189,248,0.3);
-  letter-spacing: 0.02em;
-}
-.btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(56,189,248,0.4); }
-.btn-analyze:active { transform: translateY(0); }
-
-.btn-clear {
-  padding: 10px 18px;
-  background: transparent;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  color: var(--text-dim);
-  font-size: 0.88rem;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-left: 10px;
-}
-.btn-clear:hover { border-color: var(--danger); color: var(--danger); }
-
-.file-badge {
-  display: none;
-  grid-column: 1/-1;
-  padding: 10px 16px;
-  background: var(--success-dim);
-  border: 1px solid rgba(16,185,129,0.3);
-  border-radius: var(--radius-sm);
-  color: #34d399;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.error-badge {
-  display: none;
-  padding: 14px 18px;
-  background: var(--danger-dim);
-  border: 1px solid rgba(244,63,94,0.3);
-  border-radius: var(--radius-sm);
-  color: #fb7185;
-  font-size: 0.9rem;
-  margin-bottom: 20px;
-}
-
-/* LOADING */
-.loading {
-  display: none;
-  text-align: center;
-  padding: 60px 20px;
-}
-.loader {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  border: 3px solid rgba(56,189,248,0.15);
-  border-top-color: var(--primary);
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
-}
+.field-label{font-size:0.78rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+.file-input-wrap{position:relative;border:2px dashed rgba(56,189,248,0.3);border-radius:var(--radius-sm);padding:14px 16px;cursor:pointer;transition:all 0.3s;background:var(--primary-dim);text-align:center;}
+.file-input-wrap:hover{border-color:var(--primary);background:rgba(56,189,248,0.1);}
+.file-input-wrap input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.file-input-text{font-size:0.88rem;color:var(--primary);font-weight:500;pointer-events:none;}
+.number-input-wrap input{width:100%;padding:14px 16px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-size:1rem;font-family:inherit;transition:border-color 0.2s;}
+.number-input-wrap input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-dim);}
+.btn-analyze{padding:14px 28px;background:linear-gradient(135deg,#38bdf8,#818cf8);border:none;border-radius:var(--radius-sm);color:#0a0f1e;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(56,189,248,0.3);letter-spacing:0.02em;}
+.btn-analyze:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(56,189,248,0.4);}
+.btn-clear{padding:10px 18px;background:transparent;border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text-dim);font-size:0.88rem;font-weight:500;font-family:inherit;cursor:pointer;transition:all 0.2s;margin-left:10px;}
+.btn-clear:hover{border-color:var(--danger);color:var(--danger);}
+.file-badge{display:none;grid-column:1/-1;padding:10px 16px;background:var(--success-dim);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);color:#34d399;font-size:0.85rem;font-weight:500;}
+.error-badge{display:none;padding:14px 18px;background:var(--danger-dim);border:1px solid rgba(244,63,94,0.3);border-radius:var(--radius-sm);color:#fb7185;font-size:0.9rem;margin-bottom:20px;}
+.loading{display:none;text-align:center;padding:60px 20px;}
+.loader{width:48px;height:48px;border-radius:50%;border:3px solid rgba(56,189,248,0.15);border-top-color:var(--primary);animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading p { color: var(--text-dim); font-size: 0.9rem; }
-
-/* STATS ROW */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 28px;
-}
-.stat-card {
-  padding: 20px;
-  border-radius: var(--radius);
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::before {
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;
-  height: 2px;
-  background: var(--accent, linear-gradient(90deg, var(--primary), var(--purple)));
-}
-.stat-icon { font-size: 1.4rem; margin-bottom: 8px; }
-.stat-val {
-  font-size: 1.6rem;
-  font-weight: 800;
-  background: var(--accent, linear-gradient(135deg, var(--primary), var(--purple)));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.1;
-}
-.stat-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-
-/* SECTION HEADER */
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 36px 0 18px;
-}
-.section-header h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.section-line { flex: 1; height: 1px; background: var(--glass-border); }
-.section-icon {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: var(--primary-dim);
-  border: 1px solid var(--primary-glow);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-}
-
-/* ANALYSIS GRID */
-.analysis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 18px;
-  margin-bottom: 28px;
-}
+.loading p{color:var(--text-dim);font-size:0.9rem;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px;}
+.stat-card{padding:20px;border-radius:var(--radius);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent,linear-gradient(90deg,var(--primary),var(--purple)));}
+.stat-icon{font-size:1.4rem;margin-bottom:8px;}
+.stat-val{font-size:1.6rem;font-weight:800;background:var(--accent,linear-gradient(135deg,var(--primary),var(--purple)));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+.stat-label{font-size:0.75rem;color:var(--text-dim);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;}
+.section-header{display:flex;align-items:center;gap:12px;margin:36px 0 18px;}
+.section-header h2{font-size:1.2rem;font-weight:700;color:var(--text);}
+.section-line{flex:1;height:1px;background:var(--glass-border);}
+.section-icon{width:36px;height:36px;border-radius:10px;background:var(--primary-dim);border:1px solid var(--primary-glow);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.analysis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:18px;margin-bottom:28px;}
 @media(max-width:500px){.analysis-grid{grid-template-columns:1fr;}}
-
-.a-card {
-  padding: 22px;
-  border-radius: var(--radius);
-}
-.a-card-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--glass-border);
-}
-.a-card-title span:first-child { font-size: 1.3rem; }
-.a-card-title strong {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* NUMBER ROW */
-.num-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.num-row:last-child { border-bottom: none; }
-
-.ball {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800;
-  font-size: 0.82rem;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-.ball-hot { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; }
-.ball-cold { background: linear-gradient(135deg, #38bdf8, #818cf8); color: #0a0f1e; }
-.ball-overdue { background: linear-gradient(135deg, #f43f5e, #dc2626); color: #fff; }
-.ball-default { background: linear-gradient(135deg, #38bdf8, #10b981); color: #0a0f1e; }
-.ball-purple { background: linear-gradient(135deg, #a78bfa, #f472b6); color: #0a0f1e; }
-
-.num-info { flex: 1; }
-.num-info-main { font-size: 0.88rem; font-weight: 500; color: var(--text); }
-.num-info-sub { font-size: 0.75rem; color: var(--text-dim); margin-top: 1px; }
-
-.num-tags { display: flex; gap: 4px; margin-left: auto; }
-.tag {
-  padding: 2px 7px;
-  border-radius: 20px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-.tag-odd { background: rgba(167,139,250,0.2); color: var(--purple); }
-.tag-even { background: rgba(244,114,182,0.2); color: var(--pink); }
-.tag-low { background: rgba(16,185,129,0.2); color: var(--success); }
-.tag-high { background: rgba(245,158,11,0.2); color: var(--warning); }
-
-/* BAR CHART */
-.bar-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 7px;
-}
-.bar-label {
-  width: 54px;
-  text-align: right;
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  flex-shrink: 0;
-}
-.bar-track {
-  flex: 1;
-  height: 22px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-.bar-fill {
-  height: 100%;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 7px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #0a0f1e;
-  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-  min-width: 24px;
-}
-.bar-blue { background: linear-gradient(90deg, #38bdf8, #818cf8); }
-.bar-green { background: linear-gradient(90deg, #10b981, #38bdf8); }
-.bar-orange { background: linear-gradient(90deg, #f59e0b, #ef4444); }
-.bar-purple { background: linear-gradient(90deg, #a78bfa, #f472b6); }
-.bar-teal { background: linear-gradient(90deg, #2dd4bf, #38bdf8); }
-
-/* SUM ANALYSIS */
-.sum-highlight-box {
-  background: var(--primary-dim);
-  border: 1px solid var(--primary-glow);
-  border-radius: var(--radius-sm);
-  padding: 12px 16px;
-  margin-bottom: 14px;
-  font-size: 0.85rem;
-  color: var(--primary);
-  font-weight: 500;
-  line-height: 1.5;
-}
-
-/* DECADE GRID */
-.decade-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-top: 8px;
-}
+.a-card{padding:22px;border-radius:var(--radius);}
+.a-card-title{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--glass-border);}
+.a-card-title span:first-child{font-size:1.3rem;}
+.a-card-title strong{font-size:0.95rem;font-weight:700;color:var(--text);}
+.a-card-subtitle{font-size:0.72rem;color:var(--text-muted);margin-left:auto;padding:2px 8px;background:rgba(255,255,255,0.04);border-radius:20px;}
+.num-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.num-row:last-child{border-bottom:none;}
+.ball{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.82rem;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.ball-hot{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;}
+.ball-cold{background:linear-gradient(135deg,#38bdf8,#818cf8);color:#0a0f1e;}
+.ball-overdue{background:linear-gradient(135deg,#f43f5e,#dc2626);color:#fff;}
+.ball-default{background:linear-gradient(135deg,#38bdf8,#10b981);color:#0a0f1e;}
+.ball-purple{background:linear-gradient(135deg,#a78bfa,#f472b6);color:#0a0f1e;}
+.ball-teal{background:linear-gradient(135deg,#2dd4bf,#38bdf8);color:#0a0f1e;}
+.num-info{flex:1;}
+.num-info-main{font-size:0.88rem;font-weight:500;color:var(--text);}
+.num-info-sub{font-size:0.75rem;color:var(--text-dim);margin-top:1px;}
+.num-tags{display:flex;gap:4px;margin-left:auto;}
+.tag{padding:2px 7px;border-radius:20px;font-size:0.68rem;font-weight:700;letter-spacing:0.03em;}
+.tag-odd{background:rgba(167,139,250,0.2);color:var(--purple);}
+.tag-even{background:rgba(244,114,182,0.2);color:var(--pink);}
+.tag-low{background:rgba(16,185,129,0.2);color:var(--success);}
+.tag-high{background:rgba(245,158,11,0.2);color:var(--warning);}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.bar-label{width:54px;text-align:right;font-size:0.78rem;color:var(--text-dim);flex-shrink:0;}
+.bar-track{flex:1;height:22px;background:rgba(255,255,255,0.04);border-radius:6px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;font-size:0.72rem;font-weight:700;color:#0a0f1e;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);min-width:24px;}
+.bar-blue{background:linear-gradient(90deg,#38bdf8,#818cf8);}
+.bar-green{background:linear-gradient(90deg,#10b981,#38bdf8);}
+.bar-orange{background:linear-gradient(90deg,#f59e0b,#ef4444);}
+.bar-purple{background:linear-gradient(90deg,#a78bfa,#f472b6);}
+.bar-teal{background:linear-gradient(90deg,#2dd4bf,#38bdf8);}
+.bar-pink{background:linear-gradient(90deg,#f472b6,#a78bfa);}
+.sum-highlight-box{background:var(--primary-dim);border:1px solid var(--primary-glow);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:14px;font-size:0.85rem;color:var(--primary);font-weight:500;line-height:1.5;}
+.decade-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px;}
 @media(max-width:500px){.decade-grid{grid-template-columns:repeat(3,1fr);}}
-.decade-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  padding: 10px 6px;
-  text-align: center;
-  transition: background 0.2s;
-}
-.decade-card:hover { background: var(--glass-hover); }
-.decade-label { font-size: 0.68rem; color: var(--text-dim); margin-bottom: 4px; font-weight: 600; }
-.decade-val { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
-.decade-pct { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
-
-/* CONSECUTIVE */
-.cons-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
-
-/* ===== GENERATOR ===== */
-.generator-wrap {
-  margin-top: 36px;
-  padding: 28px;
-  border-radius: var(--radius);
-  border: 1px solid rgba(56,189,248,0.2);
-  background: linear-gradient(135deg, rgba(56,189,248,0.04), rgba(167,139,250,0.04));
-}
-.gen-title {
-  font-size: 1.3rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #38bdf8, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 22px;
-}
-
-.method-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-.method-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass);
-  color: var(--text-dim);
-  border-radius: 50px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.method-btn:hover { border-color: var(--primary); color: var(--primary); }
-.method-btn.active {
-  background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(129,140,248,0.2));
-  border-color: var(--primary);
-  color: var(--primary);
-  box-shadow: 0 0 12px var(--primary-dim);
-}
-
-/* FILTERS */
-.filters-box {
-  background: rgba(0,0,0,0.2);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  padding: 20px;
-  margin-bottom: 22px;
-}
-.filters-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.check-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.check-item:hover { border-color: var(--primary); }
-.check-item input[type="checkbox"] {
-  width: 16px; height: 16px;
-  accent-color: var(--primary);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.check-item label {
-  font-size: 0.83rem;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.filter-selects {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-.filter-select-wrap select {
-  width: 100%;
-  padding: 9px 12px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 0.85rem;
-  font-family: inherit;
-  cursor: pointer;
-}
-.filter-select-wrap select:focus { outline: none; border-color: var(--primary); }
-
-.sum-range-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-.sum-range-row label { font-size: 0.82rem; color: var(--text-dim); font-weight: 500; }
-.sum-range-row input {
-  width: 74px;
-  padding: 8px 10px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 0.9rem;
-  font-family: inherit;
-}
-.sum-range-row input:focus { outline: none; border-color: var(--primary); }
-
-/* GEN CONTROLS */
-.gen-controls-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-.gen-count-wrap { display: flex; flex-direction: column; gap: 6px; }
-.gen-count-wrap input {
-  width: 100px;
-  padding: 11px 14px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 1rem;
-  font-family: inherit;
-}
-.gen-count-wrap input:focus { outline: none; border-color: var(--primary); }
-
-.btn-generate {
-  padding: 12px 28px;
-  background: linear-gradient(135deg, #38bdf8, #a78bfa);
-  border: none;
-  border-radius: var(--radius-sm);
-  color: #0a0f1e;
-  font-size: 0.95rem;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 16px rgba(56,189,248,0.25);
-  letter-spacing: 0.02em;
-}
-.btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(56,189,248,0.35); }
-
-/* COMBO GRID */
-.combo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 14px;
-  margin-top: 4px;
-}
-.combo-card {
-  background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(167,139,250,0.06));
-  border: 1px solid rgba(56,189,248,0.2);
-  border-radius: var(--radius);
-  padding: 16px 12px;
-  text-align: center;
-  transition: all 0.25s;
-  cursor: default;
-}
-.combo-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(56,189,248,0.15);
-  border-color: rgba(56,189,248,0.4);
-}
-.combo-num-idx { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-.combo-balls { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
-.combo-ball {
-  width: 30px; height: 30px;
-  background: linear-gradient(135deg, #38bdf8, #818cf8);
-  color: #0a0f1e;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800;
-  font-size: 0.78rem;
-  box-shadow: 0 2px 8px rgba(56,189,248,0.3);
-}
-.combo-meta {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-.combo-meta span {
-  display: inline-block;
-  padding: 2px 6px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 4px;
-  margin: 1px;
-}
-
-.btn-copy-single {
-  padding: 5px 14px;
-  background: rgba(56,189,248,0.1);
-  border: 1px solid rgba(56,189,248,0.25);
-  border-radius: 20px;
-  color: var(--primary);
-  font-size: 0.72rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-copy-single:hover { background: rgba(56,189,248,0.2); }
-
-.btn-copy-all {
-  margin-top: 18px;
-  padding: 10px 22px;
-  background: transparent;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  color: var(--text-dim);
-  font-size: 0.85rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-copy-all:hover { border-color: var(--primary); color: var(--primary); }
-
-/* TOAST */
-.toast {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: linear-gradient(135deg, #38bdf8, #818cf8);
-  color: #0a0f1e;
-  padding: 12px 24px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  z-index: 9999;
-  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events: none;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(56,189,248,0.5); }
+.decade-card{background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:10px;padding:10px 6px;text-align:center;transition:background 0.2s;}
+.decade-card:hover{background:var(--glass-hover);}
+.decade-label{font-size:0.68rem;color:var(--text-dim);margin-bottom:4px;font-weight:600;}
+.decade-val{font-size:1.2rem;font-weight:800;color:var(--primary);}
+.decade-pct{font-size:0.68rem;color:var(--text-muted);margin-top:2px;}
+.info-box{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:0.78rem;color:var(--purple);line-height:1.5;}
+.generator-wrap{margin-top:36px;padding:28px;border-radius:var(--radius);border:1px solid rgba(56,189,248,0.2);background:linear-gradient(135deg,rgba(56,189,248,0.04),rgba(167,139,250,0.04));}
+.gen-title{font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:22px;}
+.method-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.method-btn{padding:8px 16px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text-dim);border-radius:50px;font-size:0.82rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;}
+.method-btn:hover{border-color:var(--primary);color:var(--primary);}
+.method-btn.active{background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(129,140,248,0.2));border-color:var(--primary);color:var(--primary);box-shadow:0 0 12px var(--primary-dim);}
+.filters-box{background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:20px;margin-bottom:22px;}
+.filters-title{font-size:0.78rem;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;}
+.filters-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:16px;}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;transition:all 0.2s;}
+.check-item:hover{border-color:var(--primary);}
+.check-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--primary);cursor:pointer;flex-shrink:0;}
+.check-item label{font-size:0.83rem;color:var(--text-dim);cursor:pointer;font-weight:500;}
+.filter-selects{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px;}
+.filter-select-wrap select{width:100%;padding:9px 12px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:inherit;cursor:pointer;}
+.filter-select-wrap select:focus{outline:none;border-color:var(--primary);}
+.sum-range-row{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;}
+.sum-range-row label{font-size:0.82rem;color:var(--text-dim);font-weight:500;}
+.sum-range-row input{width:74px;padding:8px 10px;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:8px;color:var(--text);font-size:0.9rem;font-family:inherit;}
+.sum-range-row input:focus{outline:none;border-color:var(--primary);}
+.gen-controls-row{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
+.gen-count-wrap{display:flex;flex-direction:column;gap:6px;}
+.gen-count-wrap input{width:100px;padding:11px 14px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-size:1rem;font-family:inherit;}
+.gen-count-wrap input:focus{outline:none;border-color:var(--primary);}
+.btn-generate{padding:12px 28px;background:linear-gradient(135deg,#38bdf8,#a78bfa);border:none;border-radius:var(--radius-sm);color:#0a0f1e;font-size:0.95rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 16px rgba(56,189,248,0.25);letter-spacing:0.02em;}
+.btn-generate:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(56,189,248,0.35);}
+.combo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:4px;}
+.combo-card{background:linear-gradient(135deg,rgba(56,189,248,0.06),rgba(167,139,250,0.06));border:1px solid rgba(56,189,248,0.2);border-radius:var(--radius);padding:16px 12px;text-align:center;transition:all 0.25s;}
+.combo-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(56,189,248,0.15);border-color:rgba(56,189,248,0.4);}
+.combo-num-idx{font-size:0.68rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.combo-balls{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-bottom:10px;}
+.combo-ball{width:30px;height:30px;background:linear-gradient(135deg,#38bdf8,#818cf8);color:#0a0f1e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.78rem;box-shadow:0 2px 8px rgba(56,189,248,0.3);}
+.combo-meta{font-size:0.68rem;color:var(--text-muted);margin-bottom:10px;line-height:1.5;}
+.combo-meta span{display:inline-block;padding:2px 6px;background:rgba(255,255,255,0.05);border-radius:4px;margin:1px;}
+.btn-copy-single{padding:5px 14px;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);border-radius:20px;color:var(--primary);font-size:0.72rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;}
+.btn-copy-single:hover{background:rgba(56,189,248,0.2);}
+.btn-copy-all{margin-top:18px;padding:10px 22px;background:transparent;border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text-dim);font-size:0.85rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;}
+.btn-copy-all:hover{border-color:var(--primary);color:var(--primary);}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#38bdf8,#818cf8);color:#0a0f1e;padding:12px 24px;border-radius:50px;font-weight:700;font-size:0.9rem;z-index:9999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,0.3);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,0.5);}
 </style>
 </head>
 <body>
-
 <div class="page">
-
-  <!-- HEADER -->
   <div class="header">
     <span class="header-icon">🎰</span>
     <h1>Lotto Analyzer Pro</h1>
     <p>Zaawansowana analiza statystyczna losowań Lotto 6/49</p>
   </div>
 
-  <!-- UPLOAD -->
   <div class="glass upload-section">
     <div>
       <div class="field-label">Plik z losowaniami</div>
@@ -726,124 +179,37 @@ body::before {
   </div>
 
   <div class="error-badge" id="errorBadge"></div>
-
-  <div class="loading" id="loading">
-    <div class="loader"></div>
-    <p>Analizuję dane losowań…</p>
-  </div>
+  <div class="loading" id="loading"><div class="loader"></div><p>Analizuję dane losowań…</p></div>
 
   <div id="mainContent" style="display:none;">
-
-    <!-- STATS -->
     <div class="stats-row">
-      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#38bdf8,#818cf8)">
-        <div class="stat-icon">🎯</div>
-        <div class="stat-val" id="sTotalDraws">—</div>
-        <div class="stat-label">Analizowanych losowań</div>
-      </div>
-      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#10b981,#38bdf8)">
-        <div class="stat-icon">📅</div>
-        <div class="stat-val" id="sLastDate">—</div>
-        <div class="stat-label">Ostatnie losowanie</div>
-      </div>
-      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#a78bfa,#f472b6)">
-        <div class="stat-icon">🌀</div>
-        <div class="stat-val" id="sEntropy">—</div>
-        <div class="stat-label">Entropia systemu</div>
-      </div>
-      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#f59e0b,#ef4444)">
-        <div class="stat-icon">➕</div>
-        <div class="stat-val" id="sMedianSum">—</div>
-        <div class="stat-label">Mediana sumy</div>
-      </div>
-      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#f472b6,#a78bfa)">
-        <div class="stat-icon">⚖️</div>
-        <div class="stat-val" id="sTopOE">—</div>
-        <div class="stat-label">Najcz. układ P/N</div>
-      </div>
+      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#38bdf8,#818cf8)"><div class="stat-icon">🎯</div><div class="stat-val" id="sTotalDraws">—</div><div class="stat-label">Losowań</div></div>
+      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#10b981,#38bdf8)"><div class="stat-icon">📅</div><div class="stat-val" id="sLastDate">—</div><div class="stat-label">Ostatnie losowanie</div></div>
+      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#a78bfa,#f472b6)"><div class="stat-icon">🌀</div><div class="stat-val" id="sEntropy">—</div><div class="stat-label">Entropia systemu</div></div>
+      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#f59e0b,#ef4444)"><div class="stat-icon">➕</div><div class="stat-val" id="sMedianSum">—</div><div class="stat-label">Mediana sumy</div></div>
+      <div class="glass stat-card" style="--accent:linear-gradient(90deg,#f472b6,#a78bfa)"><div class="stat-icon">⚖️</div><div class="stat-val" id="sTopOE">—</div><div class="stat-label">Najcz. układ P/N</div></div>
     </div>
 
-    <!-- ANALYSIS SECTION -->
-    <div class="section-header">
-      <div class="section-icon">📊</div>
-      <h2>Analiza Statystyczna</h2>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header"><div class="section-icon">📊</div><h2>Analiza Statystyczna</h2><div class="section-line"></div></div>
 
     <div class="analysis-grid">
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>🔥</span><strong>Gorące Liczby</strong></div>
-        <div id="hotNumbers"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>❄️</span><strong>Zimne Liczby</strong></div>
-        <div id="coldNumbers"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>⏰</span><strong>Zaległe Liczby</strong></div>
-        <div id="overdueNumbers"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>📊</span><strong>Analiza Gap (odstępów)</strong></div>
-        <div id="gapAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>🌀</span><strong>Entropia Liczb</strong></div>
-        <div id="entropyAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>📈</span><strong>Wynik Prawdopodobieństwa</strong></div>
-        <div id="probabilityScore"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>🔵</span><strong>Parzyste / Nieparzyste</strong></div>
-        <div id="oddEvenAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>📐</span><strong>Niskie (1–24) / Wysokie (25–49)</strong></div>
-        <div id="lowHighAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>➕</span><strong>Analiza Sumy Kombinacji</strong></div>
-        <div id="sumAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>🔟</span><strong>Analiza Dziesiątek</strong></div>
-        <div id="decadesAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>👫</span><strong>Pary Sąsiednie</strong></div>
-        <div id="consecutiveAnalysis"></div>
-      </div>
-
-      <div class="glass a-card">
-        <div class="a-card-title"><span>🔡</span><strong>Analiza Ostatniej Cyfry</strong></div>
-        <div id="lastDigitAnalysis"></div>
-      </div>
-
+      <div class="glass a-card"><div class="a-card-title"><span>🔥</span><strong>Gorące Liczby</strong><span class="a-card-subtitle">najczęstsze</span></div><div id="hotNumbers"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>❄️</span><strong>Zimne Liczby</strong><span class="a-card-subtitle">najrzadsze</span></div><div id="coldNumbers"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>⏰</span><strong>Zaległe Liczby</strong><span class="a-card-subtitle">odchylenie od rytmu</span></div><div id="overdueNumbers"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>📊</span><strong>Analiza Gap</strong><span class="a-card-subtitle">odstępy w zestawie</span></div><div id="gapAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>🌀</span><strong>Entropia Przerw</strong><span class="a-card-subtitle">nieregularność rytmu</span></div><div id="entropyAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>📈</span><strong>Wynik Prawdopodobieństwa</strong><span class="a-card-subtitle">wskaźnik złożony</span></div><div id="probabilityScore"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>🔵</span><strong>Parzyste / Nieparzyste</strong><span class="a-card-subtitle">rozkład P:N</span></div><div id="oddEvenAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>📐</span><strong>Niskie / Wysokie</strong><span class="a-card-subtitle">1–24 vs 25–49</span></div><div id="lowHighAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>➕</span><strong>Analiza Sumy</strong><span class="a-card-subtitle">rozkład sum kombinacji</span></div><div id="sumAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>🔟</span><strong>Analiza Dziesiątek</strong><span class="a-card-subtitle">grupy 1–9, 10–19…</span></div><div id="decadesAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>👫</span><strong>Pary Sąsiednie</strong><span class="a-card-subtitle">liczby następujące po sobie</span></div><div id="consecutiveAnalysis"></div></div>
+      <div class="glass a-card"><div class="a-card-title"><span>🔡</span><strong>Ostatnia Cyfra</strong><span class="a-card-subtitle">cyfry jedności</span></div><div id="lastDigitAnalysis"></div></div>
     </div>
 
-    <!-- GENERATOR -->
-    <div class="section-header">
-      <div class="section-icon">🎲</div>
-      <h2>Inteligentny Generator Kombinacji</h2>
-      <div class="section-line"></div>
-    </div>
-
+    <div class="section-header"><div class="section-icon">🎲</div><h2>Generator Kombinacji</h2><div class="section-line"></div></div>
     <div class="generator-wrap glass">
       <div class="gen-title">🎲 Generator Kombinacji</div>
-
       <div class="field-label" style="margin-bottom:10px;">Metoda doboru liczb</div>
       <div class="method-row">
         <button class="method-btn active" onclick="selectMethod('hot',event)">🔥 Gorące</button>
@@ -853,7 +219,6 @@ body::before {
         <button class="method-btn" onclick="selectMethod('probability',event)">📈 Prawdopodobieństwo</button>
         <button class="method-btn" onclick="selectMethod('mixed',event)">🎯 Mieszany Smart</button>
       </div>
-
       <div class="filters-box">
         <div class="filters-title">⚙️ Filtry jakości kombinacji</div>
         <div class="filters-grid">
@@ -865,165 +230,104 @@ body::before {
           <div class="check-item"><input type="checkbox" id="fDec"><label for="fDec">Brak 4+ liczb z tej samej dziesiątki</label></div>
         </div>
         <div class="filter-selects">
-          <div class="filter-select-wrap">
-            <div class="field-label">Układ Parzyste:Nieparzyste</div>
-            <select id="oeRatio">
-              <option value="any">Dowolny</option>
-              <option value="3:3" selected>3:3 (najczęstszy)</option>
-              <option value="2:4">2:4</option>
-              <option value="4:2">4:2</option>
-              <option value="1:5">1:5</option>
-              <option value="5:1">5:1</option>
-            </select>
-          </div>
-          <div class="filter-select-wrap">
-            <div class="field-label">Układ Niskie:Wysokie</div>
-            <select id="lhRatio">
-              <option value="any">Dowolny</option>
-              <option value="3:3" selected>3:3 (najczęstszy)</option>
-              <option value="2:4">2:4</option>
-              <option value="4:2">4:2</option>
-              <option value="1:5">1:5</option>
-              <option value="5:1">5:1</option>
-            </select>
-          </div>
+          <div class="filter-select-wrap"><div class="field-label">Układ Parzyste:Nieparzyste</div>
+            <select id="oeRatio"><option value="any">Dowolny</option><option value="3:3" selected>3:3 (najczęstszy)</option><option value="2:4">2:4</option><option value="4:2">4:2</option><option value="1:5">1:5</option><option value="5:1">5:1</option></select></div>
+          <div class="filter-select-wrap"><div class="field-label">Układ Niskie:Wysokie</div>
+            <select id="lhRatio"><option value="any">Dowolny</option><option value="3:3" selected>3:3 (najczęstszy)</option><option value="2:4">2:4</option><option value="4:2">4:2</option><option value="1:5">1:5</option><option value="5:1">5:1</option></select></div>
         </div>
         <div class="sum-range-row">
-          <label>Suma min:</label>
-          <input type="number" id="sumMin" value="115">
-          <label>Suma max:</label>
-          <input type="number" id="sumMax" value="185">
+          <label>Suma min:</label><input type="number" id="sumMin" value="115">
+          <label>Suma max:</label><input type="number" id="sumMax" value="185">
         </div>
       </div>
-
       <div class="gen-controls-row">
-        <div class="gen-count-wrap">
-          <div class="field-label">Liczba kombinacji</div>
-          <input type="number" id="comboCount" value="6" min="1" max="50">
-        </div>
+        <div class="gen-count-wrap"><div class="field-label">Liczba kombinacji</div><input type="number" id="comboCount" value="6" min="1" max="50"></div>
         <button class="btn-generate" onclick="generateCombinations()">✨ Generuj</button>
       </div>
-
       <div id="comboSection" style="display:none;">
         <div class="combo-grid" id="comboGrid"></div>
         <button class="btn-copy-all" onclick="copyAll()">📋 Skopiuj Wszystkie</button>
       </div>
     </div>
-
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-let analysisData = null;
-let selectedMethod = 'hot';
-let allDraws = null;
+let analysisData=null,selectedMethod='hot',allDraws=null;
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2200);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
-function handleFileUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  document.getElementById('fileInputText').textContent = '✅ ' + file.name;
-  const reader = new FileReader();
-  reader.onload = e => {
-    allDraws = parseCSV(e.target.result);
-    const badge = document.getElementById('fileBadge');
-    const err = document.getElementById('errorBadge');
-    if (allDraws.length === 0) {
-      err.textContent = '❌ Nie udało się sparsować pliku CSV. Sprawdź format.';
-      err.style.display = 'block';
-      badge.style.display = 'none';
-    } else {
-      err.style.display = 'none';
-      document.getElementById('drawCount').max = allDraws.length;
-      badge.textContent = '✅ Wczytano ' + allDraws.length + ' losowań · Najnowsze: ' + new Date(allDraws[0].drawDate).toLocaleDateString('pl-PL');
-      badge.style.display = 'block';
-    }
+function handleFileUpload(event){
+  const file=event.target.files[0];if(!file)return;
+  document.getElementById('fileInputText').textContent='✅ '+file.name;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    allDraws=parseCSV(e.target.result);
+    const badge=document.getElementById('fileBadge'),err=document.getElementById('errorBadge');
+    if(allDraws.length===0){err.textContent='❌ Nie udało się sparsować pliku CSV.';err.style.display='block';badge.style.display='none';}
+    else{err.style.display='none';document.getElementById('drawCount').max=allDraws.length;
+      badge.textContent='✅ Wczytano '+allDraws.length+' losowań · Najnowsze: '+new Date(allDraws[0].drawDate).toLocaleDateString('pl-PL');badge.style.display='block';}
   };
-  reader.readAsText(file, 'UTF-8');
+  reader.readAsText(file,'UTF-8');
 }
 
-function parseCSV(text) {
-  const draws = [];
-  for (const line of text.trim().split('\n')) {
-    const p = line.trim().split(',');
-    if (p.length < 8) continue;
-    const dp = p[1].trim().split('.');
-    if (dp.length !== 3) continue;
-    const drawDate = new Date(dp[2]+'-'+dp[1]+'-'+dp[0]).toISOString();
-    const numbers = [p[2],p[3],p[4],p[5],p[6],p[7]].map(n=>parseInt(n.trim())).filter(n=>!isNaN(n)&&n>=1&&n<=49);
-    if (numbers.length === 6) draws.push({drawDate, numbers});
+function parseCSV(text){
+  const draws=[];
+  for(const line of text.trim().split('\n')){
+    const p=line.trim().split(',');if(p.length<8)continue;
+    const dp=p[1].trim().split('.');if(dp.length!==3)continue;
+    const drawDate=new Date(dp[2]+'-'+dp[1]+'-'+dp[0]).toISOString();
+    const numbers=[p[2],p[3],p[4],p[5],p[6],p[7]].map(n=>parseInt(n.trim())).filter(n=>!isNaN(n)&&n>=1&&n<=49);
+    if(numbers.length===6)draws.push({drawDate,numbers});
   }
   draws.sort((a,b)=>new Date(b.drawDate)-new Date(a.drawDate));
   return draws;
 }
 
-function analyzeLoaded() {
-  const err = document.getElementById('errorBadge');
-  err.style.display = 'none';
-  if (!allDraws || allDraws.length === 0) {
-    err.textContent = '❌ Najpierw wgraj plik CSV z losowaniami.';
-    err.style.display = 'block';
-    return;
-  }
-  const count = Math.min(parseInt(document.getElementById('drawCount').value)||100, allDraws.length);
-  document.getElementById('loading').style.display = 'block';
-  document.getElementById('mainContent').style.display = 'none';
-  setTimeout(()=>{
-    performAnalysis(allDraws.slice(0, count));
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-  }, 60);
+function analyzeLoaded(){
+  const err=document.getElementById('errorBadge');err.style.display='none';
+  if(!allDraws||allDraws.length===0){err.textContent='❌ Najpierw wgraj plik CSV.';err.style.display='block';return;}
+  const count=Math.min(parseInt(document.getElementById('drawCount').value)||100,allDraws.length);
+  document.getElementById('loading').style.display='block';
+  document.getElementById('mainContent').style.display='none';
+  setTimeout(()=>{performAnalysis(allDraws.slice(0,count));document.getElementById('loading').style.display='none';document.getElementById('mainContent').style.display='block';},60);
 }
 
-function performAnalysis(draws) {
-  const freqMap = {}, skipMap = {}, gapFreq = {};
-  for (let i=1;i<=49;i++){freqMap[i]=0;skipMap[i]=[];}
+function performAnalysis(draws){
+  const freqMap={},skipMap={},gapFreq={};
+  for(let i=1;i<=49;i++){freqMap[i]=0;skipMap[i]=[];}
+  const oeCount={},lhCount={},sums=[],consCount=[0,0,0,0];
+  const lastDigitFreq={},decFreq={'1–9':0,'10–19':0,'20–29':0,'30–39':0,'40–49':0};
 
-  const oeCount={}, lhCount={};
-  const sums=[], consCount=[0,0,0,0];
-  const lastDigitFreq={}, decFreq={'1–9':0,'10–19':0,'20–29':0,'30–39':0,'40–49':0};
+  // Zbieramy pozycje każdej liczby dla entropii przerw
+  const positions={};
+  for(let i=1;i<=49;i++)positions[i]=[];
 
   draws.forEach((draw,di)=>{
-    const nums = draw.numbers;
+    const nums=draw.numbers;
     nums.forEach(n=>{
       freqMap[n]++;
-      const d=n%10; lastDigitFreq[d]=(lastDigitFreq[d]||0)+1;
-      if(n<=9)decFreq['1–9']++;
-      else if(n<=19)decFreq['10–19']++;
-      else if(n<=29)decFreq['20–29']++;
-      else if(n<=39)decFreq['30–39']++;
-      else decFreq['40–49']++;
+      positions[n].push(di);
+      const d=n%10;lastDigitFreq[d]=(lastDigitFreq[d]||0)+1;
+      if(n<=9)decFreq['1–9']++;else if(n<=19)decFreq['10–19']++;
+      else if(n<=29)decFreq['20–29']++;else if(n<=39)decFreq['30–39']++;else decFreq['40–49']++;
     });
     const sorted=[...nums].sort((a,b)=>a-b);
-    for(let i=0;i<sorted.length-1;i++){
-      const g=sorted[i+1]-sorted[i];
-      gapFreq[g]=(gapFreq[g]||0)+1;
-    }
+    for(let i=0;i<sorted.length-1;i++){const g=sorted[i+1]-sorted[i];gapFreq[g]=(gapFreq[g]||0)+1;}
     nums.forEach(n=>{
-      if(skipMap[n].length>0){
-        skipMap[n].push(di - skipMap[n][skipMap[n].length-1]);
-      }
+      if(skipMap[n].length>0)skipMap[n].push(di-skipMap[n][skipMap[n].length-1]);
       skipMap[n].push(di);
     });
     const odd=nums.filter(n=>n%2!==0).length;
-    const oeK=odd+':'+(6-odd); oeCount[oeK]=(oeCount[oeK]||0)+1;
+    const oeK=odd+':'+(6-odd);oeCount[oeK]=(oeCount[oeK]||0)+1;
     const low=nums.filter(n=>n<=24).length;
-    const lhK=low+':'+(6-low); lhCount[lhK]=(lhCount[lhK]||0)+1;
+    const lhK=low+':'+(6-low);lhCount[lhK]=(lhCount[lhK]||0)+1;
     sums.push(nums.reduce((a,b)=>a+b,0));
-    let pairs=0;
-    for(let i=0;i<sorted.length-1;i++) if(sorted[i+1]-sorted[i]===1)pairs++;
+    let pairs=0;for(let i=0;i<sorted.length-1;i++)if(sorted[i+1]-sorted[i]===1)pairs++;
     consCount[Math.min(pairs,3)]++;
   });
 
-  const totalApps=Object.values(freqMap).reduce((a,b)=>a+b,0);
   const maxF=Math.max(...Object.values(freqMap));
   const minF=Math.min(...Object.values(freqMap));
 
@@ -1033,8 +337,7 @@ function performAnalysis(draws) {
   const overdueNumbers=[];
   Object.entries(skipMap).forEach(([num,skips])=>{
     if(skips.length>1){
-      const gaps=[];
-      for(let i=0;i<skips.length-1;i++) gaps.push(skips[i+1]-skips[i]);
+      const gaps=[];for(let i=0;i<skips.length-1;i++)gaps.push(skips[i+1]-skips[i]);
       const avgGap=gaps.reduce((a,b)=>a+b,0)/gaps.length;
       const lastGap=draws.length-skips[skips.length-1];
       const dev=(lastGap-avgGap)/Math.sqrt(avgGap);
@@ -1045,56 +348,77 @@ function performAnalysis(draws) {
 
   const sortedGaps=Object.entries(gapFreq).sort((a,b)=>b[1]-a[1]).slice(0,8);
 
-  const entropyScores={};
-  Object.entries(freqMap).forEach(([num,freq])=>{
-    const p=freq/totalApps;
-    entropyScores[num]=p>0?-(p*Math.log2(p)):0;
-  });
-  const sortedEntropy=Object.entries(entropyScores)
-    .map(([num,ent])=>({number:parseInt(num),entropy:parseFloat(ent.toFixed(4)),frequency:freqMap[num]}))
-    .sort((a,b)=>b.entropy-a.entropy).slice(0,10);
+  // === POPRAWIONA ENTROPIA: rozkład przerw między wystąpieniami ===
+  // H(n) = -sum_g [ p(g) * log2(p(g)) ]  gdzie g = przerwa między kolejnymi wystąpieniami n
+  // Wysoka entropia = przerwy są różnorodne (losowe zachowanie)
+  // Niska entropia = przerwy powtarzają się regularnie (rytmiczne zachowanie)
+  const gapEntropyScores={};
+  const gapStdScores={};
+  for(let n=1;n<=49;n++){
+    const pos=positions[n];
+    if(pos.length<2){gapEntropyScores[n]=0;gapStdScores[n]=0;continue;}
+    const gaps=[];
+    for(let i=0;i<pos.length-1;i++)gaps.push(pos[i+1]-pos[i]);
+    // Zlicz unikalne przerwy
+    const gapCount={};
+    gaps.forEach(g=>{gapCount[g]=(gapCount[g]||0)+1;});
+    const total=gaps.length;
+    let H=0;
+    Object.values(gapCount).forEach(c=>{const p=c/total;H-=p*Math.log2(p);});
+    gapEntropyScores[n]=H;
+    // Odchylenie standardowe przerw (pomocnicza metryka)
+    const mean=gaps.reduce((a,b)=>a+b,0)/gaps.length;
+    const variance=gaps.reduce((s,g)=>s+(g-mean)**2,0)/gaps.length;
+    gapStdScores[n]=Math.sqrt(variance);
+  }
 
-  // === PROBABILITY — poprawiona, bardziej zbalansowana waga ===
-  // Normalizacja odchylenia do [0,1] z cap na 3 sigma
-  const maxDev = Math.max(...overdueNumbers.map(o=>Math.abs(parseFloat(o.dev))), 1);
-  const maxEntropy = Math.log2(49);
+  const sortedEntropy=Object.entries(gapEntropyScores)
+    .map(([num,H])=>({number:parseInt(num),entropy:parseFloat(H.toFixed(3)),frequency:freqMap[parseInt(num)],std:gapStdScores[parseInt(num)].toFixed(1)}))
+    .sort((a,b)=>b.entropy-a.entropy).slice(0,12);
+
+  // === POPRAWIONY WYNIK PRAWDOPODOBIEŃSTWA ===
+  // Składowe są teraz naprawdę niezależne:
+  // 1. Częstość (normalizowana)           — waga 20%
+  // 2. Zaległość (cappowana na 3σ)        — waga 40%
+  // 3. Entropia przerw (normalizowana)    — waga 20%  ← teraz niezależna od częstości!
+  // 4. Entropia przerw STD (normalizowana)— waga 20%  ← różnorodność przerw
+  const maxGapEnt=Math.max(...Object.values(gapEntropyScores),0.001);
+  const maxGapStd=Math.max(...Object.values(gapStdScores),0.001);
 
   const probabilityScores={};
   Object.keys(freqMap).forEach(num=>{
     const ni=parseInt(num);
-    const freq=freqMap[ni];
-    const freqScore=freq/maxF; // 0-1
-
+    const freqScore=freqMap[ni]/maxF;
     const overdue=overdueNumbers.find(o=>o.number===ni);
-    // cap odchylenie na 3 sigma, normalizacja do 0-1
     const rawDev=overdue?Math.abs(parseFloat(overdue.dev)):0;
-    const overdueScore=Math.min(rawDev/3, 1);
-
-    // entropia: im bliżej 1/49 (równomierny), tym wyższy score
-    const entropyScore=parseFloat(entropyScores[num])/maxEntropy;
-
-    // Wagi: częstość 25%, zaległość 45%, entropia 30%
-    const score=freqScore*0.25 + overdueScore*0.45 + entropyScore*0.30;
-    probabilityScores[num]={number:ni, score:parseFloat(score.toFixed(4)), freq, rawDev};
+    const overdueScore=Math.min(rawDev/3,1);
+    const entropyScore=gapEntropyScores[ni]/maxGapEnt;
+    const stdScore=gapStdScores[ni]/maxGapStd;
+    const score=freqScore*0.20+overdueScore*0.40+entropyScore*0.20+stdScore*0.20;
+    probabilityScores[num]={number:ni,score:parseFloat(score.toFixed(4)),freq:freqMap[ni],rawDev};
   });
   const sortedProbability=Object.values(probabilityScores).sort((a,b)=>b.score-a.score).slice(0,15);
 
   sums.sort((a,b)=>a-b);
   const medianSum=sums[Math.floor(sums.length/2)];
   const sumBuckets={};
-  sums.forEach(s=>{const b=Math.floor(s/20)*20; sumBuckets[b]=(sumBuckets[b]||0)+1;});
+  sums.forEach(s=>{const b=Math.floor(s/20)*20;sumBuckets[b]=(sumBuckets[b]||0)+1;});
+
+  // Entropia systemu (globalna, do statystyki)
+  const totalApps=Object.values(freqMap).reduce((a,b)=>a+b,0);
+  let sysEnt=0;
+  Object.values(freqMap).forEach(f=>{if(f>0){const p=f/totalApps;sysEnt-=p*Math.log2(p);}});
 
   analysisData={draws,freqMap,hotNumbers,coldNumbers,overdueNumbers,sortedGaps,
-    sortedEntropy,sortedProbability,probabilityScores,oeCount,lhCount,
-    sums,sumBuckets,medianSum,consCount,lastDigitFreq,decFreq,maxF,minF,totalApps};
-
+    sortedEntropy,sortedProbability,probabilityScores,gapEntropyScores,gapStdScores,
+    oeCount,lhCount,sums,sumBuckets,medianSum,consCount,lastDigitFreq,decFreq,
+    maxF,minF,totalApps,sysEnt};
   displayAnalysis();
 }
 
 function ballTag(n){
-  const oe=n%2===0?'<span class="tag tag-even">P</span>':'<span class="tag tag-odd">N</span>';
-  const lh=n<=24?'<span class="tag tag-low">Low</span>':'<span class="tag tag-high">High</span>';
-  return oe+lh;
+  return (n%2===0?'<span class="tag tag-even">P</span>':'<span class="tag tag-odd">N</span>')+
+         (n<=24?'<span class="tag tag-low">Low</span>':'<span class="tag tag-high">High</span>');
 }
 
 function displayAnalysis(){
@@ -1102,314 +426,149 @@ function displayAnalysis(){
   document.getElementById('sTotalDraws').textContent=d.draws.length;
   document.getElementById('sLastDate').textContent=new Date(d.draws[0].drawDate).toLocaleDateString('pl-PL');
   document.getElementById('sMedianSum').textContent=d.medianSum;
-
-  let sysEnt=0;
-  Object.values(d.freqMap).forEach(f=>{if(f>0){const p=f/(d.draws.length*6);sysEnt-=p*Math.log2(p);}});
-  document.getElementById('sEntropy').textContent=(sysEnt/Math.log2(49)*100).toFixed(1)+'%';
-
+  document.getElementById('sEntropy').textContent=(d.sysEnt/Math.log2(49)*100).toFixed(1)+'%';
   const topOE=Object.entries(d.oeCount).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('sTopOE').textContent=topOE?topOE[0].replace(':','P / ')+'N':'—';
 
-  // Hot
-  document.getElementById('hotNumbers').innerHTML=d.hotNumbers.map(([num,cnt])=>`
-    <div class="num-row">
-      <div class="ball ball-hot">${num}</div>
-      <div class="num-info">
-        <div class="num-info-main">${cnt} powtórzeń</div>
-        <div class="num-info-sub">Częstość: ${(cnt/d.draws.length*100).toFixed(1)}%</div>
-      </div>
-      <div class="num-tags">${ballTag(parseInt(num))}</div>
-    </div>`).join('');
+  document.getElementById('hotNumbers').innerHTML=d.hotNumbers.map(([num,cnt])=>
+    `<div class="num-row"><div class="ball ball-hot">${num}</div><div class="num-info"><div class="num-info-main">${cnt} powtórzeń</div><div class="num-info-sub">Częstość: ${(cnt/d.draws.length*100).toFixed(1)}%</div></div><div class="num-tags">${ballTag(parseInt(num))}</div></div>`).join('');
 
-  // Cold
-  document.getElementById('coldNumbers').innerHTML=d.coldNumbers.map(([num,cnt])=>`
-    <div class="num-row">
-      <div class="ball ball-cold">${num}</div>
-      <div class="num-info">
-        <div class="num-info-main">${cnt} powtórzeń</div>
-        <div class="num-info-sub">Częstość: ${(cnt/d.draws.length*100).toFixed(1)}%</div>
-      </div>
-      <div class="num-tags">${ballTag(parseInt(num))}</div>
-    </div>`).join('');
+  document.getElementById('coldNumbers').innerHTML=d.coldNumbers.map(([num,cnt])=>
+    `<div class="num-row"><div class="ball ball-cold">${num}</div><div class="num-info"><div class="num-info-main">${cnt} powtórzeń</div><div class="num-info-sub">Częstość: ${(cnt/d.draws.length*100).toFixed(1)}%</div></div><div class="num-tags">${ballTag(parseInt(num))}</div></div>`).join('');
 
-  // Overdue
-  document.getElementById('overdueNumbers').innerHTML=d.overdueNumbers.slice(0,8).map(item=>`
-    <div class="num-row">
-      <div class="ball ball-overdue">${item.number}</div>
-      <div class="num-info">
-        <div class="num-info-main">Przerwa: ${item.lastGap} losowań</div>
-        <div class="num-info-sub">Śred: ${item.avgGap} · Odch: ${item.dev}σ</div>
-      </div>
-      <div class="num-tags">${ballTag(item.number)}</div>
-    </div>`).join('');
+  document.getElementById('overdueNumbers').innerHTML=d.overdueNumbers.slice(0,8).map(item=>
+    `<div class="num-row"><div class="ball ball-overdue">${item.number}</div><div class="num-info"><div class="num-info-main">Przerwa: ${item.lastGap} losowań</div><div class="num-info-sub">Śred: ${item.avgGap} · Odch: ${item.dev}σ</div></div><div class="num-tags">${ballTag(item.number)}</div></div>`).join('');
 
-  // Gap
-  const maxGapC=d.sortedGaps[0]?d.sortedGaps[0][1]:1;
-  document.getElementById('gapAnalysis').innerHTML=d.sortedGaps.map(([g,c])=>`
-    <div class="bar-row">
-      <div class="bar-label">Gap ${g}</div>
-      <div class="bar-track"><div class="bar-fill bar-green" style="width:${c/maxGapC*100}%">${c}</div></div>
-    </div>`).join('');
+  const maxGC=d.sortedGaps[0]?d.sortedGaps[0][1]:1;
+  document.getElementById('gapAnalysis').innerHTML=d.sortedGaps.map(([g,c])=>
+    `<div class="bar-row"><div class="bar-label">Gap ${g}</div><div class="bar-track"><div class="bar-fill bar-green" style="width:${c/maxGC*100}%">${c}</div></div></div>`).join('');
 
-  // Entropy
-  const maxEnt=d.sortedEntropy[0]?d.sortedEntropy[0].entropy:1;
-  document.getElementById('entropyAnalysis').innerHTML=d.sortedEntropy.map(item=>`
-    <div class="num-row">
-      <div class="ball ball-purple">${item.number}</div>
-      <div class="num-info">
-        <div class="num-info-main">Entropia: ${item.entropy}</div>
-        <div class="num-info-sub">${item.frequency} powtórzeń</div>
-      </div>
-    </div>`).join('');
+  // Entropia przerw — z wyjaśnieniem
+  const maxE=d.sortedEntropy[0]?d.sortedEntropy[0].entropy:1;
+  document.getElementById('entropyAnalysis').innerHTML=
+    '<div class="info-box">🔬 <strong>Entropia rozkładu przerw</strong> — mierzy nieregularność rytmu pojawień liczby. Wysoka = losowe, nieregularne przerwy. Niska = powtarzający się rytm.</div>'+
+    d.sortedEntropy.map(item=>
+      `<div class="num-row"><div class="ball ball-purple">${item.number}</div><div class="num-info"><div class="num-info-main">H = ${item.entropy} bitów</div><div class="num-info-sub">Powtórzeń: ${item.frequency} · Odch.std przerw: ${item.std}</div></div></div>`).join('');
 
-  // Probability — pokazuje wynik + składowe
-  const maxScore=d.sortedProbability[0]?d.sortedProbability[0].score:1;
-  document.getElementById('probabilityScore').innerHTML=d.sortedProbability.map(item=>`
-    <div class="bar-row">
-      <div class="bar-label">${item.number}</div>
-      <div class="bar-track"><div class="bar-fill bar-purple" style="width:${item.score/maxScore*100}%">${item.score.toFixed(3)}</div></div>
-    </div>`).join('');
+  const maxPS=d.sortedProbability[0]?d.sortedProbability[0].score:1;
+  document.getElementById('probabilityScore').innerHTML=
+    '<div class="info-box">⚖️ <strong>Wagi:</strong> Zaległość 40% + Entropia przerw 20% + Różnorodność przerw 20% + Częstość 20%</div>'+
+    d.sortedProbability.map(item=>
+      `<div class="bar-row"><div class="bar-label">${item.number}</div><div class="bar-track"><div class="bar-fill bar-purple" style="width:${item.score/maxPS*100}%">${item.score.toFixed(3)}</div></div></div>`).join('');
 
-  // Odd/Even
-  const oeTotal=d.draws.length;
-  const oeSorted=Object.entries(d.oeCount).sort((a,b)=>b[1]-a[1]);
-  const maxOE=oeSorted[0]?oeSorted[0][1]:1;
-  document.getElementById('oddEvenAnalysis').innerHTML=
-    '<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">P=Parzyste, N=Nieparzyste</p>'+
-    oeSorted.map(([k,c])=>{
-      const pct=(c/oeTotal*100).toFixed(1);
-      return `<div class="bar-row"><div class="bar-label">${k.replace(':','P:').replace(/(\d+)$/,'$1N')}</div><div class="bar-track"><div class="bar-fill bar-purple" style="width:${c/maxOE*100}%">${pct}%</div></div></div>`;
-    }).join('');
+  const oeTotal=d.draws.length,oeSorted=Object.entries(d.oeCount).sort((a,b)=>b[1]-a[1]),maxOE=oeSorted[0]?oeSorted[0][1]:1;
+  document.getElementById('oddEvenAnalysis').innerHTML='<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">P = Parzyste · N = Nieparzyste</p>'+
+    oeSorted.map(([k,c])=>{const pct=(c/oeTotal*100).toFixed(1);return`<div class="bar-row"><div class="bar-label">${k}P:N</div><div class="bar-track"><div class="bar-fill bar-purple" style="width:${c/maxOE*100}%">${pct}%</div></div></div>`;}).join('');
 
-  // Low/High
-  const lhTotal=d.draws.length;
-  const lhSorted=Object.entries(d.lhCount).sort((a,b)=>b[1]-a[1]);
-  const maxLH=lhSorted[0]?lhSorted[0][1]:1;
-  document.getElementById('lowHighAnalysis').innerHTML=
-    '<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">N=Niskie (1-24), W=Wysokie (25-49)</p>'+
-    lhSorted.map(([k,c])=>{
-      const pct=(c/lhTotal*100).toFixed(1);
-      return `<div class="bar-row"><div class="bar-label">${k.replace(':','N:').replace(/(\d+)$/,'$1W')}</div><div class="bar-track"><div class="bar-fill bar-orange" style="width:${c/maxLH*100}%">${pct}%</div></div></div>`;
-    }).join('');
+  const lhSorted=Object.entries(d.lhCount).sort((a,b)=>b[1]-a[1]),maxLH=lhSorted[0]?lhSorted[0][1]:1;
+  document.getElementById('lowHighAnalysis').innerHTML='<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">N = Niskie (1–24) · W = Wysokie (25–49)</p>'+
+    lhSorted.map(([k,c])=>{const pct=(c/d.draws.length*100).toFixed(1);return`<div class="bar-row"><div class="bar-label">${k}N:W</div><div class="bar-track"><div class="bar-fill bar-orange" style="width:${c/maxLH*100}%">${pct}%</div></div></div>`;}).join('');
 
-  // Sum
   const inRange=d.sums.filter(s=>s>=115&&s<=185).length;
   const buckets=Object.entries(d.sumBuckets).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
   const maxB=Math.max(...Object.values(d.sumBuckets));
   document.getElementById('sumAnalysis').innerHTML=
     `<div class="sum-highlight-box">📊 <strong>${(inRange/d.draws.length*100).toFixed(1)}%</strong> losowań ma sumę w przedziale 115–185<br>Mediana: <strong>${d.medianSum}</strong> · Min: ${d.sums[0]} · Max: ${d.sums[d.sums.length-1]}</div>`+
-    buckets.map(([b,c])=>{
-      const pct=(c/d.draws.length*100).toFixed(1);
-      const typical=parseInt(b)>=100&&parseInt(b)<=180;
-      return `<div class="bar-row"><div class="bar-label">${b}–${parseInt(b)+19}</div><div class="bar-track"><div class="bar-fill ${typical?'bar-green':'bar-orange'}" style="width:${c/maxB*100}%">${pct}%</div></div></div>`;
-    }).join('');
+    buckets.map(([b,c])=>{const pct=(c/d.draws.length*100).toFixed(1),typ=parseInt(b)>=100&&parseInt(b)<=180;
+      return`<div class="bar-row"><div class="bar-label">${b}–${parseInt(b)+19}</div><div class="bar-track"><div class="bar-fill ${typ?'bar-green':'bar-orange'}" style="width:${c/maxB*100}%">${pct}%</div></div></div>`;}).join('');
 
-  // Decades
   const totalNums=d.draws.length*6;
-  document.getElementById('decadesAnalysis').innerHTML=
-    '<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">Udział każdej grupy we wszystkich wylosowanych liczbach</p>'+
-    '<div class="decade-grid">'+
-    Object.entries(d.decFreq).map(([r,c])=>
-      `<div class="decade-card"><div class="decade-label">${r}</div><div class="decade-val">${c}</div><div class="decade-pct">${(c/totalNums*100).toFixed(1)}%</div></div>`
-    ).join('')+'</div>';
+  document.getElementById('decadesAnalysis').innerHTML='<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">Udział każdej grupy we wszystkich wylosowanych liczbach</p>'+
+    '<div class="decade-grid">'+Object.entries(d.decFreq).map(([r,c])=>
+      `<div class="decade-card"><div class="decade-label">${r}</div><div class="decade-val">${c}</div><div class="decade-pct">${(c/totalNums*100).toFixed(1)}%</div></div>`).join('')+'</div>';
 
-  // Consecutive
-  const cTotal=d.consCount.reduce((a,b)=>a+b,0);
-  const cLabels=['Brak par','1 para','2 pary','3+ par'];
-  const maxCons=Math.max(...d.consCount);
-  document.getElementById('consecutiveAnalysis').innerHTML=
-    '<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">Liczby sąsiednie (np. 17 i 18) w losowaniu</p>'+
-    d.consCount.map((c,i)=>{
-      const pct=(c/cTotal*100).toFixed(1);
-      return `<div class="bar-row"><div class="bar-label">${cLabels[i]}</div><div class="bar-track"><div class="bar-fill bar-teal" style="width:${c/maxCons*100}%">${pct}%</div></div></div>`;
-    }).join('');
+  const cTotal=d.consCount.reduce((a,b)=>a+b,0),cLabels=['Brak par','1 para','2 pary','3+ par'],maxCons=Math.max(...d.consCount);
+  document.getElementById('consecutiveAnalysis').innerHTML='<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">Liczby sąsiednie (np. 17 i 18) w jednym losowaniu</p>'+
+    d.consCount.map((c,i)=>{const pct=(c/cTotal*100).toFixed(1);return`<div class="bar-row"><div class="bar-label">${cLabels[i]}</div><div class="bar-track"><div class="bar-fill bar-teal" style="width:${c/maxCons*100}%">${pct}%</div></div></div>`;}).join('');
 
-  // Last digit
-  const ldTotal=d.draws.length*6;
-  const ldSorted=Object.entries(d.lastDigitFreq).sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
-  const maxLD=Math.max(...Object.values(d.lastDigitFreq));
-  document.getElementById('lastDigitAnalysis').innerHTML=
-    '<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">Częstość ostatnich cyfr wylosowanych liczb</p>'+
-    ldSorted.map(([d2,c])=>{
-      const pct=(c/ldTotal*100).toFixed(1);
-      return `<div class="bar-row"><div class="bar-label">…${d2}</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:${c/maxLD*100}%">${pct}%</div></div></div>`;
-    }).join('');
+  const ldSorted=Object.entries(d.lastDigitFreq).sort((a,b)=>parseInt(a[0])-parseInt(b[0])),maxLD=Math.max(...Object.values(d.lastDigitFreq));
+  document.getElementById('lastDigitAnalysis').innerHTML='<p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:12px;">Częstość ostatnich cyfr wśród wylosowanych liczb</p>'+
+    ldSorted.map(([d2,c])=>{const pct=(c/totalNums*100).toFixed(1);return`<div class="bar-row"><div class="bar-label">…${d2}</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:${c/maxLD*100}%">${pct}%</div></div></div>`;}).join('');
 }
 
-function selectMethod(m,e){
-  selectedMethod=m;
-  document.querySelectorAll('.method-btn').forEach(b=>b.classList.remove('active'));
-  e.target.classList.add('active');
-}
+function selectMethod(m,e){selectedMethod=m;document.querySelectorAll('.method-btn').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');}
 
 function passesFilters(combo){
-  const sum=combo.reduce((a,b)=>a+b,0);
-  const odd=combo.filter(n=>n%2!==0).length;
-  const low=combo.filter(n=>n<=24).length;
+  const sum=combo.reduce((a,b)=>a+b,0),odd=combo.filter(n=>n%2!==0).length,low=combo.filter(n=>n<=24).length;
   const sorted=[...combo].sort((a,b)=>a-b);
-
-  if(document.getElementById('fSum').checked){
-    const mn=parseInt(document.getElementById('sumMin').value);
-    const mx=parseInt(document.getElementById('sumMax').value);
-    if(sum<mn||sum>mx)return false;
-  }
-  if(document.getElementById('fOE').checked){
-    const r=document.getElementById('oeRatio').value;
-    if(r!=='any'){const[ro,re]=r.split(':').map(Number);if(odd!==ro||6-odd!==re)return false;}
-  }
-  if(document.getElementById('fLH').checked){
-    const r=document.getElementById('lhRatio').value;
-    if(r!=='any'){const[rl,rh]=r.split(':').map(Number);if(low!==rl||6-low!==rh)return false;}
-  }
-  if(document.getElementById('fCons').checked){
-    let has=false;
-    for(let i=0;i<sorted.length-1;i++)if(sorted[i+1]-sorted[i]===1){has=true;break;}
-    if(!has)return false;
-  }
-  if(document.getElementById('fLD').checked){
-    const dc={};combo.forEach(n=>{const d=n%10;dc[d]=(dc[d]||0)+1;});
-    if(Math.max(...Object.values(dc))>=3)return false;
-  }
-  if(document.getElementById('fDec').checked){
-    const dc=[0,0,0,0,0];
-    combo.forEach(n=>{if(n<=9)dc[0]++;else if(n<=19)dc[1]++;else if(n<=29)dc[2]++;else if(n<=39)dc[3]++;else dc[4]++;});
-    if(Math.max(...dc)>=4)return false;
-  }
+  if(document.getElementById('fSum').checked){const mn=parseInt(document.getElementById('sumMin').value),mx=parseInt(document.getElementById('sumMax').value);if(sum<mn||sum>mx)return false;}
+  if(document.getElementById('fOE').checked){const r=document.getElementById('oeRatio').value;if(r!=='any'){const[ro,re]=r.split(':').map(Number);if(odd!==ro||6-odd!==re)return false;}}
+  if(document.getElementById('fLH').checked){const r=document.getElementById('lhRatio').value;if(r!=='any'){const[rl,rh]=r.split(':').map(Number);if(low!==rl||6-low!==rh)return false;}}
+  if(document.getElementById('fCons').checked){let has=false;for(let i=0;i<sorted.length-1;i++)if(sorted[i+1]-sorted[i]===1){has=true;break;}if(!has)return false;}
+  if(document.getElementById('fLD').checked){const dc={};combo.forEach(n=>{const d=n%10;dc[d]=(dc[d]||0)+1;});if(Math.max(...Object.values(dc))>=3)return false;}
+  if(document.getElementById('fDec').checked){const dc=[0,0,0,0,0];combo.forEach(n=>{if(n<=9)dc[0]++;else if(n<=19)dc[1]++;else if(n<=29)dc[2]++;else if(n<=39)dc[3]++;else dc[4]++;});if(Math.max(...dc)>=4)return false;}
   return true;
 }
 
 function getSourceNumbers(){
   const d=analysisData;
-  if(selectedMethod==='hot') return d.hotNumbers.map(([n])=>parseInt(n));
-  if(selectedMethod==='cold') return d.coldNumbers.map(([n])=>parseInt(n));
-  if(selectedMethod==='overdue') return d.overdueNumbers.slice(0,20).map(i=>i.number);
-  if(selectedMethod==='entropy') return d.sortedEntropy.slice(0,20).map(i=>i.number);
-  if(selectedMethod==='probability') return d.sortedProbability.slice(0,20).map(i=>i.number);
-
+  if(selectedMethod==='hot')return d.hotNumbers.map(([n])=>parseInt(n));
+  if(selectedMethod==='cold')return d.coldNumbers.map(([n])=>parseInt(n));
+  if(selectedMethod==='overdue')return d.overdueNumbers.slice(0,20).map(i=>i.number);
+  if(selectedMethod==='entropy')return d.sortedEntropy.slice(0,20).map(i=>i.number);
+  if(selectedMethod==='probability')return d.sortedProbability.slice(0,20).map(i=>i.number);
   if(selectedMethod==='mixed'){
-    // === POPRAWIONY MIESZANY ===
-    // Używa ważonego losowania z puli wszystkich 49 liczb
-    // Waga każdej liczby = wynik prawdopodobieństwa z analysisData
-    // Dzięki temu "mieszany" korzysta z pełnej analizy, a nie tylko top-N
+    // Ważone losowanie ze wszystkich 49 liczb na podstawie scorów prawdopodobieństwa
     const weights=[];
     for(let n=1;n<=49;n++){
       const ps=d.probabilityScores[n.toString()];
-      weights.push({number:n, weight: ps ? ps.score : 0.01});
+      weights.push({number:n,weight:ps?ps.score:0.001});
     }
-    // Normalizuj
     const totalW=weights.reduce((a,b)=>a+b.weight,0);
     weights.forEach(w=>w.weight/=totalW);
-    return weights; // zwróć obiekty z wagami
+    return weights;
   }
-  return [];
+  return[];
 }
 
-function weightedSample(weights, n) {
-  const result=[], used=new Set();
-  let tries=0;
-  while(result.length<n && tries<1000){
-    tries++;
-    const r=Math.random();
-    let cum=0;
-    for(const w of weights){
-      cum+=w.weight;
-      if(r<cum && !used.has(w.number)){
-        result.push(w.number);
-        used.add(w.number);
-        break;
-      }
-    }
+function weightedSample(weights,n){
+  const result=[],used=new Set();let tries=0;
+  while(result.length<n&&tries<2000){
+    tries++;const r=Math.random();let cum=0;
+    for(const w of weights){cum+=w.weight;if(r<cum&&!used.has(w.number)){result.push(w.number);used.add(w.number);break;}}
   }
-  // fallback jeśli coś pójdzie nie tak
-  while(result.length<n){
-    const n2=Math.floor(Math.random()*49)+1;
-    if(!used.has(n2)){result.push(n2);used.add(n2);}
-  }
+  while(result.length<n){const n2=Math.floor(Math.random()*49)+1;if(!used.has(n2)){result.push(n2);used.add(n2);}}
   return result;
 }
 
 function generateCombinations(){
   const source=getSourceNumbers();
-  if(!source||source.length===0){
-    showToast('❌ Za mało danych. Wczytaj plik CSV.');
-    return;
-  }
+  if(!source||source.length===0){showToast('❌ Za mało danych. Wczytaj plik CSV.');return;}
   const isMixed=selectedMethod==='mixed';
-  const isArray=Array.isArray(source)&&source.length>0&&typeof source[0]==='object';
-  const simpleSource=isArray?null:source;
-
-  if(!isMixed&&simpleSource&&simpleSource.length<6){
-    showToast('❌ Za mało liczb źródłowych. Zmień metodę.');
-    return;
-  }
-
+  const isWeighted=isMixed&&source[0]&&typeof source[0]==='object';
+  const simpleSource=isWeighted?null:source;
+  if(!isMixed&&simpleSource&&simpleSource.length<6){showToast('❌ Za mało liczb. Zmień metodę.');return;}
   const count=parseInt(document.getElementById('comboCount').value)||6;
-  const combos=[];
-  let attempts=0;
-  const maxAtt=count*800;
-
-  while(combos.length<count && attempts<maxAtt){
+  const combos=[];let attempts=0;
+  while(combos.length<count&&attempts<count*1000){
     attempts++;
     let combo;
-    if(isMixed){
-      combo=weightedSample(source, 6);
-    } else {
-      combo=[];
-      const used=new Set();
-      let t=0;
-      while(combo.length<6&&t<200){
-        t++;
-        const n=simpleSource[Math.floor(Math.random()*simpleSource.length)];
-        if(!used.has(n)){combo.push(n);used.add(n);}
-      }
-    }
-    if(combo.length===6&&passesFilters(combo)) combos.push(combo.sort((a,b)=>a-b));
+    if(isWeighted){combo=weightedSample(source,6);}
+    else{combo=[];const used=new Set();let t=0;while(combo.length<6&&t<200){t++;const n=simpleSource[Math.floor(Math.random()*simpleSource.length)];if(!used.has(n)){combo.push(n);used.add(n);}}}
+    if(combo.length===6&&passesFilters(combo))combos.push(combo.sort((a,b)=>a-b));
   }
-
-  if(combos.length===0){
-    showToast('⚠️ Złagódź filtry — brak pasujących kombinacji.');
-    return;
-  }
-
+  if(combos.length===0){showToast('⚠️ Złagódź filtry — brak pasujących kombinacji.');return;}
   renderCombos(combos);
 }
 
 function renderCombos(combos){
   document.getElementById('comboGrid').innerHTML=combos.map((combo,i)=>{
-    const sum=combo.reduce((a,b)=>a+b,0);
-    const odd=combo.filter(n=>n%2!==0).length;
-    const low=combo.filter(n=>n<=24).length;
-    return `<div class="combo-card">
-      <div class="combo-num-idx">Kombinacja ${i+1}</div>
-      <div class="combo-balls">${combo.map(n=>`<div class="combo-ball">${n}</div>`).join('')}</div>
-      <div class="combo-meta">
-        <span>Σ ${sum}</span>
-        <span>${odd}P:${6-odd}N</span>
-        <span>${low}N:${6-low}W</span>
-      </div>
-      <button class="btn-copy-single" onclick="copySingle('${combo.join(', ')}')">📋 Kopiuj</button>
-    </div>`;
+    const sum=combo.reduce((a,b)=>a+b,0),odd=combo.filter(n=>n%2!==0).length,low=combo.filter(n=>n<=24).length;
+    return`<div class="combo-card"><div class="combo-num-idx">Kombinacja ${i+1}</div><div class="combo-balls">${combo.map(n=>`<div class="combo-ball">${n}</div>`).join('')}</div><div class="combo-meta"><span>Σ ${sum}</span><span>${odd}P:${6-odd}N</span><span>${low}N:${6-low}W</span></div><button class="btn-copy-single" onclick="copySingle('${combo.join(', ')}')">📋 Kopiuj</button></div>`;
   }).join('');
   document.getElementById('comboSection').style.display='block';
 }
 
-function copySingle(text){
-  navigator.clipboard.writeText(text).then(()=>showToast('✅ Skopiowano!'));
-}
-
+function copySingle(text){navigator.clipboard.writeText(text).then(()=>showToast('✅ Skopiowano!'));}
 function copyAll(){
-  const text=Array.from(document.querySelectorAll('.combo-card'))
-    .map(c=>Array.from(c.querySelectorAll('.combo-ball')).map(b=>b.textContent).join(', ')).join('\n');
+  const text=Array.from(document.querySelectorAll('.combo-card')).map(c=>Array.from(c.querySelectorAll('.combo-ball')).map(b=>b.textContent).join(', ')).join('\n');
   navigator.clipboard.writeText(text).then(()=>showToast('✅ Skopiowano wszystkie!'));
 }
-
 function clearAll(){
-  document.getElementById('mainContent').style.display='none';
-  document.getElementById('errorBadge').style.display='none';
-  document.getElementById('fileBadge').style.display='none';
-  document.getElementById('csvFile').value='';
+  document.getElementById('mainContent').style.display='none';document.getElementById('errorBadge').style.display='none';
+  document.getElementById('fileBadge').style.display='none';document.getElementById('csvFile').value='';
   document.getElementById('fileInputText').textContent='📂 Wgraj plik lotto.csv';
-  analysisData=null; allDraws=null; selectedMethod='hot';
+  analysisData=null;allDraws=null;selectedMethod='hot';
   document.querySelectorAll('.method-btn').forEach(b=>b.classList.remove('active'));
   document.querySelector('.method-btn').classList.add('active');
 }
