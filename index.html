@@ -12,6 +12,7 @@
         :root {
             --color-bg-primary: #0f172a;
             --color-surface: #1e293b;
+            --color-surface2: #273549;
             --color-text-primary: #f1f5f9;
             --color-text-secondary: #cbd5e1;
             --color-primary: #38bdf8;
@@ -19,6 +20,8 @@
             --color-warning: #f59e0b;
             --color-error: #ef4444;
             --color-danger: #dc2626;
+            --color-purple: #a78bfa;
+            --color-pink: #f472b6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--color-bg-primary); color: var(--color-text-primary); padding: 20px; min-height: 100vh; }
@@ -30,6 +33,7 @@
         label { font-size: 0.9rem; margin-bottom: 8px; color: var(--color-text-secondary); font-weight: 500; }
         input, select { padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; background: rgba(0,0,0,0.2); color: var(--color-text-primary); font-size: 1rem; }
         input[type="file"] { cursor: pointer; padding: 8px; }
+        input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--color-primary); }
         input:focus, select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(56,189,248,0.1); }
         button { padding: 10px 20px; border: none; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
         .btn-primary { background: var(--color-primary); color: #0f172a; }
@@ -39,357 +43,716 @@
         .btn-small { padding: 6px 12px; font-size: 0.85rem; margin-bottom: 5px; }
         .controls-wrapper { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
         .file-info { background: rgba(16,185,129,0.1); border: 1px solid var(--color-success); color: #6ee7b7; padding: 10px 15px; border-radius: 6px; font-size: 0.9rem; display: none; grid-column: 1/-1; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: var(--color-surface); padding: 20px; border-radius: 8px; border-left: 4px solid var(--color-primary); }
-        .stat-value { font-size: 2rem; font-weight: bold; color: var(--color-primary); margin: 10px 0; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--color-primary); margin: 10px 0; }
         .stat-label { color: var(--color-text-secondary); font-size: 0.9rem; }
         .error { background: rgba(239,68,68,0.1); border: 1px solid var(--color-error); color: #fca5a5; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
         .loading { text-align: center; padding: 20px; color: var(--color-text-secondary); }
         .spinner { border: 3px solid rgba(56,189,248,0.2); border-top: 3px solid var(--color-primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .analysis-card { background: var(--color-surface); padding: 20px; border-radius: 8px; border: 1px solid rgba(56,189,248,0.2); }
         .analysis-title { color: var(--color-primary); font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
         .analysis-icon { font-size: 1.5rem; }
-        .number-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+        .number-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
         .number-row:last-child { border-bottom: none; }
-        .number-badge { display: inline-block; background: var(--color-primary); color: #0f172a; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; }
+        .number-badge { display: inline-block; background: var(--color-primary); color: #0f172a; padding: 3px 10px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; min-width: 36px; text-align: center; }
         .badge-hot { background: var(--color-warning); color: #000; }
         .badge-overdue { background: var(--color-danger); color: #fff; }
-        .chart-bar { display: flex; align-items: center; margin-bottom: 8px; gap: 10px; }
-        .chart-label { width: 40px; text-align: right; color: var(--color-text-secondary); font-size: 0.9rem; }
-        .chart-fill { flex: 1; height: 20px; background: linear-gradient(90deg, var(--color-primary), var(--color-success)); border-radius: 3px; position: relative; }
-        .chart-value { position: absolute; right: 5px; top: 2px; color: #0f172a; font-size: 0.75rem; font-weight: bold; }
+        .badge-purple { background: var(--color-purple); color: #0f172a; }
+        .badge-pink { background: var(--color-pink); color: #0f172a; }
+        .badge-success { background: var(--color-success); color: #0f172a; }
+        .chart-bar { display: flex; align-items: center; margin-bottom: 6px; gap: 10px; }
+        .chart-label { width: 50px; text-align: right; color: var(--color-text-secondary); font-size: 0.85rem; white-space: nowrap; }
+        .chart-fill { height: 20px; background: linear-gradient(90deg, var(--color-primary), var(--color-success)); border-radius: 3px; position: relative; min-width: 20px; transition: width 0.5s ease; }
+        .chart-fill-warn { background: linear-gradient(90deg, var(--color-warning), var(--color-danger)); }
+        .chart-fill-purple { background: linear-gradient(90deg, var(--color-purple), var(--color-pink)); }
+        .chart-value { position: absolute; right: 5px; top: 2px; color: #0f172a; font-size: 0.72rem; font-weight: bold; white-space: nowrap; }
+        .chart-wrapper { flex: 1; }
+
+        /* Donut chart */
+        .donut-section { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .donut-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+        .donut-wrap svg { transform: rotate(-90deg); }
+        .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.3; }
+        .donut-legend { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+        /* Sum range */
+        .sum-range-bar { margin: 10px 0; }
+        .sum-range-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 4px; }
+        .sum-bar-outer { background: rgba(255,255,255,0.08); border-radius: 4px; height: 22px; position: relative; overflow: hidden; }
+        .sum-bar-inner { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.72rem; font-weight: bold; color: #0f172a; transition: width 0.5s ease; }
+        .sum-highlight { background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.4); border-radius: 6px; padding: 8px 12px; margin-top: 10px; font-size: 0.85rem; color: var(--color-primary); }
+
+        /* Decades */
+        .decade-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
+        .decade-card { background: rgba(255,255,255,0.05); border-radius: 6px; padding: 10px 6px; text-align: center; }
+        .decade-label { font-size: 0.75rem; color: var(--color-text-secondary); margin-bottom: 4px; }
+        .decade-value { font-size: 1.1rem; font-weight: bold; color: var(--color-primary); }
+        .decade-pct { font-size: 0.72rem; color: var(--color-text-secondary); }
+
+        /* Generator */
         .generator-section { background: var(--color-surface); padding: 20px; border-radius: 8px; border: 2px solid rgba(56,189,248,0.3); margin-top: 30px; }
         .generator-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .combination-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 15px; }
+        .filter-section { background: var(--color-surface2); border-radius: 8px; padding: 16px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.08); }
+        .filter-title { font-weight: 600; color: var(--color-primary); margin-bottom: 12px; font-size: 0.95rem; }
+        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .filter-item { display: flex; align-items: center; gap: 10px; }
+        .filter-item label { margin: 0; font-size: 0.88rem; cursor: pointer; color: var(--color-text-primary); }
+        .filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+        .filter-row label { margin: 0; min-width: 160px; }
+        .filter-row input[type="number"] { width: 70px; padding: 6px 8px; font-size: 0.9rem; }
+        .filter-row select { padding: 6px 8px; font-size: 0.9rem; }
+        .combination-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 15px; }
         .combination-card { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); border-radius: 6px; padding: 12px; text-align: center; }
-        .combination-numbers { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-        .combination-number { width: 28px; height: 28px; background: var(--color-primary); color: #0f172a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; }
-        .method-selector { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-        .method-btn { padding: 8px 16px; border: 2px solid rgba(56,189,248,0.3); background: transparent; color: var(--color-primary); border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
+        .combination-meta { font-size: 0.7rem; color: var(--color-text-secondary); margin-top: 6px; }
+        .combination-numbers { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+        .combination-number { width: 28px; height: 28px; background: var(--color-primary); color: #0f172a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.82rem; }
+        .method-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+        .method-btn { padding: 7px 14px; border: 2px solid rgba(56,189,248,0.3); background: transparent; color: var(--color-primary); border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; font-size: 0.9rem; }
         .method-btn.active { background: var(--color-primary); color: #0f172a; border-color: var(--color-primary); }
         .method-btn:hover { border-color: var(--color-primary); }
-        @media (max-width: 768px) { .analysis-grid { grid-template-columns: 1fr; } h1 { font-size: 1.8rem; } }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; margin-left: 6px; }
+        .tag-odd { background: rgba(167,139,250,0.3); color: var(--color-purple); }
+        .tag-even { background: rgba(244,114,182,0.3); color: var(--color-pink); }
+        .tag-low { background: rgba(16,185,129,0.3); color: var(--color-success); }
+        .tag-high { background: rgba(245,158,11,0.3); color: var(--color-warning); }
+        @media (max-width: 768px) { .analysis-grid { grid-template-columns: 1fr; } h1 { font-size: 1.8rem; } .decade-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎰 Lotto Advanced Analyzer</h1>
+<div class="container">
+    <h1>🎰 Lotto Advanced Analyzer</h1>
 
-        <div class="control-panel">
-            <div class="control-group">
-                <label>📂 Wgraj plik lotto.csv:</label>
-                <input type="file" id="csvFile" accept=".csv" onchange="handleFileUpload(event)">
-            </div>
-            <div class="control-group">
-                <label>Liczba ostatnich losowań do analizy:</label>
-                <input type="number" id="drawCount" value="100" min="20" max="9999">
-            </div>
-            <div class="controls-wrapper" style="grid-column: 1/-1;">
-                <button class="btn-primary" onclick="analyzeLoaded()">▶ Analizuj</button>
-                <button class="btn-secondary" onclick="clearAll()">Wyczyść</button>
-            </div>
-            <div class="file-info" id="fileInfo"></div>
+    <div class="control-panel">
+        <div class="control-group">
+            <label>📂 Wgraj plik lotto.csv:</label>
+            <input type="file" id="csvFile" accept=".csv" onchange="handleFileUpload(event)">
+        </div>
+        <div class="control-group">
+            <label>Liczba ostatnich losowań do analizy:</label>
+            <input type="number" id="drawCount" value="100" min="20" max="9999">
+        </div>
+        <div class="controls-wrapper" style="grid-column: 1/-1;">
+            <button class="btn-primary" onclick="analyzeLoaded()">▶ Analizuj</button>
+            <button class="btn-secondary" onclick="clearAll()">Wyczyść</button>
+        </div>
+        <div class="file-info" id="fileInfo"></div>
+    </div>
+
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div><p>Analiza danych...</p>
+    </div>
+
+    <div id="analysisContent" style="display: none;">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Analizowanych Losowań</div><div class="stat-value" id="totalDraws">0</div></div>
+            <div class="stat-card"><div class="stat-label">Ostatnie Losowanie</div><div class="stat-value" id="lastDrawDate" style="font-size:1.1rem;">-</div></div>
+            <div class="stat-card"><div class="stat-label">Entropia Systemu</div><div class="stat-value" id="systemEntropy" style="font-size:1.1rem;">-</div></div>
+            <div class="stat-card"><div class="stat-label">Typowa Suma (mediana)</div><div class="stat-value" id="medianSum" style="font-size:1.1rem;">-</div></div>
+            <div class="stat-card"><div class="stat-label">Najcz. Układ P/N</div><div class="stat-value" id="topOddEven" style="font-size:1rem;">-</div></div>
         </div>
 
-        <div id="error" class="error" style="display: none;"></div>
-        <div id="loading" class="loading" style="display: none;">
-            <div class="spinner"></div>
-            <p>Analiza danych...</p>
+        <div class="analysis-grid">
+            <!-- Gorące -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">🔥</span> Gorące Liczby</div>
+                <div id="hotNumbers"></div>
+            </div>
+            <!-- Zimne -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">❄️</span> Zimne Liczby</div>
+                <div id="coldNumbers"></div>
+            </div>
+            <!-- Zaległe -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">⏰</span> Zaległe Liczby</div>
+                <div id="overdueNumbers"></div>
+            </div>
+            <!-- Gap -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">📊</span> Analiza Gap</div>
+                <div id="gapAnalysis"></div>
+            </div>
+            <!-- Entropia -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">🌀</span> Entropia</div>
+                <div id="entropyAnalysis"></div>
+            </div>
+            <!-- Prawdopodobieństwo -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">📈</span> Wynik Prawdopodobieństwa</div>
+                <div id="probabilityScore"></div>
+            </div>
+            <!-- Parzyste/Nieparzyste -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">🔵</span> Parzyste / Nieparzyste</div>
+                <div id="oddEvenAnalysis"></div>
+            </div>
+            <!-- Niskie/Wysokie -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">📐</span> Niskie (1-24) / Wysokie (25-49)</div>
+                <div id="lowHighAnalysis"></div>
+            </div>
+            <!-- Suma -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">➕</span> Analiza Sumy Kombinacji</div>
+                <div id="sumAnalysis"></div>
+            </div>
+            <!-- Dziesiątki -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">🔟</span> Analiza Dziesiątek</div>
+                <div id="decadesAnalysis"></div>
+            </div>
+            <!-- Pary sąsiednie -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">👫</span> Pary Sąsiednie (Consecutive)</div>
+                <div id="consecutiveAnalysis"></div>
+            </div>
+            <!-- Ostatnia cyfra -->
+            <div class="analysis-card">
+                <div class="analysis-title"><span class="analysis-icon">🔡</span> Analiza Ostatniej Cyfry</div>
+                <div id="lastDigitAnalysis"></div>
+            </div>
         </div>
 
-        <div id="analysisContent" style="display: none;">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Analizowanych Losowań</div>
-                    <div class="stat-value" id="totalDraws">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Ostatnie Losowanie</div>
-                    <div class="stat-value" id="lastDrawDate" style="font-size: 1.2rem;">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Entropia Systemu</div>
-                    <div class="stat-value" id="systemEntropy" style="font-size: 1.2rem;">-</div>
+        <!-- GENERATOR -->
+        <div class="generator-section">
+            <h2>🎲 Inteligentny Generator Kombinacji</h2>
+
+            <div>
+                <label style="display:block;margin-bottom:10px;">Metoda doboru liczb:</label>
+                <div class="method-selector">
+                    <button class="method-btn active" onclick="selectMethod('hot',event)">🔥 Gorące</button>
+                    <button class="method-btn" onclick="selectMethod('cold',event)">❄️ Zimne</button>
+                    <button class="method-btn" onclick="selectMethod('overdue',event)">⏰ Zaległe</button>
+                    <button class="method-btn" onclick="selectMethod('entropy',event)">🌀 Entropia</button>
+                    <button class="method-btn" onclick="selectMethod('probability',event)">📈 Prawdopodobieństwo</button>
+                    <button class="method-btn" onclick="selectMethod('mixed',event)">🎯 Mieszany</button>
                 </div>
             </div>
 
-            <div class="analysis-grid">
-                <div class="analysis-card">
-                    <div class="analysis-title"><span class="analysis-icon">🔥</span> Gorące Liczby</div>
-                    <div id="hotNumbers"></div>
+            <!-- FILTRY -->
+            <div class="filter-section">
+                <div class="filter-title">⚙️ Filtry kombinacji</div>
+
+                <div class="filter-grid">
+                    <div class="filter-item">
+                        <input type="checkbox" id="filterOddEven" checked>
+                        <label for="filterOddEven">Balans Parzystych/Nieparzystych</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="filterLowHigh" checked>
+                        <label for="filterLowHigh">Balans Niskich/Wysokich</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="filterSum" checked>
+                        <label for="filterSum">Zakres Sumy</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="filterConsecutive">
+                        <label for="filterConsecutive">Min. 1 para sąsiednia</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="filterNoSameLastDigit">
+                        <label for="filterNoSameLastDigit">Brak 3+ liczb z tą samą ostatnią cyfrą</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="filterDecades">
+                        <label for="filterDecades">Brak 4+ liczb z tej samej dziesiątki</label>
+                    </div>
                 </div>
-                <div class="analysis-card">
-                    <div class="analysis-title"><span class="analysis-icon">❄️</span> Zimne Liczby</div>
-                    <div id="coldNumbers"></div>
+
+                <div class="filter-row" style="margin-top:14px;">
+                    <label>Układ P/N (parzyste:nieparzyste):</label>
+                    <select id="oddEvenRatio">
+                        <option value="any">Dowolny</option>
+                        <option value="3:3" selected>3:3 (najczęstszy)</option>
+                        <option value="2:4">2:4</option>
+                        <option value="4:2">4:2</option>
+                        <option value="1:5">1:5</option>
+                        <option value="5:1">5:1</option>
+                    </select>
                 </div>
-                <div class="analysis-card">
-                    <div class="analysis-title"><span class="analysis-icon">⏰</span> Zaległe Liczby</div>
-                    <div id="overdueNumbers"></div>
+
+                <div class="filter-row">
+                    <label>Układ N/W (niskie:wysokie):</label>
+                    <select id="lowHighRatio">
+                        <option value="any">Dowolny</option>
+                        <option value="3:3" selected>3:3 (najczęstszy)</option>
+                        <option value="2:4">2:4</option>
+                        <option value="4:2">4:2</option>
+                        <option value="1:5">1:5</option>
+                        <option value="5:1">5:1</option>
+                    </select>
                 </div>
-                <div class="analysis-card">
-                    <div class="analysis-title"><span class="analysis-icon">📊</span> Analiza Gap</div>
-                    <div id="gapAnalysis"></div>
-                </div>
-                <div class="analysis-card">
-                    <div class="analysis-title"><span class="analysis-icon">🌀</span> Entropia</div>
-                    <div id="entropyAnalysis"></div>
-                </div>
-                <div class="analysis-card">
-                    <div class="analysis-title"><span class="analysis-icon">📈</span> Wynik Prawdopodobieństwa</div>
-                    <div id="probabilityScore"></div>
+
+                <div class="filter-row">
+                    <label>Suma min:</label>
+                    <input type="number" id="sumMin" value="115">
+                    <label>Suma max:</label>
+                    <input type="number" id="sumMax" value="185">
                 </div>
             </div>
 
-            <div class="generator-section">
-                <h2>🎲 Inteligentny Generator Kombinacji</h2>
-                <div>
-                    <label style="display: block; margin-bottom: 10px;">Wybierz metodę analizy:</label>
-                    <div class="method-selector">
-                        <button class="method-btn active" onclick="selectMethod('hot', event)">🔥 Gorące</button>
-                        <button class="method-btn" onclick="selectMethod('cold', event)">❄️ Zimne</button>
-                        <button class="method-btn" onclick="selectMethod('overdue', event)">⏰ Zaległe</button>
-                        <button class="method-btn" onclick="selectMethod('entropy', event)">🌀 Entropia</button>
-                        <button class="method-btn" onclick="selectMethod('probability', event)">📈 Prawdopodobieństwo</button>
-                    </div>
+            <div class="generator-controls">
+                <div class="control-group">
+                    <label>Liczba Kombinacji:</label>
+                    <input type="number" id="combinationCount" value="5" min="1" max="50">
                 </div>
-                <div class="generator-controls">
-                    <div class="control-group">
-                        <label>Liczba Kombinacji:</label>
-                        <input type="number" id="combinationCount" value="5" min="1" max="50">
-                    </div>
-                    <div class="control-group">
-                        <label style="visibility: hidden;">Generuj</label>
-                        <button class="btn-primary" onclick="generateCombinations()">Generuj Kombinacje</button>
-                    </div>
+                <div class="control-group">
+                    <label style="visibility:hidden;">Generuj</label>
+                    <button class="btn-primary" onclick="generateCombinations()">Generuj Kombinacje</button>
                 </div>
-                <div id="combinationsSection" style="display: none;">
-                    <div class="combination-grid" id="combinationGrid"></div>
-                    <button class="btn-secondary" onclick="copyAllCombinations()" style="margin-top: 20px;">Skopiuj Wszystkie</button>
-                </div>
+            </div>
+
+            <div id="combinationsSection" style="display:none;">
+                <div class="combination-grid" id="combinationGrid"></div>
+                <button class="btn-secondary" onclick="copyAllCombinations()" style="margin-top:20px;">Skopiuj Wszystkie</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        let analysisData = null;
-        let selectedMethod = 'hot';
-        let allDrawsFromCSV = null;
+<script>
+let analysisData = null;
+let selectedMethod = 'hot';
+let allDrawsFromCSV = null;
 
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                allDrawsFromCSV = parseCSV(text);
-                const errorDiv = document.getElementById('error');
-                const fileInfo = document.getElementById('fileInfo');
-                if (allDrawsFromCSV.length === 0) {
-                    errorDiv.textContent = 'Błąd: Nie udało się sparsować pliku CSV.';
-                    errorDiv.style.display = 'block';
-                    fileInfo.style.display = 'none';
-                } else {
-                    errorDiv.style.display = 'none';
-                    document.getElementById('drawCount').max = allDrawsFromCSV.length;
-                    fileInfo.textContent = '✅ Wczytano ' + allDrawsFromCSV.length + ' losowań. Najnowsze: ' + new Date(allDrawsFromCSV[0].drawDate).toLocaleDateString('pl-PL');
-                    fileInfo.style.display = 'block';
-                }
-            };
-            reader.readAsText(file, 'UTF-8');
-        }
-
-        function parseCSV(text) {
-            const lines = text.trim().split('\n');
-            const draws = [];
-            for (const line of lines) {
-                const parts = line.trim().split(',');
-                if (parts.length < 8) continue;
-                const dateParts = parts[1].trim().split('.');
-                if (dateParts.length !== 3) continue;
-                const drawDate = new Date(dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0]).toISOString();
-                const numbers = [parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]]
-                    .map(n => parseInt(n.trim()))
-                    .filter(n => !isNaN(n) && n >= 1 && n <= 49);
-                if (numbers.length === 6) draws.push({ drawDate, numbers });
-            }
-            draws.sort((a, b) => new Date(b.drawDate) - new Date(a.drawDate));
-            return draws;
-        }
-
-        function analyzeLoaded() {
-            const errorDiv = document.getElementById('error');
-            const loadingDiv = document.getElementById('loading');
-            const contentDiv = document.getElementById('analysisContent');
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        allDrawsFromCSV = parseCSV(e.target.result);
+        const errorDiv = document.getElementById('error');
+        const fileInfo = document.getElementById('fileInfo');
+        if (allDrawsFromCSV.length === 0) {
+            errorDiv.textContent = 'Błąd: Nie udało się sparsować pliku CSV.';
+            errorDiv.style.display = 'block';
+            fileInfo.style.display = 'none';
+        } else {
             errorDiv.style.display = 'none';
-            if (!allDrawsFromCSV || allDrawsFromCSV.length === 0) {
-                errorDiv.textContent = 'Błąd: Najpierw wgraj plik CSV z losowaniami.';
-                errorDiv.style.display = 'block';
-                return;
+            document.getElementById('drawCount').max = allDrawsFromCSV.length;
+            fileInfo.textContent = '✅ Wczytano ' + allDrawsFromCSV.length + ' losowań. Najnowsze: ' + new Date(allDrawsFromCSV[0].drawDate).toLocaleDateString('pl-PL');
+            fileInfo.style.display = 'block';
+        }
+    };
+    reader.readAsText(file, 'UTF-8');
+}
+
+function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const draws = [];
+    for (const line of lines) {
+        const parts = line.trim().split(',');
+        if (parts.length < 8) continue;
+        const dp = parts[1].trim().split('.');
+        if (dp.length !== 3) continue;
+        const drawDate = new Date(dp[2] + '-' + dp[1] + '-' + dp[0]).toISOString();
+        const numbers = [parts[2],parts[3],parts[4],parts[5],parts[6],parts[7]]
+            .map(n => parseInt(n.trim())).filter(n => !isNaN(n) && n >= 1 && n <= 49);
+        if (numbers.length === 6) draws.push({ drawDate, numbers });
+    }
+    draws.sort((a, b) => new Date(b.drawDate) - new Date(a.drawDate));
+    return draws;
+}
+
+function analyzeLoaded() {
+    const errorDiv = document.getElementById('error');
+    errorDiv.style.display = 'none';
+    if (!allDrawsFromCSV || allDrawsFromCSV.length === 0) {
+        errorDiv.textContent = 'Błąd: Najpierw wgraj plik CSV z losowaniami.';
+        errorDiv.style.display = 'block';
+        return;
+    }
+    const drawCount = Math.min(parseInt(document.getElementById('drawCount').value), allDrawsFromCSV.length);
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('analysisContent').style.display = 'none';
+    setTimeout(() => {
+        performAnalysis(allDrawsFromCSV.slice(0, drawCount));
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('analysisContent').style.display = 'block';
+    }, 50);
+}
+
+function performAnalysis(draws) {
+    const analysis = { frequencyMap: {}, skipMap: {}, gapFrequency: {} };
+    for (let i = 1; i <= 49; i++) { analysis.frequencyMap[i] = 0; analysis.skipMap[i] = []; }
+
+    const oddEvenCounts = {}; // "3:3" -> count
+    const lowHighCounts = {};
+    const sums = [];
+    const consecutiveCounts = [0, 0, 0, 0]; // 0 pairs, 1 pair, 2 pairs, 3+ pairs
+    const lastDigitFreq = {};
+    const decadeFreq = { '1-9':0,'10-19':0,'20-29':0,'30-39':0,'40-49':0 };
+
+    draws.forEach((draw, drawIndex) => {
+        const numbers = draw.numbers;
+        numbers.forEach(num => {
+            analysis.frequencyMap[num]++;
+            const d = num % 10;
+            lastDigitFreq[d] = (lastDigitFreq[d] || 0) + 1;
+            if (num <= 9) decadeFreq['1-9']++;
+            else if (num <= 19) decadeFreq['10-19']++;
+            else if (num <= 29) decadeFreq['20-29']++;
+            else if (num <= 39) decadeFreq['30-39']++;
+            else decadeFreq['40-49']++;
+        });
+
+        const sorted = [...numbers].sort((a, b) => a - b);
+
+        // Gap
+        for (let i = 0; i < sorted.length - 1; i++) {
+            const gap = sorted[i + 1] - sorted[i];
+            analysis.gapFrequency[gap] = (analysis.gapFrequency[gap] || 0) + 1;
+        }
+
+        // Skip map
+        numbers.forEach(num => {
+            if (analysis.skipMap[num].length > 0) {
+                const lastIndex = analysis.skipMap[num][analysis.skipMap[num].length - 1];
+                analysis.skipMap[num].push(drawIndex - lastIndex);
             }
-            const drawCount = Math.min(parseInt(document.getElementById('drawCount').value), allDrawsFromCSV.length);
-            loadingDiv.style.display = 'block';
-            contentDiv.style.display = 'none';
-            setTimeout(() => {
-                performAnalysis(allDrawsFromCSV.slice(0, drawCount));
-                loadingDiv.style.display = 'none';
-                contentDiv.style.display = 'block';
-            }, 50);
+            analysis.skipMap[num].push(drawIndex);
+        });
+
+        // Odd/Even
+        const odd = numbers.filter(n => n % 2 !== 0).length;
+        const even = 6 - odd;
+        const oeKey = odd + ':' + even;
+        oddEvenCounts[oeKey] = (oddEvenCounts[oeKey] || 0) + 1;
+
+        // Low/High
+        const low = numbers.filter(n => n <= 24).length;
+        const high = 6 - low;
+        const lhKey = low + ':' + high;
+        lowHighCounts[lhKey] = (lowHighCounts[lhKey] || 0) + 1;
+
+        // Sum
+        sums.push(numbers.reduce((a, b) => a + b, 0));
+
+        // Consecutive pairs
+        let pairs = 0;
+        for (let i = 0; i < sorted.length - 1; i++) {
+            if (sorted[i + 1] - sorted[i] === 1) pairs++;
         }
+        consecutiveCounts[Math.min(pairs, 3)]++;
+    });
 
-        function performAnalysis(draws) {
-            const analysis = { frequencyMap: {}, skipMap: {}, gapFrequency: {} };
-            for (let i = 1; i <= 49; i++) { analysis.frequencyMap[i] = 0; analysis.skipMap[i] = []; }
+    const totalAppearances = Object.values(analysis.frequencyMap).reduce((a, b) => a + b, 0);
+    const maxFreq = Math.max(...Object.values(analysis.frequencyMap));
+    const minFreq = Math.min(...Object.values(analysis.frequencyMap));
 
-            draws.forEach((draw, drawIndex) => {
-                const numbers = draw.numbers;
-                numbers.forEach(num => { analysis.frequencyMap[num]++; });
-                const sorted = [...numbers].sort((a, b) => a - b);
-                for (let i = 0; i < sorted.length - 1; i++) {
-                    const gap = sorted[i + 1] - sorted[i];
-                    analysis.gapFrequency[gap] = (analysis.gapFrequency[gap] || 0) + 1;
-                }
-                numbers.forEach(num => {
-                    if (analysis.skipMap[num].length > 0) {
-                        const lastIndex = analysis.skipMap[num][analysis.skipMap[num].length - 1];
-                        analysis.skipMap[num].push(drawIndex - lastIndex);
-                    }
-                    analysis.skipMap[num].push(drawIndex);
-                });
-            });
+    const hotNumbers = Object.entries(analysis.frequencyMap).filter(([_,c]) => c >= maxFreq * 0.75).sort((a,b) => b[1]-a[1]).slice(0,10);
+    const coldNumbers = Object.entries(analysis.frequencyMap).filter(([_,c]) => c <= minFreq + (maxFreq-minFreq)*0.25).sort((a,b) => a[1]-b[1]).slice(0,10);
 
-            const totalAppearances = Object.values(analysis.frequencyMap).reduce((a, b) => a + b, 0);
-            const maxFreq = Math.max(...Object.values(analysis.frequencyMap));
-            const minFreq = Math.min(...Object.values(analysis.frequencyMap));
-
-            const hotNumbers = Object.entries(analysis.frequencyMap).filter(([_, c]) => c >= maxFreq * 0.75).sort((a, b) => b[1] - a[1]).slice(0, 10);
-            const coldNumbers = Object.entries(analysis.frequencyMap).filter(([_, c]) => c <= minFreq + (maxFreq - minFreq) * 0.25).sort((a, b) => a[1] - b[1]).slice(0, 10);
-
-            const overdueNumbers = [];
-            Object.entries(analysis.skipMap).forEach(([num, skips]) => {
-                if (skips.length > 1) {
-                    const gaps = [];
-                    for (let i = 0; i < skips.length - 1; i++) gaps.push(skips[i + 1] - skips[i]);
-                    const avgGap = gaps.reduce((a, b) => a + b, 0) / gaps.length;
-                    const lastGap = draws.length - skips[skips.length - 1];
-                    const deviation = (lastGap - avgGap) / Math.sqrt(avgGap);
-                    overdueNumbers.push({ number: parseInt(num), lastGap, avgGap: avgGap.toFixed(1), deviation: deviation.toFixed(2) });
-                }
-            });
-            overdueNumbers.sort((a, b) => b.deviation - a.deviation);
-
-            const sortedGaps = Object.entries(analysis.gapFrequency).sort((a, b) => b[1] - a[1]).slice(0, 8);
-
-            const entropyScores = {};
-            Object.entries(analysis.frequencyMap).forEach(([num, freq]) => {
-                const p = freq / totalAppearances;
-                entropyScores[num] = p > 0 ? -(p * Math.log2(p)) : 0;
-            });
-
-            const sortedEntropy = Object.entries(entropyScores)
-                .map(([num, entropy]) => ({ number: parseInt(num), entropy: entropy.toFixed(4), frequency: analysis.frequencyMap[num] }))
-                .sort((a, b) => b.entropy - a.entropy).slice(0, 10);
-
-            const probabilityScores = {};
-            Object.keys(analysis.frequencyMap).forEach(num => {
-                const numInt = parseInt(num);
-                const freq = analysis.frequencyMap[numInt];
-                const freqScore = freq / maxFreq;
-                const overdue = overdueNumbers.find(o => o.number === numInt);
-                const overdueScore = overdue ? Math.abs(parseFloat(overdue.deviation)) / 5 : 0;
-                const entropyScore = parseFloat(entropyScores[num]) / Math.log2(49);
-                probabilityScores[num] = { number: numInt, score: (freqScore * 0.3 + overdueScore * 0.4 + entropyScore * 0.3).toFixed(3) };
-            });
-
-            const sortedProbability = Object.values(probabilityScores).sort((a, b) => b.score - a.score).slice(0, 10);
-
-            analysisData = { draws, hotNumbers, coldNumbers, overdueNumbers, sortedGaps, sortedEntropy, sortedProbability, analysis };
-            displayAnalysis();
+    const overdueNumbers = [];
+    Object.entries(analysis.skipMap).forEach(([num, skips]) => {
+        if (skips.length > 1) {
+            const gaps = [];
+            for (let i = 0; i < skips.length - 1; i++) gaps.push(skips[i+1] - skips[i]);
+            const avgGap = gaps.reduce((a,b) => a+b, 0) / gaps.length;
+            const lastGap = draws.length - skips[skips.length - 1];
+            const deviation = (lastGap - avgGap) / Math.sqrt(avgGap);
+            overdueNumbers.push({ number: parseInt(num), lastGap, avgGap: avgGap.toFixed(1), deviation: deviation.toFixed(2) });
         }
+    });
+    overdueNumbers.sort((a,b) => b.deviation - a.deviation);
 
-        function displayAnalysis() {
-            const data = analysisData;
-            document.getElementById('totalDraws').textContent = data.draws.length;
-            document.getElementById('lastDrawDate').textContent = new Date(data.draws[0].drawDate).toLocaleDateString('pl-PL');
+    const sortedGaps = Object.entries(analysis.gapFrequency).sort((a,b) => b[1]-a[1]).slice(0,8);
 
-            let systemEntropy = 0;
-            Object.values(data.analysis.frequencyMap).forEach(freq => {
-                if (freq > 0) { const p = freq / (data.draws.length * 6); systemEntropy -= p * Math.log2(p); }
-            });
-            document.getElementById('systemEntropy').textContent = (systemEntropy / Math.log2(49) * 100).toFixed(1) + '%';
+    const entropyScores = {};
+    Object.entries(analysis.frequencyMap).forEach(([num, freq]) => {
+        const p = freq / totalAppearances;
+        entropyScores[num] = p > 0 ? -(p * Math.log2(p)) : 0;
+    });
+    const sortedEntropy = Object.entries(entropyScores).map(([num, entropy]) => ({ number: parseInt(num), entropy: entropy.toFixed(4), frequency: analysis.frequencyMap[num] })).sort((a,b) => b.entropy-a.entropy).slice(0,10);
 
-            document.getElementById('hotNumbers').innerHTML = data.hotNumbers.map(([num, count]) =>
-                '<div class="number-row"><span class="number-badge badge-hot">' + num + '</span><span>' + count + ' powtórzeń</span></div>').join('');
+    const probabilityScores = {};
+    Object.keys(analysis.frequencyMap).forEach(num => {
+        const numInt = parseInt(num);
+        const freq = analysis.frequencyMap[numInt];
+        const freqScore = freq / maxFreq;
+        const overdue = overdueNumbers.find(o => o.number === numInt);
+        const overdueScore = overdue ? Math.abs(parseFloat(overdue.deviation)) / 5 : 0;
+        const entropyScore = parseFloat(entropyScores[num]) / Math.log2(49);
+        probabilityScores[num] = { number: numInt, score: (freqScore*0.3 + overdueScore*0.4 + entropyScore*0.3).toFixed(3) };
+    });
+    const sortedProbability = Object.values(probabilityScores).sort((a,b) => b.score-a.score).slice(0,10);
 
-            document.getElementById('coldNumbers').innerHTML = data.coldNumbers.map(([num, count]) =>
-                '<div class="number-row"><span class="number-badge">' + num + '</span><span>' + count + ' powtórzeń</span></div>').join('');
+    // Sum stats
+    sums.sort((a,b) => a-b);
+    const medianSum = sums[Math.floor(sums.length/2)];
+    const sumBuckets = {};
+    sums.forEach(s => {
+        const bucket = Math.floor(s/20)*20;
+        sumBuckets[bucket] = (sumBuckets[bucket]||0) + 1;
+    });
 
-            document.getElementById('overdueNumbers').innerHTML = data.overdueNumbers.slice(0, 6).map(item =>
-                '<div class="number-row"><span class="number-badge badge-overdue">' + item.number + '</span><div style="font-size:0.85rem;">Przerwa: ' + item.lastGap + ' | Śred: ' + item.avgGap + '</div></div>').join('');
+    analysisData = {
+        draws, hotNumbers, coldNumbers, overdueNumbers, sortedGaps,
+        sortedEntropy, sortedProbability, analysis,
+        oddEvenCounts, lowHighCounts, sums, sumBuckets, medianSum,
+        consecutiveCounts, lastDigitFreq, decadeFreq
+    };
+    displayAnalysis();
+}
 
-            document.getElementById('gapAnalysis').innerHTML = data.sortedGaps.map(([gap, count]) =>
-                '<div class="chart-bar"><div class="chart-label">Gap ' + gap + '</div><div class="chart-fill" style="width:' + (count / data.sortedGaps[0][1] * 100) + '%"><div class="chart-value">' + count + '</div></div></div>').join('');
+function displayAnalysis() {
+    const d = analysisData;
+    document.getElementById('totalDraws').textContent = d.draws.length;
+    document.getElementById('lastDrawDate').textContent = new Date(d.draws[0].drawDate).toLocaleDateString('pl-PL');
+    document.getElementById('medianSum').textContent = d.medianSum;
 
-            document.getElementById('entropyAnalysis').innerHTML = data.sortedEntropy.map(item =>
-                '<div class="number-row"><span class="number-badge">' + item.number + '</span><div style="font-size:0.85rem;">Entropia: ' + item.entropy + '</div></div>').join('');
+    let systemEntropy = 0;
+    Object.values(d.analysis.frequencyMap).forEach(freq => {
+        if (freq > 0) { const p = freq / (d.draws.length * 6); systemEntropy -= p * Math.log2(p); }
+    });
+    document.getElementById('systemEntropy').textContent = (systemEntropy / Math.log2(49) * 100).toFixed(1) + '%';
 
-            document.getElementById('probabilityScore').innerHTML = data.sortedProbability.map(item =>
-                '<div class="chart-bar"><div class="chart-label">' + item.number + '</div><div class="chart-fill" style="width:' + (parseFloat(item.score) * 100) + '%"><div class="chart-value">' + item.score + '</div></div></div>').join('');
+    const topOE = Object.entries(d.oddEvenCounts).sort((a,b) => b[1]-a[1])[0];
+    document.getElementById('topOddEven').textContent = topOE ? topOE[0] + ' (' + ((topOE[1]/d.draws.length*100).toFixed(0)) + '%)' : '-';
+
+    // Gorące
+    document.getElementById('hotNumbers').innerHTML = d.hotNumbers.map(([num, count]) =>
+        '<div class="number-row"><span class="number-badge badge-hot">' + num + '</span><span>' + count + ' powtórzeń</span><div style="font-size:0.75rem;color:var(--color-text-secondary)"><span class="tag ' + (parseInt(num)%2===0?'tag-even':'tag-odd') + '">' + (parseInt(num)%2===0?'P':'N') + '</span><span class="tag ' + (parseInt(num)<=24?'tag-low':'tag-high') + '">' + (parseInt(num)<=24?'Low':'High') + '</span></div></div>'
+    ).join('');
+
+    // Zimne
+    document.getElementById('coldNumbers').innerHTML = d.coldNumbers.map(([num, count]) =>
+        '<div class="number-row"><span class="number-badge">' + num + '</span><span>' + count + ' powtórzeń</span><div style="font-size:0.75rem;"><span class="tag ' + (parseInt(num)%2===0?'tag-even':'tag-odd') + '">' + (parseInt(num)%2===0?'P':'N') + '</span><span class="tag ' + (parseInt(num)<=24?'tag-low':'tag-high') + '">' + (parseInt(num)<=24?'Low':'High') + '</span></div></div>'
+    ).join('');
+
+    // Zaległe
+    document.getElementById('overdueNumbers').innerHTML = d.overdueNumbers.slice(0,6).map(item =>
+        '<div class="number-row"><span class="number-badge badge-overdue">' + item.number + '</span><div style="font-size:0.82rem;">Przerwa: ' + item.lastGap + ' | Śred: ' + item.avgGap + ' | Dev: ' + item.deviation + '</div></div>'
+    ).join('');
+
+    // Gap
+    document.getElementById('gapAnalysis').innerHTML = d.sortedGaps.map(([gap, count]) =>
+        '<div class="chart-bar"><div class="chart-label">Gap ' + gap + '</div><div class="chart-wrapper"><div class="chart-fill" style="width:' + (count/d.sortedGaps[0][1]*100) + '%"><div class="chart-value">' + count + '</div></div></div></div>'
+    ).join('');
+
+    // Entropia
+    document.getElementById('entropyAnalysis').innerHTML = d.sortedEntropy.map(item =>
+        '<div class="number-row"><span class="number-badge">' + item.number + '</span><div style="font-size:0.85rem;">Entropia: ' + item.entropy + '</div></div>'
+    ).join('');
+
+    // Prawdopodobieństwo
+    document.getElementById('probabilityScore').innerHTML = d.sortedProbability.map(item =>
+        '<div class="chart-bar"><div class="chart-label">' + item.number + '</div><div class="chart-wrapper"><div class="chart-fill" style="width:' + (parseFloat(item.score)*100) + '%"><div class="chart-value">' + item.score + '</div></div></div></div>'
+    ).join('');
+
+    // Odd/Even
+    const oeTotal = d.draws.length;
+    const oeSorted = Object.entries(d.oddEvenCounts).sort((a,b) => b[1]-a[1]);
+    document.getElementById('oddEvenAnalysis').innerHTML =
+        '<div style="margin-bottom:10px;font-size:0.85rem;color:var(--color-text-secondary)">Rozkład par parzystych (P) i nieparzystych (N) w losowaniach:</div>' +
+        oeSorted.map(([key, count]) => {
+            const pct = (count/oeTotal*100).toFixed(1);
+            return '<div class="chart-bar"><div class="chart-label">' + key.replace(':','P:') + 'N</div><div class="chart-wrapper"><div class="chart-fill chart-fill-purple" style="width:' + pct + '%"><div class="chart-value">' + pct + '%</div></div></div></div>';
+        }).join('');
+
+    // Low/High
+    const lhTotal = d.draws.length;
+    const lhSorted = Object.entries(d.lowHighCounts).sort((a,b) => b[1]-a[1]);
+    document.getElementById('lowHighAnalysis').innerHTML =
+        '<div style="margin-bottom:10px;font-size:0.85rem;color:var(--color-text-secondary)">Liczby niskie (1-24) vs wysokie (25-49):</div>' +
+        lhSorted.map(([key, count]) => {
+            const pct = (count/lhTotal*100).toFixed(1);
+            return '<div class="chart-bar"><div class="chart-label">' + key.replace(':','N:') + 'W</div><div class="chart-wrapper"><div class="chart-fill chart-fill-warn" style="width:' + pct + '%"><div class="chart-value">' + pct + '%</div></div></div></div>';
+        }).join('');
+
+    // Suma
+    const sumMin = Math.min(...d.sums), sumMax = Math.max(...d.sums);
+    const inRange = d.sums.filter(s => s >= 115 && s <= 185).length;
+    const buckets = Object.entries(d.sumBuckets).sort((a,b) => parseInt(a[0])-parseInt(b[0]));
+    const maxBucket = Math.max(...Object.values(d.sumBuckets));
+    document.getElementById('sumAnalysis').innerHTML =
+        '<div class="sum-highlight">📊 ' + (inRange/d.draws.length*100).toFixed(1) + '% losowań ma sumę w przedziale 115–185 | Mediana: ' + d.medianSum + ' | Min: ' + sumMin + ' | Max: ' + sumMax + '</div>' +
+        '<div style="margin-top:12px;">' +
+        buckets.map(([bucket, count]) => {
+            const pct = (count/d.draws.length*100).toFixed(1);
+            const isTypical = parseInt(bucket) >= 100 && parseInt(bucket) <= 180;
+            return '<div class="sum-range-bar"><div class="sum-range-label"><span>' + bucket + '–' + (parseInt(bucket)+19) + '</span><span>' + count + ' (' + pct + '%)</span></div><div class="sum-bar-outer"><div class="sum-bar-inner" style="width:' + (count/maxBucket*100) + '%;background:' + (isTypical?'linear-gradient(90deg,#38bdf8,#10b981)':'linear-gradient(90deg,#f59e0b,#dc2626)') + '">' + pct + '%</div></div></div>';
+        }).join('') + '</div>';
+
+    // Dziesiątki
+    const totalNums = d.draws.length * 6;
+    document.getElementById('decadesAnalysis').innerHTML =
+        '<div style="margin-bottom:8px;font-size:0.85rem;color:var(--color-text-secondary)">Jak często liczby z danej grupy pojawiają się w losowaniach:</div>' +
+        '<div class="decade-grid">' +
+        Object.entries(d.decadeFreq).map(([range, count]) =>
+            '<div class="decade-card"><div class="decade-label">' + range + '</div><div class="decade-value">' + count + '</div><div class="decade-pct">' + (count/totalNums*100).toFixed(1) + '%</div></div>'
+        ).join('') + '</div>';
+
+    // Pary sąsiednie
+    const consTotal = d.consecutiveCounts.reduce((a,b)=>a+b,0);
+    const consLabels = ['0 par','1 para','2 pary','3+ par'];
+    document.getElementById('consecutiveAnalysis').innerHTML =
+        '<div style="margin-bottom:10px;font-size:0.85rem;color:var(--color-text-secondary)">Ile losowań zawierało liczby sąsiednie (np. 17,18):</div>' +
+        d.consecutiveCounts.map((count, i) => {
+            const pct = (count/consTotal*100).toFixed(1);
+            return '<div class="chart-bar"><div class="chart-label">' + consLabels[i] + '</div><div class="chart-wrapper"><div class="chart-fill" style="width:' + pct + '%"><div class="chart-value">' + pct + '%</div></div></div></div>';
+        }).join('');
+
+    // Ostatnia cyfra
+    const ldTotal = d.draws.length * 6;
+    const ldSorted = Object.entries(d.lastDigitFreq).sort((a,b) => a[0]-b[0]);
+    document.getElementById('lastDigitAnalysis').innerHTML =
+        '<div style="margin-bottom:10px;font-size:0.85rem;color:var(--color-text-secondary)">Jak często liczby kończące się daną cyfrą wypadają:</div>' +
+        ldSorted.map(([digit, count]) => {
+            const pct = (count/ldTotal*100).toFixed(1);
+            return '<div class="chart-bar"><div class="chart-label">...' + digit + '</div><div class="chart-wrapper"><div class="chart-fill chart-fill-purple" style="width:' + (count/Math.max(...Object.values(d.lastDigitFreq))*100) + '%"><div class="chart-value">' + pct + '%</div></div></div></div>';
+        }).join('');
+}
+
+function selectMethod(method, event) {
+    selectedMethod = method;
+    document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function passesFilters(combo) {
+    const sum = combo.reduce((a,b)=>a+b,0);
+    const odd = combo.filter(n=>n%2!==0).length;
+    const even = 6-odd;
+    const low = combo.filter(n=>n<=24).length;
+    const high = 6-low;
+    const sorted = [...combo].sort((a,b)=>a-b);
+
+    if (document.getElementById('filterSum').checked) {
+        const sMin = parseInt(document.getElementById('sumMin').value);
+        const sMax = parseInt(document.getElementById('sumMax').value);
+        if (sum < sMin || sum > sMax) return false;
+    }
+
+    if (document.getElementById('filterOddEven').checked) {
+        const ratio = document.getElementById('oddEvenRatio').value;
+        if (ratio !== 'any') {
+            const [ro, re] = ratio.split(':').map(Number);
+            if (odd !== ro || even !== re) return false;
         }
+    }
 
-        function selectMethod(method, event) {
-            selectedMethod = method;
-            document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+    if (document.getElementById('filterLowHigh').checked) {
+        const ratio = document.getElementById('lowHighRatio').value;
+        if (ratio !== 'any') {
+            const [rl, rh] = ratio.split(':').map(Number);
+            if (low !== rl || high !== rh) return false;
         }
+    }
 
-        function generateCombinations() {
-            let sourceNumbers = [];
-            if (selectedMethod === 'hot') sourceNumbers = analysisData.hotNumbers.map(([num]) => parseInt(num));
-            else if (selectedMethod === 'cold') sourceNumbers = analysisData.coldNumbers.map(([num]) => parseInt(num));
-            else if (selectedMethod === 'overdue') sourceNumbers = analysisData.overdueNumbers.slice(0, 20).map(item => item.number);
-            else if (selectedMethod === 'entropy') sourceNumbers = analysisData.sortedEntropy.slice(0, 20).map(item => item.number);
-            else if (selectedMethod === 'probability') sourceNumbers = analysisData.sortedProbability.slice(0, 20).map(item => item.number);
+    if (document.getElementById('filterConsecutive').checked) {
+        let hasPair = false;
+        for (let i = 0; i < sorted.length-1; i++) if (sorted[i+1]-sorted[i]===1) { hasPair=true; break; }
+        if (!hasPair) return false;
+    }
 
-            const count = parseInt(document.getElementById('combinationCount').value);
-            const combinations = [];
-            for (let i = 0; i < count; i++) {
-                const combo = [], used = new Set();
-                while (combo.length < 6) {
-                    const num = sourceNumbers[Math.floor(Math.random() * sourceNumbers.length)];
-                    if (!used.has(num)) { combo.push(num); used.add(num); }
-                }
-                combinations.push(combo.sort((a, b) => a - b));
-            }
-            displayCombinations(combinations);
+    if (document.getElementById('filterNoSameLastDigit').checked) {
+        const digitCount = {};
+        combo.forEach(n => { const d=n%10; digitCount[d]=(digitCount[d]||0)+1; });
+        if (Math.max(...Object.values(digitCount)) >= 3) return false;
+    }
+
+    if (document.getElementById('filterDecades').checked) {
+        const dec = [0,0,0,0,0];
+        combo.forEach(n => {
+            if (n<=9) dec[0]++;
+            else if (n<=19) dec[1]++;
+            else if (n<=29) dec[2]++;
+            else if (n<=39) dec[3]++;
+            else dec[4]++;
+        });
+        if (Math.max(...dec) >= 4) return false;
+    }
+
+    return true;
+}
+
+function generateCombinations() {
+    let sourceNumbers = [];
+    if (selectedMethod === 'hot') sourceNumbers = analysisData.hotNumbers.map(([num])=>parseInt(num));
+    else if (selectedMethod === 'cold') sourceNumbers = analysisData.coldNumbers.map(([num])=>parseInt(num));
+    else if (selectedMethod === 'overdue') sourceNumbers = analysisData.overdueNumbers.slice(0,20).map(i=>i.number);
+    else if (selectedMethod === 'entropy') sourceNumbers = analysisData.sortedEntropy.slice(0,20).map(i=>i.number);
+    else if (selectedMethod === 'probability') sourceNumbers = analysisData.sortedProbability.slice(0,20).map(i=>i.number);
+    else if (selectedMethod === 'mixed') {
+        const pool = new Set();
+        analysisData.hotNumbers.slice(0,5).forEach(([n])=>pool.add(parseInt(n)));
+        analysisData.overdueNumbers.slice(0,5).forEach(i=>pool.add(i.number));
+        analysisData.sortedProbability.slice(0,5).forEach(i=>pool.add(i.number));
+        analysisData.coldNumbers.slice(0,3).forEach(([n])=>pool.add(parseInt(n)));
+        sourceNumbers = Array.from(pool);
+    }
+
+    if (sourceNumbers.length < 6) {
+        alert('Za mało liczb źródłowych. Wybierz inną metodę lub wczytaj więcej losowań.');
+        return;
+    }
+
+    const count = parseInt(document.getElementById('combinationCount').value);
+    const combinations = [];
+    let attempts = 0;
+    const maxAttempts = count * 500;
+
+    while (combinations.length < count && attempts < maxAttempts) {
+        attempts++;
+        const combo = [], used = new Set();
+        let tries = 0;
+        while (combo.length < 6 && tries < 100) {
+            tries++;
+            const num = sourceNumbers[Math.floor(Math.random() * sourceNumbers.length)];
+            if (!used.has(num)) { combo.push(num); used.add(num); }
         }
+        if (combo.length === 6 && passesFilters(combo)) combinations.push(combo.sort((a,b)=>a-b));
+    }
 
-        function displayCombinations(combinations) {
-            document.getElementById('combinationGrid').innerHTML = combinations.map((combo, idx) =>
-                '<div class="combination-card"><div style="color:var(--color-text-secondary);font-size:0.75rem;margin-bottom:8px;">Kom. ' + (idx + 1) + '</div><div class="combination-numbers">' +
-                combo.map(num => '<div class="combination-number">' + num + '</div>').join('') +
-                '</div><button class="btn-secondary btn-small" onclick="copyCombination(\'' + combo.join(', ') + '\')">Kopiuj</button></div>').join('');
-            document.getElementById('combinationsSection').style.display = 'block';
-        }
+    if (combinations.length === 0) {
+        alert('Nie udało się wygenerować kombinacji spełniających filtry. Spróbuj złagodzić ustawienia filtrów.');
+        return;
+    }
 
-        function copyCombination(text) { navigator.clipboard.writeText(text).then(() => alert('Skopiowano!')); }
+    displayCombinations(combinations);
+}
 
-        function copyAllCombinations() {
-            const text = Array.from(document.querySelectorAll('.combination-card'))
-                .map(card => Array.from(card.querySelectorAll('.combination-number')).map(el => el.textContent).join(', ')).join('\n');
-            navigator.clipboard.writeText(text).then(() => alert('Skopiowano wszystkie!'));
-        }
+function displayCombinations(combinations) {
+    document.getElementById('combinationGrid').innerHTML = combinations.map((combo, idx) => {
+        const sum = combo.reduce((a,b)=>a+b,0);
+        const odd = combo.filter(n=>n%2!==0).length;
+        const low = combo.filter(n=>n<=24).length;
+        return '<div class="combination-card">' +
+            '<div style="color:var(--color-text-secondary);font-size:0.72rem;margin-bottom:6px;">Kom. ' + (idx+1) + '</div>' +
+            '<div class="combination-numbers">' + combo.map(n=>'<div class="combination-number">'+n+'</div>').join('') + '</div>' +
+            '<div class="combination-meta">Σ=' + sum + ' | P/N=' + odd + ':' + (6-odd) + ' | N/W=' + low + ':' + (6-low) + '</div>' +
+            '<button class="btn-secondary btn-small" style="margin-top:6px;" onclick="copyCombination(\''+combo.join(', ')+'\')">Kopiuj</button>' +
+            '</div>';
+    }).join('');
+    document.getElementById('combinationsSection').style.display = 'block';
+}
 
-        function clearAll() {
-            document.getElementById('analysisContent').style.display = 'none';
-            document.getElementById('error').style.display = 'none';
-            document.getElementById('fileInfo').style.display = 'none';
-            document.getElementById('csvFile').value = '';
-            analysisData = null; allDrawsFromCSV = null; selectedMethod = 'hot';
-            document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.method-btn').classList.add('active');
-        }
-    </script>
+function copyCombination(text) { navigator.clipboard.writeText(text).then(()=>alert('Skopiowano!')); }
+
+function copyAllCombinations() {
+    const text = Array.from(document.querySelectorAll('.combination-card'))
+        .map(card => Array.from(card.querySelectorAll('.combination-number')).map(el=>el.textContent).join(', ')).join('\n');
+    navigator.clipboard.writeText(text).then(()=>alert('Skopiowano wszystkie!'));
+}
+
+function clearAll() {
+    document.getElementById('analysisContent').style.display = 'none';
+    document.getElementById('error').style.display = 'none';
+    document.getElementById('fileInfo').style.display = 'none';
+    document.getElementById('csvFile').value = '';
+    analysisData = null; allDrawsFromCSV = null; selectedMethod = 'hot';
+    document.querySelectorAll('.method-btn').forEach(btn=>btn.classList.remove('active'));
+    document.querySelector('.method-btn').classList.add('active');
+}
+</script>
 </body>
 </html>
