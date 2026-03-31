@@ -1465,11 +1465,20 @@ function renderGenerator(tab){
   const isMini=tab==='mini',px=isMini?'m-':'l-',cfg=CFG[tab];
   document.getElementById(px.slice(0,-1)+'-gen').innerHTML=`
     <div class="gen-title${isMini?' mt':''}">✨ Generator Kombinacji</div>
+    <div class="sh" style="margin-bottom:20px;"><div class="si${isMini?' mt':''}">📊</div><h2>Dashboard Metod Generacji</h2><div class="sl"></div></div>
+    <div class="agrid" style="margin-bottom:24px;">
+      ${Object.entries(METHOD_DESC).map(([k,desc])=>`
+        <div class="glass ac">
+          <div class="act"><span>${k==='prob'?'🎯':k==='momentum'?'📡':k==='structural'?'🔬':k==='rolling'?'🔄':'🎲'}</span><strong>${k==='prob'?'Probability Weighted':k==='momentum'?'Momentum':k==='structural'?'Structural':k==='rolling'?'Adaptive Rolling':'Diversity Max'}</strong></div>
+          <div class="ib ig">${desc}</div>
+        </div>
+      `).join('')}
+    </div>
     <div class="mrow" id="${px}methods">
       ${Object.entries(METHOD_DESC).map(([k,desc])=>`
-        <button class="mbtn${k==='composite'?(isMini?' am':' al'):''}" onclick="selMethod('${tab}','${k}',this)">${k==='composite'?'🎯 Kompozytowy':k==='hot'?'🔥 Gorące':k==='cold'?'❄️ Zimne':k==='overdue'?'⏰ Zaległe':k==='entropy'?'🌀 Entropia':k==='zscore'?'📏 Z-score':k==='ema'?'📈 EMA ↑':'🔗 Markov'}</button>`).join('')}
+        <button class="mbtn${k==='prob'?(isMini?' am':' al'):''}" onclick="selMethod('${tab}','${k}',this)">${k==='prob'?'🎯 Probability Weighted':k==='momentum'?'📡 Momentum':k==='structural'?'🔬 Structural':k==='rolling'?'🔄 Adaptive Rolling':k==='diversity'?'🎲 Diversity Max':'Unknown'}</button>`).join('')}
     </div>
-    <div class="ib ip" id="${px}method-desc">${METHOD_DESC['composite']}</div>
+    <div class="ib ip" id="${px}method-desc">${METHOD_DESC['prob']}</div>
     <div class="fbox">
       <div class="ftitle">🎛 Filtry Statystyczne</div>
       <div class="fgrid">
