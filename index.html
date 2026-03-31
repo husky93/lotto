@@ -480,19 +480,17 @@ const CFG = {
     decRanges:['1–9','10–19','20–29','30–39','40–42'],
     sampleNeeds:{ ema:50, runs:100, zscore:200, chi2:400, bayes:150, markov:400 } }
 };
-const state = {
-  lotto:{ draws:null, analysis:null, method:'composite', rwWindow:100 },
-  mini: { draws:null, analysis:null, method:'composite', rwWindow:100 }
+onst state = {
+  lotto:{ draws:null, analysis:null, method:'prob', rwWindow:100 },
+  mini: { draws:null, analysis:null, method:'prob', rwWindow:100 }
 };
+
 const METHOD_DESC = {
-  hot:       '🔥 <strong>Gorące</strong> — losuje z top 10 najczęstszych historycznie.',
-  cold:      '❄️ <strong>Zimne</strong> — losuje z 10 najrzadszych historycznie.',
-  overdue:   '⏰ <strong>Zaległe</strong> — liczby z przerwą > μ+σ (rozkład geometryczny).',
-  entropy:   '🌀 <strong>Entropia</strong> — liczby o najbardziej nieregularnym rytmie.',
-  zscore:    '📏 <strong>Z-score</strong> — liczby z najwyższym dodatnim Z (powyżej oczekiwań).',
-  ema:       '📈 <strong>EMA Trend ↑</strong> — liczby z rosnącym trendem częstości.',
-  markov:    '🔗 <strong>Markov zachłanny</strong> — buduje kombinację przez zachłanne P(n|poprzednie).',
-  composite: '🎯 <strong>Kompozytowy Score</strong> — Z×0.35 + EMA×0.30 + Gap×0.20 + H×0.15. Rekomendowany.'
+  prob:      '🎯 <strong>Probability Weighted</strong> — pełny Unified Probability Score, losowanie ważone P(n).',
+  momentum:  '📡 <strong>Momentum</strong> — tylko liczby z triple EMA bullish, ważone intensywnością momentum.',
+  structural:'🔬 <strong>Structural</strong> — liczby z CV<1, dodatnim Runs Z i stabilną strukturą przerw.',
+  rolling:   '🔄 <strong>Adaptive Rolling</strong> — score oparty zawsze o okno last‑100, niezależnie od całkowitego N.',
+  diversity: '🎲 <strong>Diversity Max</strong> — anty‑popularne + minimalna autokorelacja czasowa.'
 };
 
 // ══════════════════════════════════════
@@ -534,6 +532,20 @@ function chi2pval(x,k){
   const h=2/(9*k),z=(Math.pow(x/k,1/3)-(1-h))/Math.sqrt(h);
   return 1-normalCDF(z);
 }
+
+function normalizeScores(map, positiveOnly=false){
+  const vals = Object.values(map).map(v=>positiveOnly?Math.max(v,0):v);
+  if (!vals.length) return {};
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const res = {};
+  for (const [k,v] of Object.entries(map)) {
+    const x = positiveOnly ? Math.max(v,0) : v;
+    res[k] = max>min ? (x-min)/(max-min) : 0;
+  }
+  return res;
+}
+
 function countRuns(seq){
   let r=seq.length>0?1:0;
   for(let i=1;i<seq.length;i++)if(seq[i]!==seq[i-1])r++;
@@ -623,32 +635,42 @@ function runAnalysis(tab){
 
 function analyze(draws,tab){
   const cfg=CFG[tab],N=draws.length,M=cfg.max,K=cfg.pick;
-  const freqMap={},positions={},gapEnt={},gapStd={},gapMean={};
+
+  // ── PODSTAWOWA STATYSTYKA ──
+  const freqMap={},positions={},gapEnt={},gapStd={},gapMean={},gapCV={};
+  const gapList=[];
   for(let i=1;i<=M;i++){freqMap[i]=0;positions[i]=[];}
   const oeCount={},lhCount={},sums=[],consCount=[0,0,0,0];
   const ldFreq={},decFreq={};cfg.decRanges.forEach(r=>decFreq[r]=0);
   const gapFreq={};
 
-  // ── EMA: iterate CHRONOLOGICALLY (oldest→newest) ── FIX B1
-  const chronological=draws.slice().reverse();
-  const emaS={},emaL={};
-  for(let i=1;i<=M;i++){emaS[i]=K/M;emaL[i]=K/M;} // initialize at expected probability
-  const AS=0.15,AL=0.05;
+  // ── TRIPLE EMA (momentum) ──
+  const emaFast={},emaMid={},emaSlow={};
+  for(let i=1;i<=M;i++){
+    emaFast[i]=K/M;
+    emaMid[i]=K/M;
+    emaSlow[i]=K/M;
+  }
+  const AF=0.30,AM=0.15,AS=0.05;
 
-  // Ko-okurencja (same draw) + Markov chains (consecutive draws)
-  const coOccur={};   // pair appeared together in same draw
-  const markovChain={}; // P(j in t+1 | i in t)
+  // Ko-okurencja (same draw) + Markov lag1 (zostawiamy) ─ oraz baza pod lag 1–3
+  const coOccur={};   
+  const markovChain={}; 
+  const markovLag={1:{},2:{},3:{}};
 
   for(let di=0;di<N;di++){
     const nums=draws[di].numbers;
-    // EMA chronological index
-    const chrIdx=N-1-di;
     const appeared=new Set(nums);
+
+    // triple EMA
     for(let n=1;n<=M;n++){
       const x=appeared.has(n)?1:0;
-      emaS[n]=AS*x+(1-AS)*emaS[n];
-      emaL[n]=AL*x+(1-AL)*emaL[n];
+      emaFast[n]=AF*x+(1-AF)*emaFast[n];
+      emaMid[n] =AM*x+(1-AM)*emaMid[n];
+      emaSlow[n]=AS*x+(1-AS)*emaSlow[n];
     }
+
+    // freq + pozycje + rozkłady
     nums.forEach(n=>{
       freqMap[n]++;
       positions[n].push(di);
@@ -659,21 +681,22 @@ function analyze(draws,tab){
       else if(n<=39)decFreq[cfg.decRanges[3]]++;
       else decFreq[cfg.decRanges[4]]++;
     });
+
     const sorted=[...nums].sort((a,b)=>a-b);
     for(let i=0;i<sorted.length-1;i++){
-      const g=sorted[i+1]-sorted[i];gapFreq[g]=(gapFreq[g]||0)+1;
-      // ko-okurencja
+      const g=sorted[i+1]-sorted[i];
+      gapFreq[g]=(gapFreq[g]||0)+1;
       for(let j=i+1;j<sorted.length;j++){
         const key=sorted[i]+'-'+sorted[j];
         coOccur[key]=(coOccur[key]||0)+1;
       }
     }
-    // Last pair (remaining)
     for(let i=0;i<sorted.length-1;i++)
       for(let j=i+1;j<sorted.length;j++){
         const key=sorted[i]+'-'+sorted[j];
-        if(!coOccur[key])coOccur[key]=1; // already counted above for adjacent, re-count all
+        if(!coOccur[key])coOccur[key]=1;
       }
+
     const odd=nums.filter(n=>n%2!==0).length;
     oeCount[odd+':'+(K-odd)]=(oeCount[odd+':'+(K-odd)]||0)+1;
     const low=nums.filter(n=>n<=cfg.lowSplit).length;
@@ -682,7 +705,8 @@ function analyze(draws,tab){
     let pairs=0;
     for(let i=0;i<sorted.length-1;i++)if(sorted[i+1]-sorted[i]===1)pairs++;
     consCount[Math.min(pairs,3)]++;
-    // Markov chain t→t+1
+
+    // Markov lag 1 (stare)
     if(di<N-1){
       const nextNums=new Set(draws[di+1].numbers);
       nums.forEach(cur=>{
@@ -694,7 +718,36 @@ function analyze(draws,tab){
     }
   }
 
-  // Rebuild coOccur properly (avoid double counting above)
+  // ── Pairwise Temporal Lag 1–3 (M6) ──
+  for(let L=1;L<=3;L++){
+    for(let di=0;di<N-L;di++){
+      const curSet=new Set(draws[di].numbers);
+      const nextSet=new Set(draws[di+L].numbers);
+      curSet.forEach(cur=>{
+        nextSet.forEach(nxt=>{
+          const key=cur+'>'+nxt;
+          markovLag[L][key]=(markovLag[L][key]||0)+1;
+        });
+      });
+    }
+  }
+  const topTemporalLag=[];
+  for(let L=1;L<=3;L++){
+    const totals={};
+    Object.entries(markovLag[L]).forEach(([key,c])=>{
+      const from=key.split('>')[0];
+      totals[from]=(totals[from]||0)+c;
+    });
+    Object.entries(markovLag[L]).forEach(([key,c])=>{
+      const from=key.split('>')[0];
+      const p=c/(totals[from]||1);
+      topTemporalLag.push({lag:L,pair:key,p:parseFloat(p.toFixed(4))});
+    });
+  }
+  topTemporalLag.sort((a,b)=>b.p-a.p);
+  const topTemporalLagTrim=topTemporalLag.slice(0,30);
+
+  // ── Co‑okurencja przestrzenna bez dubli ──
   const coOccurClean={};
   for(let di=0;di<N;di++){
     const sorted=[...draws[di].numbers].sort((a,b)=>a-b);
@@ -706,12 +759,20 @@ function analyze(draws,tab){
   }
   const topCoOccur=Object.entries(coOccurClean).sort((a,b)=>b[1]-a[1]).slice(0,20);
 
-  // Gap stats with guard (B5)
+  // ── GAP stats + CV + Poisson D (M1, M2) ──
   const expectedGap=M/K;
   for(let n=1;n<=M;n++){
     const pos=positions[n];
-    if(pos.length<3){gapEnt[n]=null;gapStd[n]=0;gapMean[n]=expectedGap;continue;}
-    const gaps=[];for(let i=0;i<pos.length-1;i++)gaps.push(pos[i+1]-pos[i]);
+    if(pos.length<3){
+      gapEnt[n]=null;gapStd[n]=0;gapMean[n]=expectedGap;gapCV[n]=null;
+      continue;
+    }
+    const gaps=[];
+    for(let i=0;i<pos.length-1;i++){
+      const g=pos[i+1]-pos[i];
+      gaps.push(g);
+      gapList.push(g);
+    }
     const gc={};gaps.forEach(g=>{gc[g]=(gc[g]||0)+1;});
     let H=0;const tot=gaps.length;
     Object.values(gc).forEach(c=>{const p=c/tot;if(p>0)H-=p*Math.log2(p);});
@@ -719,16 +780,23 @@ function analyze(draws,tab){
     const mean=gaps.reduce((a,b)=>a+b,0)/tot;
     gapMean[n]=mean;
     gapStd[n]=Math.sqrt(gaps.reduce((s,g)=>s+(g-mean)**2,0)/tot);
+    gapCV[n]=gapStd[n]/gapMean[n];
+  }
+  let dispersionGlobal=null;
+  if(gapList.length>=10){
+    const mu=gapList.reduce((a,b)=>a+b,0)/gapList.length;
+    const v=gapList.reduce((s,g)=>s+(g-mu)**2,0)/gapList.length;
+    dispersionGlobal=v/mu;
   }
 
-  // ── CHI2 ──
+  // ── CHI² (global bias częstości) ──
   const expectedFreq=N*K/M;
   let chiStat=0;
   for(let n=1;n<=M;n++)chiStat+=(freqMap[n]-expectedFreq)**2/expectedFreq;
   const df=M-1;
   const chiPval=chi2pval(chiStat,df);
 
-  // ── Z-SCORE (FIX B2: correct sigma for sum of N Bernoulli trials) ──
+  // ── Z‑score (global A) ──
   const sigma=Math.sqrt(N*(K/M)*(1-K/M));
   const zScores={};
   for(let n=1;n<=M;n++)zScores[n]=parseFloat(((freqMap[n]-expectedFreq)/sigma).toFixed(3));
@@ -745,23 +813,39 @@ function analyze(draws,tab){
     runsData[n]={R,z:sigR>0?parseFloat(((R-muR)/sigR).toFixed(3)):0,n1,n0,muR:parseFloat(muR.toFixed(1))};
   }
 
-  // ── EMA TRENDS ──
-  const emaTrends={},sortedEMA=[];
+  // ── Triple EMA Momentum (M3) + kompatybilne emaTrends/sortedEMA ──
+  const emaTrends={},sortedEMA=[],momentum={},sortedMomentum=[];
   for(let n=1;n<=M;n++){
-    const diff=emaS[n]-emaL[n];
-    emaTrends[n]={short:parseFloat(emaS[n].toFixed(5)),long:parseFloat(emaL[n].toFixed(5)),diff:parseFloat(diff.toFixed(5)),trend:diff>0.0005?'up':diff<-0.0005?'down':'flat'};
+    const f=emaFast[n],m=emaMid[n],s=emaSlow[n];
+    const diff=f-s;
+    const tripleBull=f>m && m>s;
+    const intensity=tripleBull?((f-m)+(m-s)):0;
+    emaTrends[n]={
+      fast:parseFloat(f.toFixed(5)),
+      mid: parseFloat(m.toFixed(5)),
+      slow:parseFloat(s.toFixed(5)),
+      diff:parseFloat(diff.toFixed(5)),
+      trend: tripleBull ? 'up' : (diff<-0.0005?'down':'flat')
+    };
+    momentum[n]={
+      fast:emaTrends[n].fast,
+      mid: emaTrends[n].mid,
+      slow:emaTrends[n].slow,
+      tripleBull,
+      intensity:parseFloat(intensity.toFixed(5))
+    };
     sortedEMA.push({number:n,...emaTrends[n]});
+    sortedMomentum.push({number:n,...momentum[n]});
   }
   sortedEMA.sort((a,b)=>b.diff-a.diff);
+  sortedMomentum.sort((a,b)=>b.intensity-a.intensity);
 
-  // ── AUTOCORRELATION lag 1–15 ──
-  const acf={};
+  // ── AUTOKORELACJA lag 1–15 (pattern C) ──
   const allAppearances=[];
   for(let di=0;di<N;di++){
     const a=[];for(let n=1;n<=M;n++)a.push(draws[di].numbers.includes(n)?1:0);
     allAppearances.push(a);
   }
-  // ACF per number, averaged across numbers
   const acfMean=[];
   for(let lag=1;lag<=15;lag++){
     let sum=0;
@@ -775,7 +859,6 @@ function analyze(draws,tab){
     }
     acfMean.push(parseFloat((sum/M).toFixed(4)));
   }
-  // Per-number ACF for display (top autocorrelated numbers)
   const acfPerNum={};
   for(let n=1;n<=M;n++){
     const seq=allAppearances.map(a=>a[n-1]);
@@ -790,34 +873,44 @@ function analyze(draws,tab){
     acfPerNum[n]=parseFloat(maxR.toFixed(3));
   }
 
-  // ── BAYESIAN POSTERIOR (Beta) ──
-  // Prior: weakly informative Beta centered at expected prob K/M
-  const priorStrength=10; // equivalent sample size
-  const priorAlpha=(K/M)*priorStrength;
-  const priorBeta=(1-K/M)*priorStrength;
-  const bayesian={};
-  const sigThresh=1/Math.sqrt(N); // 95% CI width threshold
-  for(let n=1;n<=M;n++){
-    const obs=freqMap[n];
-    const aPost=priorAlpha+obs;
-    const bPost=priorBeta+(N-obs);
-    const mean=aPost/(aPost+bPost);
-    // 95% CI using beta quantile approximation (Wilson score)
-    const p=obs/N;
-    const z95=1.96;
-    const denom=1+z95*z95/N;
-    const center=(p+z95*z95/(2*N))/denom;
-    const margin=z95*Math.sqrt(p*(1-p)/N+z95*z95/(4*N*N))/denom;
-    bayesian[n]={
-      postMean:parseFloat((mean*N).toFixed(2)),
-      ciLow:parseFloat(Math.max(0,center-margin)*N,1),
-      ciHigh:parseFloat(Math.min(1,center+margin)*N,1),
-      obs,expected:parseFloat(expectedFreq.toFixed(1))
-    };
-  }
-  const sortedBayes=Object.entries(bayesian).map(([n,b])=>({number:parseInt(n),...b})).sort((a,b)=>b.postMean-a.postMean);
+  // ── Last‑K Recency Bias (M4) ──
+  const lastK={};
+  const windowsK=[10,20,50,100];
+  for(let n=1;n<=M;n++) lastK[n]={};
+  windowsK.forEach(Kw=>{
+    const wDraws=draws.slice(0,Math.min(Kw,N));
+    const wN=wDraws.length;
+    for(let n=1;n<=M;n++){
+      const hits=wDraws.filter(d=>d.numbers.includes(n)).length;
+      lastK[n][Kw]={count:hits,rate:wN?hits/wN:0};
+    }
+  });
 
-  // ── SPARKLINE DATA (windows of 50) ──
+  // ── Seasonal Phase (M5) ──
+  const seasonal=[];
+  if(N>=200){
+    const qSize=Math.floor(N/4);
+    for(let q=0;q<4;q++){
+      const start=q*qSize;
+      const end=(q===3)?N:(q+1)*qSize;
+      const seg=draws.slice(start,end);
+      const Nq=seg.length;
+      if(Nq<30){seasonal.push({q:q+1,pval:1,chi:0,N:Nq});continue;}
+      const f={};for(let i=1;i<=M;i++)f[i]=0;
+      seg.forEach(d=>d.numbers.forEach(n=>f[n]++));
+      const exp=Nq*K/M;
+      let chi=0;
+      for(let i=1;i<=M;i++)chi+=(f[i]-exp)**2/exp;
+      seasonal.push({
+        q:q+1,
+        pval:parseFloat(chi2pval(chi,M-1).toFixed(4)),
+        chi:parseFloat(chi.toFixed(2)),
+        N:Nq
+      });
+    }
+  }
+
+  // ── SPARKLINE (jak było) ──
   const windowSize=Math.max(50,Math.floor(N/6));
   const sparklineData={};
   const topForSpark=sortedZ.slice(0,8).map(x=>x.number);
@@ -834,23 +927,24 @@ function analyze(draws,tab){
     sparklineData[n]=windows;
   });
 
-  // ── COMPOSITE SCORE ──
-  const maxAbsZ=Math.max(...Object.values(zScores).map(Math.abs),0.001);
-  const maxEMADiff=Math.max(...sortedEMA.map(e=>e.diff),0.0001);
-  const compositeScores={};
+  // ── Strukturalny “Bayes” = Poisson / CV / Runs (zostawiamy nazwę dla kompatybilności) ──
+  const bayesian={};
   for(let n=1;n<=M;n++){
-    const zs=Math.max(zScores[n]/maxAbsZ,0);
-    const emas=Math.max((emaTrends[n]?.diff||0)/maxEMADiff,0);
-    const lastGap=positions[n].length>0?positions[n][0]:N;
-    const gapScore=Math.min(lastGap/expectedGap,3)/3;
-    const entS=gapEnt[n]!==null?(gapEnt[n]/Math.max(...Object.values(gapEnt).filter(v=>v!==null),0.001)):0;
-    compositeScores[n]=parseFloat((zs*0.35+emas*0.30+gapScore*0.20+entS*0.15).toFixed(4));
+    bayesian[n]={
+      cv: gapCV[n],
+      meanGap: gapMean[n],
+      stdGap: gapStd[n],
+      runsZ: runsData[n]?.z || 0,
+      freq: freqMap[n]
+    };
   }
-  const sortedComposite=Object.entries(compositeScores).map(([n,s])=>({number:parseInt(n),score:s})).sort((a,b)=>b.score-a.score);
+  const sortedBayes=Object.entries(bayesian)
+    .filter(([,b])=>b.cv!==null)
+    .map(([n,b])=>({number:parseInt(n),...b}))
+    .sort((a,b)=>a.cv-b.cv); // najniższe CV = najbardziej regularne
 
   // ── OVERDUE ──
   const overdueNumbers=[];
-  const expGapSigma=Math.sqrt(N*(K/M)*(1-K/M));
   for(let n=1;n<=M;n++){
     const lastSeen=positions[n].length>0?positions[n][0]:N;
     const overdueness=(lastSeen-expectedGap)/Math.max(gapStd[n],1);
@@ -858,6 +952,7 @@ function analyze(draws,tab){
   }
   overdueNumbers.sort((a,b)=>b.overdueness-a.overdueness);
 
+  // ── Summary ──
   sums.sort((a,b)=>a-b);
   const medianSum=sums[Math.floor(sums.length/2)];
   const topOE=Object.entries(oeCount).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
@@ -865,7 +960,7 @@ function analyze(draws,tab){
   const coldNumbers=Object.entries(freqMap).sort((a,b)=>a[1]-b[1]).slice(0,10);
   const sortedEntropy=Object.entries(gapEnt).filter(([,v])=>v!==null).map(([n,h])=>({number:parseInt(n),entropy:parseFloat(h.toFixed(3))})).sort((a,b)=>b.entropy-a.entropy);
 
-  // ── MARKOV CHAIN (true: t→t+1) normalised ──
+  // ── Stary MarkovProb (lag1) dla UI ──
   const markovProb={};
   for(let n=1;n<=M;n++){
     const total=Object.entries(markovChain).filter(([k])=>k.startsWith(n+'>')).reduce((s,[,v])=>s+v,0);
@@ -877,22 +972,97 @@ function analyze(draws,tab){
   }
   const topMarkov=Object.entries(coOccurClean).sort((a,b)=>b[1]-a[1]).slice(0,20);
 
+  // ── UNIFIED PROBABILITY SCORE ──
+  // A: Global (Z)
+  const S_global={};
+  for(let n=1;n<=M;n++)S_global[n]=Math.max(zScores[n],0);
+  const Sg=normalizeScores(S_global,true);
+
+  // B: Trend (momentum)
+  const S_trend={};
+  for(let n=1;n<=M;n++){
+    S_trend[n]=momentum[n].tripleBull?momentum[n].intensity:0;
+  }
+  const St=normalizeScores(S_trend,true);
+
+  // C: Structural (CV + Runs)
+  const S_struct={};
+  for(let n=1;n<=M;n++){
+    const cv=gapCV[n];
+    const rz=runsData[n]?.z||0;
+    let s=0;
+    if(cv!==null){
+      if(cv<1)s+=(1-cv);       // nagroda za regularność
+      if(cv>1.5)s-=(cv-1.5);   // kara za mocne klastrowanie
+    }
+    if(rz>0)s+=rz*0.3;
+    S_struct[n]=s;
+  }
+  const Ss=normalizeScores(S_struct);
+
+  // D: Pattern (ACF + sezonowość)
+  const S_pattern={};
+  for(let n=1;n<=M;n++){
+    const acf=Math.abs(acfPerNum[n]||0);
+    S_pattern[n]=acf;
+  }
+  const Sp=normalizeScores(S_pattern,true);
+
+  // E: Recency (Last‑K)
+  const S_recency={};
+  for(let n=1;n<=M;n++){
+    const lk=lastK[n];
+    const v=0.4*lk[10].rate+0.3*lk[20].rate+0.2*lk[50].rate+0.1*lk[100].rate;
+    S_recency[n]=v;
+  }
+  const Sr=normalizeScores(S_recency,true);
+
+  // Wagi adaptacyjne
+  let wA,wB,wC,wD,wE;
+  if(N<100){ wA=0.00; wB=0.50; wC=0.20; wD=0.10; wE=0.20;
+  } else if(N<300){ wA=0.20; wB=0.40; wC=0.20; wD=0.10; wE=0.10;
+  } else if(N<500){ wA=0.30; wB=0.30; wC=0.20; wD=0.10; wE=0.10;
+  } else { wA=0.35; wB=0.25; wC=0.20; wD=0.10; wE=0.10; }
+
+  const unifiedRaw={},unifiedProb={};
+  for(let n=1;n<=M;n++){
+    unifiedRaw[n]=wA*Sg[n]+wB*St[n]+wC*Ss[n]+wD*Sp[n]+wE*Sr[n];
+  }
+  const maxU=Math.max(...Object.values(unifiedRaw));
+  let sumExp=0;const expU={};
+  for(let n=1;n<=M;n++){
+    const e=Math.exp(unifiedRaw[n]-maxU);
+    expU[n]=e;sumExp+=e;
+  }
+  for(let n=1;n<=M;n++){
+    unifiedProb[n]=expU[n]/sumExp;
+  }
+  const unifiedSorted=[];
+  for(let n=1;n<=M;n++){
+    unifiedSorted.push({number:n,score:unifiedRaw[n],p:unifiedProb[n]});
+  }
+  unifiedSorted.sort((a,b)=>b.p-a.p);
+
   return{
-    N,M,K,chiStat:parseFloat(chiStat.toFixed(2)),chiPval:parseFloat(chiPval.toFixed(4)),df,
+    N,M,K,
+    chiStat:parseFloat(chiStat.toFixed(2)),chiPval:parseFloat(chiPval.toFixed(4)),df,
     expectedFreq:parseFloat(expectedFreq.toFixed(2)),sigma:parseFloat(sigma.toFixed(3)),
     medianSum,topOE,
     hotNumbers,coldNumbers,overdueNumbers,
-    freqMap,positions,gapEnt,gapStd,gapMean,
+    freqMap,positions,gapEnt,gapStd,gapMean,gapCV,dispersionGlobal,
     oeCount,lhCount,sums,consCount,ldFreq,decFreq,gapFreq,
     zScores,sortedZ,
-    emaTrends,sortedEMA,
+    emaTrends,sortedEMA,momentum,sortedMomentum,
     runsData,
     acfMean,acfPerNum,
+    lastK,seasonal,
     bayesian,sortedBayes,
     coOccurClean,topCoOccur,topMarkov,markovChain,markovProb,
+    markovLag,topTemporalLag:topTemporalLagTrim,
     sparklineData,topForSpark,windowSize,
-    compositeScores,sortedComposite,
     sortedEntropy,
+    S_global:Sg,S_trend:St,S_struct:Ss,S_pattern:Sp,S_recency:Sr,
+    unifiedRaw,unifiedProb,unifiedSorted,
     draws
   };
 }
@@ -973,17 +1143,24 @@ function renderGap(px,d,cfg){
     top.map(([g,c])=>bar('gap '+g,c/maxG*100,c,'bb')).join('');
 }
 function renderEntropy(px,d,cfg,isMini){
-  const bCls=isMini?'bmz':'bz';
-  const valid=d.sortedEntropy.slice(0,8);
-  const maxH=valid[0]?.entropy||1;
-  document.getElementById(px+'entropy').innerHTML=
-    `<div class="ib ip">Entropia H=0: perfekcyjnie regularna. H wysoka: chaotyczny rytm pojawień. Min. 3 wystąpienia.</div>`+
-    valid.map(e=>{
-      const pct=Math.round(e.entropy/maxH*100);
-      return `<div class="num-row">
-        <div class="ball ${bCls}">${e.number}</div>
-        <div class="ni"><div class="nim">H = ${e.entropy.toFixed(3)}</div><div class="nis">${pct}% max entropii</div></div>
-        <div class="ntags">${ballTag(e.number,cfg)}</div>
+  const container=document.getElementById(px+'entropy');
+  const entries=(d.unifiedSorted||[]).slice(0,12);
+  if(!entries.length){
+    container.innerHTML='<div class="ib ip">Brak danych do Unified Probability Score.</div>';
+    return;
+  }
+  const maxP=entries[0].p||1;
+  container.innerHTML=
+    `<div class=\"ib ic\">Unified Probability Score — softmax z 5 sygnałów (global, trend, struktura, pattern, recency).</div>`+
+    entries.map(e=>{
+      const pct=(e.p*100).toFixed(2);
+      const bar=Math.max(e.p/maxP*100,4);
+      return `<div class=\"sig-row\">
+        <div class=\"sig-n spos\">${e.number}</div>
+        <div style=\"flex:1;padding:0 8px\">
+          <div class=\"ubar\"><div class=\"ufill\" style=\"width:${bar}%\"></div></div>
+        </div>
+        <span style=\"font-size:.75rem;color:var(--purple);font-weight:700\">${pct}%</span>
       </div>`;
     }).join('');
 }
@@ -1140,24 +1317,30 @@ function renderACF(px,d,cfg){
     `</div>`;
 }
 function renderBayes(px,d,cfg,isMini){
-  const sb=sampleBadge(d.N,cfg.sampleNeeds.bayes,'Bayes');
-  const top=d.sortedBayes.slice(0,8);
-  const maxCI=Math.max(...top.map(b=>b.ciHigh));
-  document.getElementById(px+'bayes').innerHTML=
-    `<div class="ib ip">Beta posterior · 95% CI (Wilson) · Prior: Beta(${(6/cfg.max*10).toFixed(1)},${((1-6/cfg.max)*10).toFixed(1)}) ${sb}</div>`+
-    top.map(b=>{
-      const lo=b.ciLow/maxCI*100,hi=b.ciHigh/maxCI*100,mn=b.postMean/maxCI*100;
-      const col=b.postMean>b.expected?'var(--success)':'var(--danger)';
-      return `<div class="bay-row">
-        <div class="sig-n ${b.postMean>b.expected?'spos':'sneg'}">${b.number}</div>
-        <div style="flex:1;padding:0 10px">
-          <div class="bay-ci">
-            <div class="bay-fill" style="left:${lo}%;width:${hi-lo}%"></div>
-            <div class="bay-mean" style="left:${mn}%"></div>
-          </div>
-          <div class="sig-lbl" style="margin-top:3px">Post.mean=${b.postMean} · 95%CI=[${b.ciLow.toFixed(1)},${b.ciHigh.toFixed(1)}] · exp=${b.expected}</div>
+  const sb=sampleBadge(d.N,cfg.sampleNeeds.bayes,'Struktura');
+  const cont=document.getElementById(px+'bayes');
+  const cvEntries=Object.entries(d.gapCV||{})
+    .filter(([,v])=>v!==null)
+    .map(([n,cv])=>({
+      number:parseInt(n),
+      cv,
+      runsZ:d.runsData[n]?.z||0
+    }))
+    .sort((a,b)=>a.cv-b.cv)
+    .slice(0,8);
+
+  const D=d.dispersionGlobal;
+  const ideal=(d.M/d.K).toFixed(1);
+
+  cont.innerHTML=
+    `<div class=\"ib ip\">Poisson Dispersion D = ${D?D.toFixed(2):'—'} (idealnie ≈ ${ideal}). CV<1 = regularność, CV>1 = klastrowanie. ${sb}</div>`+
+    cvEntries.map(e=>{
+      const cls=e.cv<1?'spos':'sneg';
+      return `<div class=\"ema-row\">
+        <div class=\"sig-n ${cls}\">${e.number}</div>
+        <div style=\"flex:1;font-size:.78rem;color:var(--td)\">
+          CV = ${e.cv.toFixed(2)} · Runs Z = ${e.runsZ.toFixed(2)}
         </div>
-        <span style="font-size:.75rem;font-weight:700;color:${col}">${b.postMean>b.expected?'+':'-'}${Math.abs(b.postMean-b.expected).toFixed(1)}</span>
       </div>`;
     }).join('');
 }
@@ -1192,18 +1375,23 @@ function renderSparkline(px,d,cfg,isMini){
     }).join('')+`</div>`;
 }
 function renderComposite(px,d,cfg,isMini){
-  const top=d.sortedComposite.slice(0,12);
-  const maxS=top[0]?.score||1;
+  const top=(d.unifiedSorted||[]).slice(0,12);
+  if(!top.length){
+    document.getElementById(px+'composite').innerHTML=
+      `<div class=\"ib ip\">Unified Probability Score — brak danych.</div>`;
+    return;
+  }
+  const maxP=top[0].p||1;
   document.getElementById(px+'composite').innerHTML=
-    `<div class="ib ip">Score = Z×0.35 + EMA×0.30 + Gap×0.20 + Entropia×0.15 — tylko liczby spełniające chi² p&lt;0.05 są statystycznie istotne.</div>`+
-    top.map((item,i)=>{
-      const pct=Math.round(item.score/maxS*100);
-      return `<div class="sig-row">
-        <div class="sig-n spos">${item.number}</div>
-        <div style="flex:1;padding:0 8px">
-          <div class="ubar"><div class="ufill" style="width:${pct}%"></div></div>
+    `<div class=\"ib ip\">Unified Probability Score — wagi adaptacyjne zależne od N (Z, momentum, struktura, pattern, recency).</div>`+
+    top.map(item=>{
+      const pct=Math.round(item.p/maxP*100);
+      return `<div class=\"sig-row\">
+        <div class=\"sig-n spos\">${item.number}</div>
+        <div style=\"flex:1;padding:0 8px\">
+          <div class=\"ubar\"><div class=\"ufill\" style=\"width:${pct}%\"></div></div>
         </div>
-        <span style="font-size:.75rem;color:var(--purple);font-weight:700">${pct}%</span>
+        <span style=\"font-size:.75rem;color:var(--purple);font-weight:700\">${pct}%</span>
       </div>`;
     }).join('');
 }
@@ -1349,28 +1537,66 @@ function selMethod(tab,method,btn){
 // SOURCE POOL (w/ greedy Markov)
 // ══════════════════════════════════════
 function getSource(tab){
-  const d=state[tab].analysis,m=state[tab].method,cfg=CFG[tab];
-  if(m==='hot') return d.hotNumbers.map(([n])=>parseInt(n));
-  if(m==='cold') return d.coldNumbers.map(([n])=>parseInt(n));
-  if(m==='overdue') return d.overdueNumbers.slice(0,20).map(i=>i.number);
-  if(m==='entropy') return d.sortedEntropy.slice(0,20).map(i=>i.number);
-  if(m==='zscore') return d.sortedZ.slice(0,20).map(i=>i.number);
-  if(m==='ema') return d.sortedEMA.filter(e=>e.trend==='up').slice(0,20).map(e=>e.number);
-  if(m==='markov') return null; // handled separately in generateCombos
-  if(m==='composite'){
-    const px=tab==='lotto'?'l-':'m-';
-    const threshold=parseInt(document.getElementById(px+'threshold')?.value||0)/100;
-    const maxS=d.sortedComposite[0]?.score||1;
-    const weights=[];
-    for(let n=1;n<=cfg.max;n++){
-      const s=d.compositeScores[n]||0.001;
-      if(s/maxS>=threshold) weights.push({number:n,weight:Math.max(s,0.001)});
-    }
-    const total=weights.reduce((s,w)=>s+w.weight,0);
-    weights.forEach(w=>w.weight/=total);
-    return weights;
+  const d=state[tab].analysis;
+  if(!d)return null;
+  const M=d.M;
+
+  if(state[tab].method==='prob'){
+    return Object.entries(d.unifiedProb).map(([n,p])=>({
+      number:parseInt(n),weight:p
+    }));
   }
-  return[];
+
+  if(state[tab].method==='momentum'){
+    const arr=[];
+    for(let n=1;n<=M;n++){
+      const mo=d.momentum[n];
+      if(mo?.tripleBull && mo.intensity>0){
+        arr.push({number:n,weight:mo.intensity});
+      }
+    }
+    return arr;
+  }
+
+  if(state[tab].method==='structural'){
+    const arr=[];
+    for(let n=1;n<=M;n++){
+      const cv=d.gapCV[n];
+      if(cv===null)continue;
+      const rz=d.runsData[n]?.z||0;
+      if(cv<1 && rz>0){
+        const w=(1-cv)+rz;
+        if(w>0)arr.push({number:n,weight:w});
+      }
+    }
+    return arr;
+  }
+
+  if(state[tab].method==='rolling'){
+    const N=d.N;
+    const K=Math.min(100,N);
+    const recent=d.draws.slice(0,K);
+    const hits={};for(let n=1;n<=M;n++)hits[n]=0;
+    recent.forEach(dr=>dr.numbers.forEach(n=>hits[n]++));
+    return Object.entries(hits)
+      .filter(([,c])=>c>0)
+      .map(([n,c])=>({number:parseInt(n),weight:c}));
+  }
+
+  if(state[tab].method==='diversity'){
+    const arr=[];
+    for(let n=1;n<=M;n++){
+      const freq=d.freqMap[n]||0;
+      const acf=Math.abs(d.acfPerNum[n]||0);
+      const antiPop=1/(1+freq);
+      const antiACF=1-acf;
+      const w=antiPop*antiACF;
+      arr.push({number:n,weight:w});
+    }
+    return arr;
+  }
+
+  return null;
 }
 
 // Greedy Markov combo builder
@@ -1499,25 +1725,24 @@ function generateCombos(tab){
 // ══════════════════════════════════════
 function renderCombos(combos,tab){
   const isMini=tab==='mini',px=tab==='lotto'?'l-':'m-',cfg=CFG[tab],d=state[tab].analysis;
+  const maxP=Math.max(...Object.values(d.unifiedProb||{1:1}));
   document.getElementById(px+'combo-grid').innerHTML=combos.map((combo,i)=>{
     const sum=combo.reduce((a,b)=>a+b,0);
     const odd=combo.filter(n=>n%2!==0).length;
     const low=combo.filter(n=>n<=cfg.lowSplit).length;
-    const cs=combo.reduce((s,n)=>s+(d.compositeScores[n]||0),0)/combo.length;
-    const maxS=d.sortedComposite[0]?.score||1;
-    const csPct=Math.round(cs/maxS*100);
-    // Uniqueness — heuristic (demographic bias avoidance)
+    const meanP=combo.reduce((s,n)=>s+(d.unifiedProb[n]||0),0)/combo.length;
+    const scorePct=Math.round(meanP/maxP*100);
     const uq=combo.reduce((s,n)=>s+(n>31?1.2:n>12?1.0:0.7),0)/combo.length/1.2;
     const uqPct=Math.round(uq*100);
-    return `<div class="ccard${isMini?' mt':''}">
-      <div class="cidx">Kombinacja ${i+1}</div>
-      <div class="cballs">${combo.map(n=>`<div class="cb${isMini?' mt':''}">${n}</div>`).join('')}</div>
-      <div class="cmeta"><span>Σ ${sum}</span><span>${odd}P:${cfg.pick-odd}N</span><span>${low}N:${cfg.pick-low}W</span></div>
-      <div class="cscore">🎯 Composite: ${csPct}%</div>
-      <div class="ubar"><div class="ufill" style="width:${csPct}%"></div></div>
-      <div class="cun">Unikalność (heurystyka): ${uqPct}%</div>
-      <div class="ubar"><div class="ufill ufill-u" style="width:${uqPct}%"></div></div>
-      <button class="btn-cp1${isMini?' mt':''}" onclick="copySingle('${combo.join(', ')}')">📋 Kopiuj</button>
+    return `<div class=\"ccard${isMini?' mt':''}\">
+      <div class=\"cidx\">Kombinacja ${i+1}</div>
+      <div class=\"cballs\">${combo.map(n=>`<div class=\"cb${isMini?' mt':''}\">${n}</div>`).join('')}</div>
+      <div class=\"cmeta\"><span>Σ ${sum}</span><span>${odd}P:${cfg.pick-odd}N</span><span>${low}N:${cfg.pick-low}W</span></div>
+      <div class=\"cscore\">🎯 Unified: ${scorePct}%</div>
+      <div class=\"ubar\"><div class=\"ufill\" style=\"width:${scorePct}%\"></div></div>
+      <div class=\"cun\">Unikalność (heurystyka): ${uqPct}%</div>
+      <div class=\"ubar\"><div class=\"ufill ufill-u\" style=\"width:${uqPct}%\"></div></div>
+      <button class=\"btn-cp1${isMini?' mt':''}\" onclick=\"copySingle('${combo.join(', ')}')\">📋 Kopiuj</button>
     </div>`;
   }).join('');
   document.getElementById(px+'combo-section').style.display='block';
@@ -1579,7 +1804,7 @@ function exportJSON(tab){
     topHot:d.hotNumbers.slice(0,10).map(([n,f])=>({n,f,z:d.zScores[parseInt(n)]})),
     topCold:d.coldNumbers.slice(0,10).map(([n,f])=>({n,f,z:d.zScores[parseInt(n)]})),
     sortedZ:d.sortedZ.slice(0,15),
-    sortedComposite:d.sortedComposite.slice(0,15),
+    sortedComposite:d.unifiedSorted.slice(0,15),
     sortedBayes:d.sortedBayes.slice(0,15),
     acfMean:d.acfMean,
     emaTrends:d.sortedEMA.slice(0,15)
@@ -1591,12 +1816,15 @@ function exportJSON(tab){
 }
 function exportCSV(tab){
   const d=state[tab].analysis;if(!d){toast('❌ Brak danych do eksportu.');return;}
-  const rows=[['Liczba','Freq','ExpFreq','ZScore','CompositeScore','BayesPostMean','ACFmaxR','EMATrend']];
+  const rows=[['Liczba','Freq','ExpFreq','ZScore','UnifiedProb','CVgap','ACFmaxR','EMATrend']];
   for(let n=1;n<=d.M;n++){
     rows.push([
-      n,d.freqMap[n],d.expectedFreq,d.zScores[n],
-      (d.compositeScores[n]||0).toFixed(4),
-      d.bayesian[n]?.postMean||'',
+      n,
+      d.freqMap[n],
+      d.expectedFreq,
+      d.zScores[n],
+      (d.unifiedProb[n]||0).toFixed(6),
+      d.gapCV[n]!=null?d.gapCV[n].toFixed(3):'',
       (d.acfPerNum[n]||0).toFixed(3),
       d.emaTrends[n]?.trend||''
     ]);
