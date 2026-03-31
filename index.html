@@ -1212,37 +1212,38 @@ function renderLastDigit(px,d,cfg){
 // ══════════════════════════════════════
 function renderChi2(px,d,cfg){
   const p=d.chiPval;
-  const [vrd,cls]=p<0.01?['🔴 Silny bias — maszyna NIE jest idealnie losowa (p<0.01)','cv-alert']:
-                  p<0.05?['🟡 Umiarkowany bias (p<0.05) — warto obserwować','cv-warn']:
-                         ['🟢 Brak dowodów na bias (p≥0.05)','cv-ok'];
+  const [vrd,cls]=p<0.01?['🔴 Silny bias — p<0.01 (statystycznie istotny)','cv-alert']:
+                  p<0.05?['🟡 Umiarkowany bias — p<0.05 (marginalnie istotny)','cv-warn']:
+                         ['🟢 Brak dowodów na bias — p≥0.05','cv-ok'];
   const N=d.N,sb=sampleBadge(N,cfg.sampleNeeds.chi2,'Chi²');
   document.getElementById(px+'chi2').innerHTML=
     `<div class="chi-m">
-      <div class="chi-v">χ²=${d.chiStat}</div>
-      <div class="chi-s">df=${d.df} · p=${p<0.001?'<0.001':p.toFixed(4)} · N=${N} ${sb}</div>
+      <div class="chi-v">χ² = ${d.chiStat}</div>
+      <div class="chi-s">df=${d.df} | p=${p<0.001?'<0.001':p.toFixed(4)} | N=${N} | H₀: rozkład jednostajny ${sb}</div>
       <div class="chi-verdict ${cls}">${vrd}</div>
     </div>
-    <div class="ib ip">E[freq]=N·k/M = ${d.expectedFreq} · σ=${d.sigma} · df=M−1=${d.df}</div>
+    <div class="ib ip">Oczekiwana częstość: E[f] = N·k/M = ${d.expectedFreq} | σ = ${d.sigma} | df = M−1 = ${d.df}</div>
     <div class="ib ${p<0.05?'iw':'ig'}">
-      ${p<0.05?`⚠️ Przy ${N} losowaniach to odchylenie jest statystycznie istotne. Nie oznacza jednak że wiesz KTÓRE liczby są biasowane — tylko że rozkład nie jest jednostajny.`:
-               `✅ Przy tej próbce nie ma podstaw do odrzucenia hipotezy losowości. Wszystkie dalsze analizy to prawdopodobnie szum.`}
+      ${p<0.05?`⚠️ Statystycznie istotne. Jednak CHI² detektuje OGÓŁEM bias, nie mówi które liczby. Sprawdź Z-score i Runs.`:
+               `✅ Brak podstaw do hipotezy nielosowości. Dalsze anomalie mogą być szumem statystycznym.`}
     </div>`;
 }
 function renderZScore(px,d,cfg,isMini){
   const N=d.N,sb=sampleBadge(N,cfg.sampleNeeds.zscore,'Z-score');
-  const sig=1.96/Math.sqrt(N);
+  const crit1=1.96,crit2=2.58;
   document.getElementById(px+'zscore').innerHTML=
-    `<div class="ib ic">σ=${d.sigma} · Istotność: |Z|>1.96 (p<0.05) ${sb}</div>`+
+    `<div class="ib ic">Próg istotności: |Z|>1.96 (p<0.05) ⭐ |Z|>2.58 (p<0.01) ⭐⭐ ${sb}</div>
+     <div class="ib ig">σ(binomial)=${d.sigma} | Expected freq=${d.expectedFreq} per ${N} draws</div>`+
     d.sortedZ.slice(0,10).map(({number,z,freq})=>{
-      const cls=Math.abs(z)>2?'spos':Math.abs(z)>1?'sig-n':'sneu';
-      const stars=Math.abs(z)>3?'★★★':Math.abs(z)>2?'★★':Math.abs(z)>1?'★':'';
+      const cls=Math.abs(z)>crit2?'spos':Math.abs(z)>crit1?'sig-n':'sneu';
+      const stars=Math.abs(z)>2.58?'⭐⭐':Math.abs(z)>1.96?'⭐':'';
+      const status=Math.abs(z)>crit2?'Znaczące':Math.abs(z)>crit1?'Istotne':'Typowe';
       return `<div class="sig-row">
         <div class="sig-n ${cls}">${number}</div>
         <div style="flex:1;padding:0 8px">
-          <div style="font-size:.8rem;font-weight:600">Z = ${z>0?'+':''}${z}</div>
-          <div class="sig-lbl">freq=${freq} · exp=${d.expectedFreq}</div>
+          <div style="font-size:.8rem;font-weight:600;color:var(--text)">Z = ${z>0?'+':''}${z.toFixed(3)} ${stars}</div>
+          <div class="sig-lbl">freq=${freq} vs exp=${d.expectedFreq} | ${status}</div>
         </div>
-        <span class="sig-star">${stars}</span>
       </div>`;
     }).join('');
 }
@@ -1251,16 +1252,18 @@ function renderCoOccur(px,d,cfg,isMini){
   const expCoOccur=N*cfg.pick*(cfg.pick-1)/(cfg.max*(cfg.max-1));
   const sb=sampleBadge(N,cfg.sampleNeeds.markov,'Ko-okurencja');
   document.getElementById(px+'markov').innerHTML=
-    `<div class="ib ip">Oczekiwana ko-okurencja pary ≈ ${expCoOccur.toFixed(1)} razy / ${N} losowań ${sb}</div>`+
+    `<div class="ib ip">Pary liczb w jednym losowaniu | Oczekiwana (uniform)≈${expCoOccur.toFixed(1)}× | ${N} draws ${sb}</div>`+
+    `<div class="ib ic">Nadwyżka >+30% może sugerować mechaniczne klasterowanie maszyny.</div>`+
     `<div class="mk-grid">`+
     d.topMarkov.slice(0,12).map(([pair,cnt])=>{
       const delta=cnt-expCoOccur;
       const pct=((cnt/expCoOccur-1)*100).toFixed(0);
-      const col=delta>0?'color:var(--success)':'color:var(--danger)';
+      const col=Math.abs(delta)>expCoOccur*0.5?'color:var(--warning)':delta>0?'color:var(--success)':'color:var(--danger)';
+      const icon=Math.abs(delta)>expCoOccur*0.5?'⚠️':delta>0?'📈':'📉';
       return `<div class="mk-card">
         <div class="mk-pair">${pair}</div>
         <div class="mk-prob">${cnt}×</div>
-        <div class="mk-delta" style="${col}">${delta>0?'+':''}${pct}%</div>
+        <div class="mk-delta" style="${col}">${icon} ${delta>0?'+':''}${pct}%</div>
       </div>`;
     }).join('')+`</div>`;
 }
@@ -1268,52 +1271,56 @@ function renderRuns(px,d,cfg,isMini){
   const extremes=Object.entries(d.runsData).filter(([,r])=>Math.abs(r.z)>1.5).sort((a,b)=>Math.abs(b[1].z)-Math.abs(a[1].z)).slice(0,6);
   const sb=sampleBadge(d.N,cfg.sampleNeeds.runs,'Runs');
   document.getElementById(px+'runs').innerHTML=
-    `<div class="ib ip">Z>+2: zbyt regularne (rytmiczne). Z&lt;-2: klastrowanie. ${sb}</div>`+
+    `<div class="ib ip">Runs Test: Z>+2 = zbyt regularne (rytm) | Z<-2 = klastrowanie | 0 = losowe ${sb}</div>`+
+    `<div class="ib ic">Liczba serii R vs oczekiwana μ_R; wysoki Z = zbyt mało serii, niski Z = zbyt wiele.</div>`+
     `<div class="runs-grid">`+
     extremes.map(([n,r])=>{
       const col=r.z>2?'var(--success)':r.z<-2?'var(--danger)':'var(--td)';
-      const label=r.z>2?'rytmiczne':r.z<-2?'klastrowe':'normalne';
+      const pattern=r.z>2?'▮▮ Muy regular':r.z<-2?'▪▫▪▫ Clustered':'▪▫▪▪▫ Random';
       return `<div class="rc">
         <div class="rc-val" style="color:${col}">${n}</div>
-        <div class="rc-lbl">Z=${r.z>0?'+':''}${r.z}</div>
-        <div class="rc-lbl">${label} · R=${r.R}</div>
+        <div class="rc-lbl">Z=${r.z>0?'+':''}${r.z.toFixed(2)}</div>
+        <div class="rc-lbl">${pattern} | R=${r.R}/μ=${r.muR.toFixed(0)}</div>
       </div>`;
     }).join('')+`</div>`+
-    (extremes.length===0?'<div class="ib ig">✅ Żadna liczba nie wykazuje istotnej nielosowości serii.</div>':'');
+    (extremes.length===0?'<div class="ib ig">✅ Brak anomalii w seriach. Pojawienia są statystycznie losowe.</div>':'');
 }
 function renderEMA(px,d,cfg,isMini){
   const up=d.sortedEMA.filter(e=>e.trend==='up').slice(0,6);
   const dn=d.sortedEMA.filter(e=>e.trend==='down').slice(0,4);
+  const sb=sampleBadge(d.N,cfg.sampleNeeds.ema,'EMA');
   document.getElementById(px+'ema-chart').innerHTML=
-    `<div class="ib iw">⚠️ EMA pożyczone z finansów — brak podstaw teoretycznych w losowaniach. Traktuj jako obserwację, nie predykcję.</div>`+
+    `<div class="ib iw">⚠️ EMA pożyczone z finansów — brak podstaw teoretycznych w losowaniach. Traktuj jako obserwację, nie predykcję. ${sb}</div>`+
     up.map(e=>`<div class="ema-row">
       <div class="ball bc" style="width:28px;height:28px;font-size:.72rem">${e.number}</div>
       <div style="flex:1;padding:0 8px"><div class="trend-up">↑ Trend rosnący</div>
-        <div class="sig-lbl">EMA szybkie: ${(e.short*100).toFixed(2)}% · diff: +${(e.diff*1000).toFixed(2)}‰</div></div>
+        <div class="sig-lbl">Fast(α=0.30): ${(e.fast*100).toFixed(2)}% | Slow(α=0.05): ${(e.slow*100).toFixed(2)}% | Δ: +${(e.diff*1000).toFixed(1)}‰</div></div>
     </div>`).join('')+
     dn.map(e=>`<div class="ema-row">
       <div class="ball bo" style="width:28px;height:28px;font-size:.72rem">${e.number}</div>
       <div style="flex:1;padding:0 8px"><div class="trend-dn">↓ Trend malejący</div>
-        <div class="sig-lbl">EMA szybkie: ${(e.short*100).toFixed(2)}% · diff: ${(e.diff*1000).toFixed(2)}‰</div></div>
-    </div>`).join('');
+        <div class="sig-lbl">Fast(α=0.30): ${(e.fast*100).toFixed(2)}% | Slow(α=0.05): ${(e.slow*100).toFixed(2)}% | Δ: ${(e.diff*1000).toFixed(1)}‰</div></div>
+    </div>`).join('')+
+    (up.length===0&&dn.length===0?'<div class="ib ig">✅ Żadna liczba nie wykazuje wyraźnego trendu. Rozkład może być stabilny.</div>':'');
 }
 function renderACF(px,d,cfg){
   const acf=d.acfMean;
   const maxAbs=Math.max(...acf.map(Math.abs),0.01);
-  const sigLevel=(1.96/Math.sqrt(d.N)).toFixed(3);
-  const sigBars=acf.filter(r=>Math.abs(r)>parseFloat(sigLevel)).length;
+  const sigLevel=parseFloat((1.96/Math.sqrt(d.N)).toFixed(3));
+  const sigBars=acf.filter(r=>Math.abs(r)>sigLevel).length;
   document.getElementById(px+'acf').innerHTML=
-    `<div class="ib ${sigBars>2?'iw':'ig'}">Próg istotności (95%): |r|>${sigLevel} · Istotnych lagów: ${sigBars}/15 ${sigBars>2?'⚠️ Możliwa periodyczność':'✅ Brak periodyczności'}</div>`+
+    `<div class="ib ${sigBars>2?'iw':'ig'}"><strong>Autokorelacja</strong> (PAC) lagi 1–15 | 95% próg: |r|>${sigLevel} | Istotnych: ${sigBars}/15 ${sigBars>2?'⚠️ PERIODYCZNOŚĆ':'✅ Brak'}</div>`+
+    `<div class="ib ic">r>0 = pojawienia razem | r<0 = rzadko razem | Wysokie |r| = możliwa nielosowość</div>`+
     `<div class="acf-bars">`+
     acf.map((r,i)=>{
       const h=Math.abs(r)/maxAbs*100;
       const cls=r>=0?'acf-pos':'acf-neg';
-      const sig=Math.abs(r)>parseFloat(sigLevel);
-      return `<div class="acf-bar ${cls}" style="height:${Math.max(h,2)}%;opacity:${sig?1:0.4}" title="lag ${i+1}: r=${r}"></div>`;
+      const sig=Math.abs(r)>sigLevel;
+      return `<div class="acf-bar ${cls}" style="height:${Math.max(h,2)}%;opacity:${sig?1:0.4}" title="lag ${i+1}: r=${r.toFixed(3)}"></div>`;
     }).join('')+
-    `</div><div class="acf-label"><span>lag 1</span><span>8</span><span>15</span></div>`+
-    `<div style="margin-top:8px">`+
-    acf.map((r,i)=>`<span style="font-size:.68rem;color:${Math.abs(r)>parseFloat(sigLevel)?'var(--warning)':'var(--tm)'}">lag${i+1}:${r>0?'+':''}${r} </span>`).join('')+
+    `</div><div class="acf-label"><span>lag 1</span><span>lag 8</span><span>lag 15</span></div>`+
+    `<div style="margin-top:10px;font-size:.68rem;color:var(--tm);line-height:1.8;display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:3px">`+
+    acf.map((r,i)=>`<span style="color:${Math.abs(r)>sigLevel?'var(--warning)':'var(--tm)'}">lag${i+1}:${r>0?'+':''}${r.toFixed(3)}</span>`).join('')+
     `</div>`;
 }
 function renderBayes(px,d,cfg,isMini){
@@ -1324,22 +1331,25 @@ function renderBayes(px,d,cfg,isMini){
     .map(([n,cv])=>({
       number:parseInt(n),
       cv,
-      runsZ:d.runsData[n]?.z||0
+      runsZ:d.runsData[n]?.z||0,
+      freq:d.freqMap[n]||0
     }))
     .sort((a,b)=>a.cv-b.cv)
-    .slice(0,8);
+    .slice(0,10);
 
   const D=d.dispersionGlobal;
   const ideal=(d.M/d.K).toFixed(1);
 
   cont.innerHTML=
-    `<div class=\"ib ip\">Poisson Dispersion D = ${D?D.toFixed(2):'—'} (idealnie ≈ ${ideal}). CV<1 = regularność, CV>1 = klastrowanie. ${sb}</div>`+
+    `<div class="ib ip">Rozkład Przerw (Gap CV): D=${D?D.toFixed(2):'—'} (idealnie≈${ideal}). CV<1=regularne, CV>1=klastrowe. ${sb}</div>`+
     cvEntries.map(e=>{
-      const cls=e.cv<1?'spos':'sneg';
-      return `<div class=\"ema-row\">
-        <div class=\"sig-n ${cls}\">${e.number}</div>
-        <div style=\"flex:1;font-size:.78rem;color:var(--td)\">
-          CV = ${e.cv.toFixed(2)} · Runs Z = ${e.runsZ.toFixed(2)}
+      const statusCV=e.cv<0.8?'🟢':e.cv<1.2?'🟡':'🔴';
+      const statusRuns=e.runsZ>1.5?'▲':e.runsZ<-1.5?'▼':'→';
+      return `<div class="ema-row">
+        <div class="sig-n ${e.cv<1?'spos':'sneg'}">${e.number}</div>
+        <div style="flex:1;font-size:.78rem;">
+          <div style="color:var(--text);font-weight:600">${statusCV} CV=${e.cv.toFixed(2)} ${statusRuns} RunsZ=${e.runsZ.toFixed(2)}</div>
+          <div style="color:var(--tm);font-size:.73rem">freq=${e.freq} · ${e.cv<1?'regularny':'klasterowy'} rozkład przerw</div>
         </div>
       </div>`;
     }).join('');
@@ -1383,15 +1393,17 @@ function renderComposite(px,d,cfg,isMini){
   }
   const maxP=top[0].p||1;
   document.getElementById(px+'composite').innerHTML=
-    `<div class=\"ib ip\">Unified Probability Score — wagi adaptacyjne zależne od N (Z, momentum, struktura, pattern, recency).</div>`+
-    top.map(item=>{
+      `<div class=\"ib ip\"><strong>Unified Probability Score</strong> — komponenty: Z-score, EMA momentum, CV przerw, ACF, Recency | Wagi adaptacyjne na podstawie N | Suma=1.</div>`+
+      `<div class=\"ib ic\">Każda liczba ma %: wyższa = lepiej spełnia kryteria wielowymiarowe (ale NIE gwarancja!).</div>`+
+    top.map((item,idx)=>{
       const pct=Math.round(item.p/maxP*100);
+      const pctReal=Math.round(item.p*10000)/100;
       return `<div class=\"sig-row\">
-        <div class=\"sig-n spos\">${item.number}</div>
-        <div style=\"flex:1;padding:0 8px\">
+        <div class=\"sig-n spos\">#${idx+1}</div>
+        <div style=\"flex:1;padding:0 8px\">\n          <div style=\"font-weight:600;color:var(--text)\">${item.number}</div>
           <div class=\"ubar\"><div class=\"ufill\" style=\"width:${pct}%\"></div></div>
         </div>
-        <span style=\"font-size:.75rem;color:var(--purple);font-weight:700\">${pct}%</span>
+        <span style=\"font-size:.73rem;color:var(--purple);font-weight:700\">${pctReal}%</span>
       </div>`;
     }).join('');
 }
