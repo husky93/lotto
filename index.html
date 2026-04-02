@@ -3,315 +3,430 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0f1e">
-<title>🎰 Lotto Analyzer Pro</title>
+<meta name="theme-color" content="#080c18">
+<title>🎰 Lotto Analyzer Pro v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 :root{
-  --bg:#0a0f1e;--glass:rgba(255,255,255,0.04);--gb:rgba(255,255,255,0.08);
-  --primary:#38bdf8;--pd:rgba(56,189,248,0.15);--pg:rgba(56,189,248,0.3);
-  --success:#10b981;--sd:rgba(16,185,129,0.15);
-  --warning:#f59e0b;--wd:rgba(245,158,11,0.15);
-  --danger:#f43f5e;--dd:rgba(244,63,94,0.15);
-  --purple:#a78bfa;--purpd:rgba(167,139,250,0.15);
-  --mini:#f472b6;--mind:rgba(244,114,182,0.15);--ming:rgba(244,114,182,0.3);
-  --gold:#fbbf24;--goldd:rgba(251,191,36,0.15);--goldg:rgba(251,191,36,0.3);
-  --text:#f1f5f9;--tm:#64748b;--td:#94a3b8;
-  --r:16px;--rs:10px;--sh:0 8px 32px rgba(0,0,0,0.4);
+  --bg:#080c18;--bg2:#0d1225;--bg3:#121830;
+  --glass:rgba(255,255,255,0.03);--gb:rgba(255,255,255,0.07);--gb2:rgba(255,255,255,0.12);
+  --primary:#38bdf8;--pd:rgba(56,189,248,0.12);--pg:rgba(56,189,248,0.28);
+  --success:#22d3a0;--sd:rgba(34,211,160,0.12);--sg:rgba(34,211,160,0.28);
+  --warning:#f59e0b;--wd:rgba(245,158,11,0.12);--wg:rgba(245,158,11,0.28);
+  --danger:#f43f5e;--dd:rgba(244,63,94,0.12);--dg:rgba(244,63,94,0.28);
+  --purple:#a78bfa;--purpd:rgba(167,139,250,0.12);--purpg:rgba(167,139,250,0.28);
+  --mini:#f472b6;--mind:rgba(244,114,182,0.12);--ming:rgba(244,114,182,0.28);
+  --gold:#fbbf24;--goldd:rgba(251,191,36,0.12);
+  --teal:#2dd4bf;--teald:rgba(45,212,191,0.12);
+  --text:#e8edf5;--td:#8899b4;--tm:#4a5a72;
+  --r:14px;--rs:9px;--sh:0 8px 40px rgba(0,0,0,0.5);
+  --font-head:'Syne',sans-serif;
+  --font-mono:'Space Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(56,189,248,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(167,139,250,0.06) 0%,transparent 50%);z-index:0;pointer-events:none;}
-.page{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 20px 80px;}
-.header{text-align:center;padding:40px 20px 0;}
-.hi{font-size:3rem;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(56,189,248,0.5));animation:float 3s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.header h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;background:linear-gradient(135deg,#38bdf8,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;}
-.header p{color:var(--td);margin-top:8px;font-size:0.92rem;}
+body{font-family:var(--font-mono);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:13px;}
+body::before{content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%,rgba(56,189,248,0.05) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 85%,rgba(167,139,250,0.05) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 50%,rgba(244,114,182,0.03) 0%,transparent 50%);
+  z-index:0;pointer-events:none;}
+.page{position:relative;z-index:1;max-width:1480px;margin:0 auto;padding:0 16px 100px;}
+
+/* HEADER */
+.header{text-align:center;padding:36px 20px 0;}
+.header-icon{font-size:2.6rem;display:block;margin-bottom:10px;filter:drop-shadow(0 0 24px rgba(56,189,248,0.6));animation:float 3.5s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+.header h1{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;
+  background:linear-gradient(135deg,#38bdf8 0%,#a78bfa 50%,#f472b6 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-1px;line-height:1;}
+.header-sub{font-size:0.72rem;color:var(--td);margin-top:8px;letter-spacing:0.12em;text-transform:uppercase;}
+.version-badge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:4px 12px;
+  background:linear-gradient(90deg,rgba(56,189,248,0.15),rgba(167,139,250,0.15));
+  border:1px solid rgba(167,139,250,0.3);border-radius:20px;font-size:0.68rem;color:var(--purple);}
+
 /* TABS */
-.tabs-nav{display:flex;margin:24px 0 0;border-bottom:1px solid var(--gb);position:sticky;top:0;z-index:100;background:var(--bg);padding-top:4px;}
-.tab-btn{padding:13px 22px;background:transparent;border:none;border-bottom:3px solid transparent;color:var(--td);font-size:0.9rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .25s;white-space:nowrap;}
+.tabs-nav{display:flex;margin:20px 0 0;border-bottom:1px solid var(--gb);position:sticky;top:0;z-index:100;background:var(--bg);padding-top:4px;gap:2px;}
+.tab-btn{padding:12px 20px;background:transparent;border:none;border-bottom:2px solid transparent;
+  color:var(--td);font-size:0.8rem;font-weight:700;font-family:var(--font-head);cursor:pointer;
+  transition:all .2s;white-space:nowrap;letter-spacing:0.05em;text-transform:uppercase;}
 .tab-btn:hover{color:var(--text);}
 .tab-btn.al{color:var(--primary);border-bottom-color:var(--primary);}
 .tab-btn.am{color:var(--mini);border-bottom-color:var(--mini);}
-.tc{display:none;padding-top:24px;}
+.tc{display:none;padding-top:20px;}
 .tc.active{display:block;}
-/* GLASS */
-.glass{background:var(--glass);border:1px solid var(--gb);border-radius:var(--r);backdrop-filter:blur(12px);box-shadow:var(--sh);}
+
+/* GLASS CARDS */
+.glass{background:var(--glass);border:1px solid var(--gb);border-radius:var(--r);backdrop-filter:blur(16px);box-shadow:var(--sh);}
+.glass-hi{background:rgba(255,255,255,0.05);border:1px solid var(--gb2);}
+
 /* UPLOAD */
-.upload-section{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;padding:20px;margin-bottom:20px;}
+.upload-section{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;padding:18px;margin-bottom:16px;}
 @media(max-width:700px){.upload-section{grid-template-columns:1fr;}}
-.fl{font-size:0.76rem;font-weight:600;color:var(--td);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;}
-.fw{position:relative;border:2px dashed rgba(56,189,248,.3);border-radius:var(--rs);padding:13px;cursor:pointer;transition:all .3s;background:var(--pd);text-align:center;}
-.fw.mt{border-color:rgba(244,114,182,.3);background:var(--mind);}
-.fw:hover{border-color:var(--primary);}
+.fl{font-size:0.68rem;font-weight:700;color:var(--td);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;font-family:var(--font-head);}
+.fw{position:relative;border:1px dashed rgba(56,189,248,0.3);border-radius:var(--rs);padding:12px;cursor:pointer;transition:all .3s;background:var(--pd);text-align:center;}
+.fw.mt{border-color:rgba(244,114,182,0.3);background:var(--mind);}
+.fw:hover{border-color:var(--primary);background:rgba(56,189,248,0.08);}
 .fw.mt:hover{border-color:var(--mini);}
 .fw input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.ft{font-size:.86rem;color:var(--primary);font-weight:500;pointer-events:none;}
+.ft{font-size:0.8rem;color:var(--primary);font-weight:700;pointer-events:none;font-family:var(--font-head);}
 .ft.mt{color:var(--mini);}
-.inp{width:100%;padding:12px 14px;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:var(--rs);color:var(--text);font-size:.95rem;font-family:inherit;}
-.inp:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--pd);}
-.btn-a{padding:13px 24px;background:linear-gradient(135deg,#38bdf8,#818cf8);border:none;border-radius:var(--rs);color:#0a0f1e;font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .3s;white-space:nowrap;}
-.btn-a:hover{transform:translateY(-2px);}
+.inp{width:100%;padding:11px 13px;background:rgba(0,0,0,0.35);border:1px solid var(--gb);border-radius:var(--rs);
+  color:var(--text);font-size:0.88rem;font-family:var(--font-mono);}
+.inp:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px var(--pd);}
+.btn-a{padding:12px 22px;background:linear-gradient(135deg,#38bdf8,#6366f1);border:none;border-radius:var(--rs);
+  color:#05080f;font-size:0.82rem;font-weight:700;font-family:var(--font-head);cursor:pointer;transition:all .3s;white-space:nowrap;letter-spacing:0.05em;}
+.btn-a:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,0.3);}
 .btn-a.mt{background:linear-gradient(135deg,#f472b6,#a78bfa);}
-.btn-clr{padding:10px 16px;background:transparent;border:1px solid var(--gb);border-radius:var(--rs);color:var(--td);font-size:.85rem;font-weight:500;font-family:inherit;cursor:pointer;transition:all .2s;}
+.btn-clr{padding:10px 14px;background:transparent;border:1px solid var(--gb);border-radius:var(--rs);
+  color:var(--td);font-size:0.78rem;font-weight:700;font-family:var(--font-head);cursor:pointer;transition:all .2s;letter-spacing:0.05em;}
 .btn-clr:hover{border-color:var(--danger);color:var(--danger);}
-.fb{display:none;grid-column:1/-1;padding:10px 14px;background:var(--sd);border:1px solid rgba(16,185,129,.3);border-radius:var(--rs);color:#34d399;font-size:.83rem;font-weight:500;}
-.eb{display:none;padding:13px 16px;background:var(--dd);border:1px solid rgba(244,63,94,.3);border-radius:var(--rs);color:#fb7185;font-size:.88rem;margin-bottom:18px;}
-/* CSV DIAGNOSTIC */
-.csv-diag{display:none;margin-bottom:16px;padding:14px 16px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);border-radius:var(--rs);font-size:.8rem;}
-.csv-diag-title{color:var(--warning);font-weight:700;margin-bottom:8px;}
-.csv-diag pre{color:var(--td);font-family:monospace;font-size:.75rem;white-space:pre-wrap;line-height:1.5;}
+.fb{display:none;grid-column:1/-1;padding:9px 13px;background:var(--sd);border:1px solid var(--sg);border-radius:var(--rs);color:var(--success);font-size:0.78rem;font-weight:700;}
+.eb{display:none;padding:12px 15px;background:var(--dd);border:1px solid var(--dg);border-radius:var(--rs);color:#fb7185;font-size:0.82rem;margin-bottom:16px;}
+.csv-diag{display:none;margin-bottom:14px;padding:13px 15px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.25);border-radius:var(--rs);font-size:0.76rem;}
+.csv-diag-title{color:var(--warning);font-weight:700;margin-bottom:7px;font-family:var(--font-head);}
+.csv-diag pre{color:var(--td);font-family:var(--font-mono);font-size:0.72rem;white-space:pre-wrap;line-height:1.6;}
+
 /* LOADING */
 .loading{display:none;text-align:center;padding:60px 20px;}
-.loader{width:48px;height:48px;border-radius:50%;border:3px solid rgba(56,189,248,.15);border-top-color:var(--primary);animation:spin .8s linear infinite;margin:0 auto 16px;}
+.loader{width:44px;height:44px;border-radius:50%;border:2px solid rgba(56,189,248,0.12);border-top-color:var(--primary);animation:spin .7s linear infinite;margin:0 auto 14px;}
 .loader.mt{border-top-color:var(--mini);}
 @keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-family:var(--font-head);color:var(--td);font-size:0.82rem;letter-spacing:0.1em;}
+
 /* STATS ROW */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;}
-.sc{padding:16px;border-radius:var(--r);position:relative;overflow:hidden;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px;}
+.sc{padding:14px;border-radius:var(--r);position:relative;overflow:hidden;}
 .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--acc,linear-gradient(90deg,var(--primary),var(--purple)));}
-.sc-icon{font-size:1.2rem;margin-bottom:5px;}
-.sc-val{font-size:1.3rem;font-weight:800;background:var(--acc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
-.sc-label{font-size:.68rem;color:var(--td);margin-top:3px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;}
+.sc-icon{font-size:1rem;margin-bottom:4px;}
+.sc-val{font-size:1.25rem;font-weight:700;font-family:var(--font-head);background:var(--acc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+.sc-label{font-size:0.64rem;color:var(--td);margin-top:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;font-family:var(--font-head);}
+
 /* SECTION HEADER */
-.sh{display:flex;align-items:center;gap:12px;margin:32px 0 16px;}
-.sh h2{font-size:1.1rem;font-weight:700;}
+.sh{display:flex;align-items:center;gap:10px;margin:28px 0 14px;}
+.sh h2{font-size:0.95rem;font-weight:800;font-family:var(--font-head);letter-spacing:0.05em;text-transform:uppercase;}
 .sl{flex:1;height:1px;background:var(--gb);}
-.si{width:34px;height:34px;border-radius:10px;background:var(--pd);border:1px solid var(--pg);display:flex;align-items:center;justify-content:center;font-size:.95rem;}
+.si{width:32px;height:32px;border-radius:9px;background:var(--pd);border:1px solid var(--pg);display:flex;align-items:center;justify-content:center;font-size:0.85rem;}
 .si.mt{background:var(--mind);border-color:var(--ming);}
-.si.stat{background:var(--purpd);border-color:rgba(167,139,250,.3);}
-.si.roll{background:var(--goldd);border-color:var(--goldg);}
+.si.stat{background:var(--purpd);border-color:var(--purpg);}
+.si.roll{background:var(--goldd);border-color:rgba(251,191,36,0.3);}
+
 /* SAMPLE BADGE */
-.sample-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;margin-left:auto;}
+.sample-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:0.63rem;font-weight:700;margin-left:auto;font-family:var(--font-head);}
 .sb-ok{background:var(--sd);color:var(--success);}
 .sb-warn{background:var(--wd);color:var(--warning);}
 .sb-bad{background:var(--dd);color:var(--danger);}
+
 /* ANALYSIS GRID */
-.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:24px;}
+.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-bottom:20px;}
 @media(max-width:480px){.agrid{grid-template-columns:1fr;}}
-.ac{padding:20px;border-radius:var(--r);}
-.act{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--gb);flex-wrap:wrap;}
-.act span:first-child{font-size:1.1rem;}
-.act strong{font-size:.9rem;font-weight:700;}
-.act-sub{font-size:.68rem;color:var(--tm);margin-left:auto;padding:2px 7px;background:rgba(255,255,255,.04);border-radius:20px;}
-.badge{font-size:.63rem;font-weight:700;padding:2px 6px;border-radius:20px;}
-.bi{background:rgba(56,189,248,.15);color:var(--primary);}
-.bw{background:rgba(245,158,11,.15);color:var(--warning);}
+.ac{padding:18px;border-radius:var(--r);}
+.act{display:flex;align-items:center;gap:7px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--gb);flex-wrap:wrap;}
+.act span:first-child{font-size:1rem;}
+.act strong{font-size:0.82rem;font-weight:800;font-family:var(--font-head);letter-spacing:0.02em;}
+.act-sub{font-size:0.63rem;color:var(--tm);margin-left:auto;padding:2px 6px;background:rgba(255,255,255,0.04);border-radius:20px;font-family:var(--font-head);}
+.badge{font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:20px;font-family:var(--font-head);letter-spacing:0.05em;}
+.bi{background:rgba(56,189,248,0.12);color:var(--primary);}
+.bw{background:rgba(245,158,11,0.12);color:var(--warning);}
 .bs{background:var(--purpd);color:var(--purple);}
 .bstat{background:var(--sd);color:var(--success);}
+.bnew{background:rgba(45,212,191,0.15);color:var(--teal);}
+
 /* TOOLTIP */
-.tip-btn{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--gb);color:var(--td);font-size:.65rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
-.tip-popup{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:240px;background:#1e293b;border:1px solid var(--gb);border-radius:10px;padding:11px 13px;font-size:.76rem;color:var(--td);line-height:1.55;z-index:500;pointer-events:none;}
-.tip-popup::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#1e293b;}
+.tip-btn{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.07);border:1px solid var(--gb);color:var(--td);font-size:0.6rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+.tip-popup{display:none;position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);width:230px;background:#1a2235;border:1px solid var(--gb2);border-radius:10px;padding:10px 12px;font-size:0.72rem;color:var(--td);line-height:1.6;z-index:500;pointer-events:none;font-family:var(--font-mono);}
+.tip-popup::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1a2235;}
 .tip-btn:hover .tip-popup{display:block;}
+
 /* BALLS */
-.num-row{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.num-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
 .num-row:last-child{border-bottom:none;}
-.ball{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.79rem;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.ball{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.74rem;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.4);font-family:var(--font-head);}
 .bh{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;}
-.bc{background:linear-gradient(135deg,#38bdf8,#818cf8);color:#0a0f1e;}
+.bc{background:linear-gradient(135deg,#38bdf8,#6366f1);color:#05080f;}
 .bo{background:linear-gradient(135deg,#f43f5e,#dc2626);color:#fff;}
-.bp{background:linear-gradient(135deg,#a78bfa,#f472b6);color:#0a0f1e;}
-.bz{background:linear-gradient(135deg,#10b981,#38bdf8);color:#0a0f1e;}
-.bmh{background:linear-gradient(135deg,#f472b6,#f59e0b);color:#0a0f1e;}
-.bmc{background:linear-gradient(135deg,#a78bfa,#38bdf8);color:#0a0f1e;}
+.bp{background:linear-gradient(135deg,#a78bfa,#f472b6);color:#05080f;}
+.bz{background:linear-gradient(135deg,#22d3a0,#38bdf8);color:#05080f;}
+.bmh{background:linear-gradient(135deg,#f472b6,#f59e0b);color:#05080f;}
+.bmc{background:linear-gradient(135deg,#a78bfa,#38bdf8);color:#05080f;}
 .bmo{background:linear-gradient(135deg,#f43f5e,#a78bfa);color:#fff;}
-.bmz{background:linear-gradient(135deg,#2dd4bf,#10b981);color:#0a0f1e;}
+.bmz{background:linear-gradient(135deg,#2dd4bf,#22d3a0);color:#05080f;}
 .ni{flex:1;min-width:0;}
-.nim{font-size:.85rem;font-weight:500;}
-.nis{font-size:.71rem;color:var(--td);margin-top:1px;}
+.nim{font-size:0.8rem;font-weight:700;font-family:var(--font-head);}
+.nis{font-size:0.68rem;color:var(--td);margin-top:1px;font-family:var(--font-mono);}
 .ntags{display:flex;gap:3px;flex-shrink:0;}
-.tag{padding:2px 6px;border-radius:20px;font-size:.65rem;font-weight:700;}
-.to{background:rgba(167,139,250,.2);color:var(--purple);}
-.te{background:rgba(244,114,182,.2);color:var(--mini);}
-.tl{background:rgba(16,185,129,.2);color:var(--success);}
-.th{background:rgba(245,158,11,.2);color:var(--warning);}
+.tag{padding:2px 5px;border-radius:20px;font-size:0.62rem;font-weight:700;font-family:var(--font-head);}
+.to{background:rgba(167,139,250,0.18);color:var(--purple);}
+.te{background:rgba(244,114,182,0.18);color:var(--mini);}
+.tl{background:rgba(34,211,160,0.18);color:var(--success);}
+.th{background:rgba(245,158,11,0.18);color:var(--warning);}
+
 /* BARS */
-.bar-row{display:flex;align-items:center;gap:9px;margin-bottom:6px;}
-.bl{width:58px;text-align:right;font-size:.74rem;color:var(--td);flex-shrink:0;}
-.blw{width:86px;}
-.bt{flex:1;height:20px;background:rgba(255,255,255,.04);border-radius:5px;overflow:hidden;}
-.bf{height:100%;border-radius:5px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:.68rem;font-weight:700;color:#0a0f1e;transition:width .6s ease;min-width:26px;}
-.bb{background:linear-gradient(90deg,#38bdf8,#818cf8);}
-.bg{background:linear-gradient(90deg,#10b981,#38bdf8);}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.bl{width:54px;text-align:right;font-size:0.7rem;color:var(--td);flex-shrink:0;font-family:var(--font-mono);}
+.blw{width:82px;}
+.bt{flex:1;height:18px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden;}
+.bf{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;font-size:0.64rem;font-weight:700;color:#05080f;transition:width .5s ease;min-width:24px;font-family:var(--font-head);}
+.bb{background:linear-gradient(90deg,#38bdf8,#6366f1);}
+.bg{background:linear-gradient(90deg,#22d3a0,#38bdf8);}
 .bor{background:linear-gradient(90deg,#f59e0b,#ef4444);}
 .bpu{background:linear-gradient(90deg,#a78bfa,#f472b6);}
 .btl{background:linear-gradient(90deg,#2dd4bf,#38bdf8);}
 .bpk{background:linear-gradient(90deg,#f472b6,#a78bfa);}
 .bgd{background:linear-gradient(90deg,#fbbf24,#f59e0b);}
 .bred{background:linear-gradient(90deg,#ef4444,#f43f5e);}
+.bte{background:linear-gradient(90deg,#2dd4bf,#22d3a0);}
+
 /* IBOXES */
-.ib{border-radius:7px;padding:9px 12px;margin-bottom:10px;font-size:.76rem;line-height:1.5;}
-.ip{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--purple);}
-.ig{background:var(--sd);border:1px solid rgba(16,185,129,.3);color:var(--success);}
-.iw{background:var(--wd);border:1px solid rgba(245,158,11,.3);color:var(--warning);}
+.ib{border-radius:7px;padding:8px 11px;margin-bottom:9px;font-size:0.72rem;line-height:1.6;font-family:var(--font-mono);}
+.ip{background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.2);color:var(--purple);}
+.ig{background:var(--sd);border:1px solid var(--sg);color:var(--success);}
+.iw{background:var(--wd);border:1px solid var(--wg);color:var(--warning);}
 .ic{background:var(--pd);border:1px solid var(--pg);color:var(--primary);}
-.ired{background:var(--dd);border:1px solid rgba(244,63,94,.3);color:var(--danger);}
+.ired{background:var(--dd);border:1px solid var(--dg);color:var(--danger);}
+.ite{background:var(--teald);border:1px solid rgba(45,212,191,0.25);color:var(--teal);}
+
 /* SUM HL */
-.sum-hl{border-radius:var(--rs);padding:11px 14px;margin-bottom:12px;font-size:.83rem;font-weight:500;line-height:1.5;}
+.sum-hl{border-radius:var(--rs);padding:10px 13px;margin-bottom:11px;font-size:0.78rem;font-weight:700;line-height:1.5;font-family:var(--font-head);}
 .shb{background:var(--pd);border:1px solid var(--pg);color:var(--primary);}
 .shp{background:var(--mind);border:1px solid var(--ming);color:var(--mini);}
+
 /* DEC GRID */
-.dec-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:7px;}
+.dec-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:7px;}
 .dec4{grid-template-columns:repeat(4,1fr);}
-.dc{background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:9px;padding:9px 5px;text-align:center;}
-.dlab{font-size:.65rem;color:var(--td);margin-bottom:3px;font-weight:600;}
-.dval{font-size:1.15rem;font-weight:800;color:var(--primary);}
+.dc{background:rgba(255,255,255,0.04);border:1px solid var(--gb);border-radius:8px;padding:8px 4px;text-align:center;}
+.dlab{font-size:0.62rem;color:var(--td);margin-bottom:3px;font-weight:700;font-family:var(--font-head);}
+.dval{font-size:1.1rem;font-weight:800;color:var(--primary);font-family:var(--font-head);}
 .dval.mt{color:var(--mini);}
-.dpct{font-size:.65rem;color:var(--tm);margin-top:2px;}
+.dpct{font-size:0.62rem;color:var(--tm);margin-top:1px;font-family:var(--font-mono);}
+
 /* CHI2 */
-.chi-m{background:rgba(0,0,0,.2);border-radius:8px;padding:11px;margin-bottom:10px;text-align:center;}
-.chi-v{font-size:1.5rem;font-weight:800;color:var(--purple);}
-.chi-s{font-size:.73rem;color:var(--td);margin-top:3px;}
-.chi-verdict{margin-top:7px;padding:5px 11px;border-radius:5px;font-size:.77rem;font-weight:600;display:inline-block;}
+.chi-m{background:rgba(0,0,0,0.25);border-radius:8px;padding:11px;margin-bottom:10px;text-align:center;}
+.chi-v{font-size:1.5rem;font-weight:800;color:var(--purple);font-family:var(--font-head);}
+.chi-s{font-size:0.7rem;color:var(--td);margin-top:3px;font-family:var(--font-mono);}
+.chi-verdict{margin-top:7px;padding:5px 10px;border-radius:5px;font-size:0.74rem;font-weight:700;display:inline-block;font-family:var(--font-head);}
 .cv-ok{background:var(--sd);color:var(--success);}
 .cv-warn{background:var(--wd);color:var(--warning);}
 .cv-alert{background:var(--dd);color:var(--danger);}
-.sig-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.8rem;}
+.sig-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;}
 .sig-row:last-child{border-bottom:none;}
-.sig-n{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.76rem;flex-shrink:0;}
-.spos{background:linear-gradient(135deg,#10b981,#38bdf8);color:#0a0f1e;}
+.sig-n{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.72rem;flex-shrink:0;font-family:var(--font-head);}
+.spos{background:linear-gradient(135deg,#22d3a0,#38bdf8);color:#05080f;}
 .sneg{background:linear-gradient(135deg,#f43f5e,#f59e0b);color:#fff;}
-.sneu{background:rgba(255,255,255,.08);color:var(--td);}
-.sig-lbl{font-size:.68rem;color:var(--tm);}
-.sig-star{color:var(--gold);font-size:.78rem;}
+.sneu{background:rgba(255,255,255,0.07);color:var(--td);}
+.sig-lbl{font-size:0.65rem;color:var(--tm);font-family:var(--font-mono);}
+.sig-star{color:var(--gold);font-size:0.76rem;}
+
 /* RUNS */
-.runs-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0;}
-.rc{background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:7px;padding:9px;text-align:center;}
-.rc-val{font-size:1.05rem;font-weight:800;color:var(--primary);}
-.rc-lbl{font-size:.66rem;color:var(--td);margin-top:2px;}
+.runs-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:7px 0;}
+.rc{background:rgba(255,255,255,0.04);border:1px solid var(--gb);border-radius:7px;padding:8px;text-align:center;}
+.rc-val{font-size:1rem;font-weight:800;color:var(--primary);font-family:var(--font-head);}
+.rc-lbl{font-size:0.63rem;color:var(--td);margin-top:2px;font-family:var(--font-mono);}
+
 /* MARKOV */
-.mk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;margin-top:7px;}
-.mk-card{background:rgba(255,255,255,.04);border:1px solid var(--gb);border-radius:7px;padding:7px;text-align:center;}
-.mk-pair{font-size:.68rem;color:var(--td);margin-bottom:2px;}
-.mk-prob{font-size:.92rem;font-weight:800;color:var(--purple);}
-.mk-delta{font-size:.63rem;margin-top:2px;}
+.mk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:6px;margin-top:7px;}
+.mk-card{background:rgba(255,255,255,0.04);border:1px solid var(--gb);border-radius:7px;padding:6px;text-align:center;}
+.mk-pair{font-size:0.65rem;color:var(--td);margin-bottom:2px;font-family:var(--font-mono);}
+.mk-prob{font-size:0.88rem;font-weight:800;color:var(--purple);font-family:var(--font-head);}
+.mk-delta{font-size:0.6rem;margin-top:2px;font-family:var(--font-mono);}
+
 /* EMA */
-.ema-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.8rem;}
+.ema-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem;}
 .ema-row:last-child{border-bottom:none;}
-.trend-up{color:#10b981;font-weight:700;}
-.trend-dn{color:#f43f5e;font-weight:700;}
+.trend-up{color:#22d3a0;font-weight:700;font-family:var(--font-head);}
+.trend-dn{color:#f43f5e;font-weight:700;font-family:var(--font-head);}
+
 /* AUTOCORRELATION */
-.acf-bars{display:flex;align-items:flex-end;gap:3px;height:60px;margin-top:10px;}
+.acf-bars{display:flex;align-items:flex-end;gap:3px;height:56px;margin-top:9px;}
 .acf-bar{flex:1;border-radius:2px 2px 0 0;min-height:2px;position:relative;}
-.acf-pos{background:linear-gradient(0deg,#10b981,#38bdf8);}
+.acf-pos{background:linear-gradient(0deg,#22d3a0,#38bdf8);}
 .acf-neg{background:linear-gradient(0deg,#f43f5e,#f59e0b);}
-.acf-label{display:flex;justify-content:space-between;font-size:.63rem;color:var(--tm);margin-top:4px;}
+.acf-label{display:flex;justify-content:space-between;font-size:0.6rem;color:var(--tm);margin-top:3px;font-family:var(--font-mono);}
+
 /* SPARKLINE */
-.sparkline-wrap{margin-top:8px;}
-.spark-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.spark-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.74rem;flex-shrink:0;}
-.spark-svg{flex:1;height:32px;}
-.spark-label{font-size:.68rem;color:var(--td);width:50px;text-align:right;flex-shrink:0;}
-/* BAYESIAN */
-.bay-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);}
-.bay-row:last-child{border-bottom:none;}
-.bay-ci{height:8px;border-radius:4px;background:rgba(167,139,250,.15);position:relative;flex:1;}
-.bay-mean{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--purple);}
-.bay-fill{position:absolute;top:0;height:100%;border-radius:4px;background:rgba(167,139,250,.3);}
+.sparkline-wrap{margin-top:7px;}
+.spark-row{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.spark-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.7rem;flex-shrink:0;font-family:var(--font-head);}
+.spark-svg{flex:1;height:30px;}
+.spark-label{font-size:0.65rem;color:var(--td);width:48px;text-align:right;flex-shrink:0;font-family:var(--font-mono);}
+
+/* NEW METRIC CARDS */
+/* Poisson Dispersion */
+.pd-meter{background:rgba(0,0,0,0.2);border-radius:8px;padding:11px;margin-bottom:9px;text-align:center;}
+.pd-val{font-size:1.5rem;font-weight:800;color:var(--teal);font-family:var(--font-head);}
+.pd-label{font-size:0.7rem;color:var(--td);margin-top:2px;font-family:var(--font-mono);}
+.pd-verdict{margin-top:6px;padding:4px 10px;border-radius:5px;font-size:0.72rem;font-weight:700;font-family:var(--font-head);}
+.pdv-ok{background:var(--sd);color:var(--success);}
+.pdv-reg{background:var(--pd);color:var(--primary);}
+.pdv-clust{background:var(--wd);color:var(--warning);}
+
+/* CV bars */
+.cv-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.cv-row:last-child{border-bottom:none;}
+.cv-bar{flex:1;height:14px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;position:relative;}
+.cv-fill{height:100%;border-radius:3px;transition:width .5s;}
+.cv-fill-low{background:linear-gradient(90deg,#38bdf8,#22d3a0);}
+.cv-fill-norm{background:linear-gradient(90deg,#a78bfa,#6366f1);}
+.cv-fill-high{background:linear-gradient(90deg,#f59e0b,#f43f5e);}
+.cv-mark{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.3);}
+.cv-val{font-size:0.7rem;font-weight:700;width:38px;text-align:right;flex-shrink:0;font-family:var(--font-mono);}
+
+/* Momentum score */
+.mom-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.mom-row:last-child{border-bottom:none;}
+.mom-triple{display:flex;gap:3px;flex-shrink:0;}
+.mom-arrow{font-size:0.68rem;width:14px;text-align:center;}
+.mom-bull{color:#22d3a0;}
+.mom-bear{color:#f43f5e;}
+.mom-flat{color:var(--td);}
+
+/* Last-K Recency */
+.recency-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px;}
+.rk-cell{background:rgba(255,255,255,0.04);border-radius:6px;padding:7px 4px;text-align:center;border:1px solid var(--gb);}
+.rk-label{font-size:0.6rem;color:var(--td);margin-bottom:2px;font-family:var(--font-head);text-transform:uppercase;}
+.rk-val{font-size:0.88rem;font-weight:800;font-family:var(--font-head);}
+.rk-exp{font-size:0.6rem;color:var(--tm);margin-top:1px;font-family:var(--font-mono);}
+
+/* Seasonal */
+.season-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px;}
+.sq{background:rgba(255,255,255,0.04);border:1px solid var(--gb);border-radius:7px;padding:8px 5px;text-align:center;}
+.sq-label{font-size:0.62rem;color:var(--td);font-family:var(--font-head);font-weight:700;margin-bottom:4px;}
+.sq-chi{font-size:0.88rem;font-weight:800;font-family:var(--font-head);}
+.sq-p{font-size:0.62rem;margin-top:2px;font-family:var(--font-mono);}
+
+/* Temporal lag */
+.tlag-row{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.72rem;}
+.tlag-row:last-child{border-bottom:none;}
+.tlag-pair{font-size:0.68rem;color:var(--td);width:50px;flex-shrink:0;font-family:var(--font-mono);}
+.tlag-val{font-weight:700;font-family:var(--font-mono);}
+
+/* Unified ranking */
+.unif-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.unif-row:last-child{border-bottom:none;}
+.unif-score-bar{flex:1;height:22px;background:rgba(255,255,255,0.04);border-radius:5px;overflow:hidden;position:relative;}
+.unif-fill{height:100%;border-radius:5px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.65rem;font-weight:700;color:#05080f;font-family:var(--font-head);}
+.unif-prob{font-size:0.7rem;color:var(--td);width:42px;text-align:right;flex-shrink:0;font-family:var(--font-mono);}
+.score-seg{display:flex;gap:3px;flex-shrink:0;}
+.score-dot{width:7px;height:7px;border-radius:50%;}
+
 /* ROLLING WINDOW */
-.rw-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:12px 14px;background:rgba(0,0,0,.2);border-radius:var(--rs);}
-.rw-controls label{font-size:.8rem;color:var(--td);font-weight:600;}
-.rw-controls select{padding:7px 10px;background:rgba(0,0,0,.4);border:1px solid var(--gb);border-radius:7px;color:var(--text);font-size:.82rem;font-family:inherit;cursor:pointer;}
-.rw-controls .btn-a{padding:8px 16px;font-size:.82rem;}
-.delta-row{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.rw-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:13px;padding:11px 13px;background:rgba(0,0,0,0.2);border-radius:var(--rs);}
+.rw-controls label{font-size:0.75rem;color:var(--td);font-weight:700;font-family:var(--font-head);}
+.rw-controls select{padding:7px 10px;background:rgba(0,0,0,0.4);border:1px solid var(--gb);border-radius:7px;color:var(--text);font-size:0.78rem;font-family:var(--font-mono);cursor:pointer;}
+.delta-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
 .delta-row:last-child{border-bottom:none;}
-.delta-val{font-size:.8rem;font-weight:700;}
+.delta-val{font-size:0.78rem;font-weight:700;font-family:var(--font-mono);}
 .delta-pos{color:var(--success);}
 .delta-neg{color:var(--danger);}
 .delta-neu{color:var(--td);}
+
 /* GENERATOR */
-.gen-wrap{margin-top:32px;padding:24px;border-radius:var(--r);border:1px solid rgba(56,189,248,.2);background:linear-gradient(135deg,rgba(56,189,248,.04),rgba(167,139,250,.04));}
-.gen-wrap.mt{border-color:var(--ming);background:linear-gradient(135deg,rgba(244,114,182,.05),rgba(167,139,250,.05));}
-.gen-title{font-size:1.15rem;font-weight:800;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;}
+.gen-wrap{margin-top:28px;padding:22px;border-radius:var(--r);border:1px solid rgba(56,189,248,0.18);background:linear-gradient(135deg,rgba(56,189,248,0.03),rgba(167,139,250,0.03));}
+.gen-wrap.mt{border-color:var(--ming);background:linear-gradient(135deg,rgba(244,114,182,0.04),rgba(167,139,250,0.04));}
+.gen-title{font-size:1.05rem;font-weight:800;font-family:var(--font-head);letter-spacing:-0.5px;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;}
 .gen-title.mt{background:linear-gradient(135deg,#f472b6,#a78bfa);-webkit-background-clip:text;background-clip:text;}
-.mrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
-.mbtn{padding:7px 13px;border:1px solid var(--gb);background:var(--glass);color:var(--td);border-radius:50px;font-size:.77rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;}
+.mrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px;}
+.mbtn{padding:7px 13px;border:1px solid var(--gb);background:var(--glass);color:var(--td);border-radius:50px;
+  font-size:0.73rem;font-weight:700;font-family:var(--font-head);cursor:pointer;transition:all .2s;letter-spacing:0.04em;}
 .mbtn:hover{border-color:var(--primary);color:var(--primary);}
-.mbtn.al{background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(129,140,248,.2));border-color:var(--primary);color:var(--primary);}
-.mbtn.am{background:linear-gradient(135deg,rgba(244,114,182,.2),rgba(167,139,250,.2));border-color:var(--mini);color:var(--mini);}
-.fbox{background:rgba(0,0,0,.2);border:1px solid var(--gb);border-radius:var(--rs);padding:18px;margin-bottom:18px;}
-.ftitle{font-size:.74rem;font-weight:700;color:var(--td);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:7px;margin-bottom:10px;}
-.chk{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px;background:var(--glass);border:1px solid var(--gb);cursor:pointer;}
-.chk input{width:15px;height:15px;accent-color:var(--primary);cursor:pointer;flex-shrink:0;}
+.mbtn.al{background:linear-gradient(135deg,rgba(56,189,248,0.18),rgba(99,102,241,0.18));border-color:var(--primary);color:var(--primary);}
+.mbtn.am{background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(167,139,250,0.18));border-color:var(--mini);color:var(--mini);}
+.fbox{background:rgba(0,0,0,0.2);border:1px solid var(--gb);border-radius:var(--rs);padding:16px;margin-bottom:16px;}
+.ftitle{font-size:0.7rem;font-weight:800;color:var(--td);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:11px;font-family:var(--font-head);}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:6px;margin-bottom:9px;}
+.chk{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:7px;background:var(--glass);border:1px solid var(--gb);cursor:pointer;}
+.chk input{width:14px;height:14px;accent-color:var(--primary);cursor:pointer;flex-shrink:0;}
 .chk.mt input{accent-color:var(--mini);}
-.chk label{font-size:.8rem;color:var(--td);cursor:pointer;font-weight:500;}
-.fsel-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin-top:9px;}
-.fsel select{width:100%;padding:8px 10px;background:rgba(0,0,0,.4);border:1px solid var(--gb);border-radius:7px;color:var(--text);font-size:.82rem;font-family:inherit;cursor:pointer;}
-.sr{display:flex;align-items:center;gap:9px;margin-top:10px;flex-wrap:wrap;}
-.sr label{font-size:.8rem;color:var(--td);font-weight:500;}
-.sr input{width:68px;padding:7px 9px;background:rgba(0,0,0,.4);border:1px solid var(--gb);border-radius:7px;color:var(--text);font-size:.88rem;font-family:inherit;}
-/* THRESHOLD */
-.threshold-wrap{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.threshold-wrap label{font-size:.8rem;color:var(--td);font-weight:500;}
-.threshold-wrap input[type="range"]{flex:1;min-width:120px;accent-color:var(--purple);}
-.threshold-val{font-size:.88rem;font-weight:700;color:var(--purple);min-width:32px;}
-.gc{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
-.gcnt{display:flex;flex-direction:column;gap:5px;}
-.gcnt input{width:90px;padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:var(--rs);color:var(--text);font-size:.95rem;font-family:inherit;}
-.btn-gen{padding:11px 24px;background:linear-gradient(135deg,#38bdf8,#a78bfa);border:none;border-radius:var(--rs);color:#0a0f1e;font-size:.92rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .3s;}
-.btn-gen:hover{transform:translateY(-2px);}
+.chk label{font-size:0.76rem;color:var(--td);cursor:pointer;font-weight:700;font-family:var(--font-head);}
+.fsel-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:9px;margin-top:8px;}
+.fsel select{width:100%;padding:7px 9px;background:rgba(0,0,0,0.4);border:1px solid var(--gb);border-radius:7px;color:var(--text);font-size:0.78rem;font-family:var(--font-mono);cursor:pointer;}
+.sr{display:flex;align-items:center;gap:8px;margin-top:9px;flex-wrap:wrap;}
+.sr label{font-size:0.76rem;color:var(--td);font-weight:700;font-family:var(--font-head);}
+.sr input{width:64px;padding:7px 8px;background:rgba(0,0,0,0.4);border:1px solid var(--gb);border-radius:7px;color:var(--text);font-size:0.85rem;font-family:var(--font-mono);}
+.threshold-wrap{margin-top:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.threshold-wrap label{font-size:0.76rem;color:var(--td);font-weight:700;font-family:var(--font-head);}
+.threshold-wrap input[type="range"]{flex:1;min-width:110px;accent-color:var(--purple);}
+.threshold-val{font-size:0.85rem;font-weight:800;color:var(--purple);min-width:30px;font-family:var(--font-head);}
+.gc{display:flex;align-items:flex-end;gap:11px;flex-wrap:wrap;margin-bottom:16px;}
+.gcnt{display:flex;flex-direction:column;gap:4px;}
+.gcnt input{width:86px;padding:9px 11px;background:rgba(0,0,0,0.3);border:1px solid var(--gb);border-radius:var(--rs);color:var(--text);font-size:0.9rem;font-family:var(--font-mono);}
+.btn-gen{padding:10px 22px;background:linear-gradient(135deg,#38bdf8,#a78bfa);border:none;border-radius:var(--rs);
+  color:#05080f;font-size:0.85rem;font-weight:800;font-family:var(--font-head);cursor:pointer;transition:all .3s;letter-spacing:0.05em;}
+.btn-gen:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(167,139,250,0.3);}
 .btn-gen.mt{background:linear-gradient(135deg,#f472b6,#a78bfa);}
+
 /* COMBOS */
-.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin-top:4px;}
-.ccard{background:linear-gradient(135deg,rgba(56,189,248,.06),rgba(167,139,250,.06));border:1px solid rgba(56,189,248,.2);border-radius:var(--r);padding:14px 11px;text-align:center;transition:transform .2s;}
-.ccard.mt{background:linear-gradient(135deg,rgba(244,114,182,.06),rgba(167,139,250,.06));border-color:rgba(244,114,182,.2);}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px;margin-top:4px;}
+.ccard{background:linear-gradient(135deg,rgba(56,189,248,0.05),rgba(167,139,250,0.05));border:1px solid rgba(56,189,248,0.18);border-radius:var(--r);padding:13px 10px;text-align:center;transition:transform .2s;}
+.ccard.mt{background:linear-gradient(135deg,rgba(244,114,182,0.05),rgba(167,139,250,0.05));border-color:rgba(244,114,182,0.18);}
 .ccard:hover{transform:translateY(-3px);}
-.cidx{font-size:.65rem;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.cballs{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
-.cb{width:28px;height:28px;background:linear-gradient(135deg,#38bdf8,#818cf8);color:#0a0f1e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.74rem;}
+.cidx{font-size:0.62rem;color:var(--tm);font-weight:800;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:7px;font-family:var(--font-head);}
+.cballs{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-bottom:7px;}
+.cb{width:26px;height:26px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#05080f;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.7rem;font-family:var(--font-head);}
 .cb.mt{background:linear-gradient(135deg,#f472b6,#a78bfa);}
-.cmeta{font-size:.66rem;color:var(--tm);margin-bottom:6px;line-height:1.6;}
-.cmeta span{display:inline-block;padding:1px 5px;background:rgba(255,255,255,.05);border-radius:3px;margin:1px;}
-.cscore{font-size:.7rem;color:var(--purple);margin-bottom:4px;font-weight:600;}
-.ubar{width:100%;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:7px;}
+.cmeta{font-size:0.63rem;color:var(--tm);margin-bottom:5px;line-height:1.7;font-family:var(--font-mono);}
+.cmeta span{display:inline-block;padding:1px 4px;background:rgba(255,255,255,0.05);border-radius:3px;margin:1px;}
+.cscore{font-size:0.67rem;color:var(--purple);margin-bottom:3px;font-weight:700;font-family:var(--font-head);}
+.ubar{width:100%;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-bottom:6px;}
 .ufill{height:100%;background:linear-gradient(90deg,#a78bfa,#38bdf8);border-radius:2px;}
-.ufill-u{background:linear-gradient(90deg,#ef4444,#f59e0b,#10b981);}
-.cun{font-size:.66rem;color:var(--td);margin-bottom:3px;}
-.btn-cp1{padding:4px 11px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:20px;color:var(--primary);font-size:.69rem;font-weight:600;font-family:inherit;cursor:pointer;}
-.btn-cp1.mt{background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.25);color:var(--mini);}
-.btn-cpa{margin-top:16px;padding:9px 20px;background:transparent;border:1px solid var(--gb);border-radius:var(--rs);color:var(--td);font-size:.83rem;font-weight:600;font-family:inherit;cursor:pointer;}
+.ufill-u{background:linear-gradient(90deg,#ef4444,#f59e0b,#22d3a0);}
+.cun{font-size:0.63rem;color:var(--td);margin-bottom:2px;font-family:var(--font-mono);}
+.btn-cp1{padding:4px 10px;background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.22);border-radius:20px;
+  color:var(--primary);font-size:0.66rem;font-weight:700;font-family:var(--font-head);cursor:pointer;}
+.btn-cp1.mt{background:rgba(244,114,182,0.08);border-color:rgba(244,114,182,0.22);color:var(--mini);}
+.btn-cpa{margin-top:14px;padding:8px 18px;background:transparent;border:1px solid var(--gb);border-radius:var(--rs);
+  color:var(--td);font-size:0.78rem;font-weight:700;font-family:var(--font-head);cursor:pointer;}
 .btn-cpa:hover{border-color:var(--primary);color:var(--primary);}
+
 /* HISTORY */
-.hist-wrap{margin-top:20px;border-top:1px solid var(--gb);padding-top:16px;}
-.hist-title{font-size:.75rem;font-weight:700;color:var(--td);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
-.hist-item{padding:8px 12px;background:rgba(0,0,0,.15);border:1px solid var(--gb);border-radius:8px;margin-bottom:6px;font-size:.78rem;color:var(--td);display:flex;justify-content:space-between;align-items:center;}
-.hist-nums{color:var(--text);font-weight:600;font-family:monospace;}
-.btn-hist-clr{padding:4px 10px;background:transparent;border:1px solid var(--gb);border-radius:6px;color:var(--tm);font-size:.7rem;font-family:inherit;cursor:pointer;}
+.hist-wrap{margin-top:18px;border-top:1px solid var(--gb);padding-top:14px;}
+.hist-title{font-size:0.72rem;font-weight:800;color:var(--td);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:9px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-head);}
+.hist-item{padding:7px 11px;background:rgba(0,0,0,0.15);border:1px solid var(--gb);border-radius:7px;margin-bottom:5px;font-size:0.74rem;color:var(--td);display:flex;justify-content:space-between;align-items:center;}
+.hist-nums{color:var(--text);font-weight:700;font-family:var(--font-mono);}
+.btn-hist-clr{padding:3px 9px;background:transparent;border:1px solid var(--gb);border-radius:5px;color:var(--tm);font-size:0.67rem;font-family:var(--font-head);cursor:pointer;font-weight:700;}
 .btn-hist-clr:hover{border-color:var(--danger);color:var(--danger);}
+
 /* EXPORT */
-.export-row{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;}
-.btn-exp{padding:9px 18px;background:transparent;border:1px solid var(--gb);border-radius:var(--rs);color:var(--td);font-size:.82rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;}
+.export-row{display:flex;gap:7px;margin-top:18px;flex-wrap:wrap;}
+.btn-exp{padding:8px 16px;background:transparent;border:1px solid var(--gb);border-radius:var(--rs);color:var(--td);font-size:0.78rem;font-weight:700;font-family:var(--font-head);cursor:pointer;transition:all .2s;letter-spacing:0.04em;}
 .btn-exp:hover{border-color:var(--primary);color:var(--primary);}
+
 /* RULES */
-.rules-card{padding:22px;border-radius:var(--r);margin-bottom:20px;border:1px solid var(--ming);background:linear-gradient(135deg,rgba(244,114,182,.05),rgba(167,139,250,.05));}
-.rules-title{font-size:1.05rem;font-weight:800;background:linear-gradient(135deg,#f472b6,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;}
-.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;margin-bottom:14px;}
-.ri{background:rgba(244,114,182,.06);border:1px solid rgba(244,114,182,.15);border-radius:9px;padding:12px;}
-.ri-icon{font-size:1.2rem;margin-bottom:5px;}
-.ri-title{font-size:.69rem;color:var(--mini);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
-.ri-val{font-size:.88rem;color:var(--text);font-weight:600;}
-.ri-sub{font-size:.72rem;color:var(--td);margin-top:2px;}
-.rtbl{width:100%;border-collapse:collapse;font-size:.82rem;}
-.rtbl th{background:rgba(244,114,182,.1);color:var(--mini);font-weight:700;padding:8px 12px;text-align:left;border-bottom:1px solid rgba(244,114,182,.2);}
-.rtbl td{padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--td);}
+.rules-card{padding:20px;border-radius:var(--r);margin-bottom:18px;border:1px solid var(--ming);background:linear-gradient(135deg,rgba(244,114,182,0.04),rgba(167,139,250,0.04));}
+.rules-title{font-size:1rem;font-weight:800;font-family:var(--font-head);background:linear-gradient(135deg,#f472b6,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:13px;}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px;margin-bottom:13px;}
+.ri{background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.15);border-radius:9px;padding:11px;}
+.ri-icon{font-size:1.1rem;margin-bottom:4px;}
+.ri-title{font-size:0.66rem;color:var(--mini);font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;font-family:var(--font-head);}
+.ri-val{font-size:0.85rem;color:var(--text);font-weight:700;font-family:var(--font-head);}
+.ri-sub{font-size:0.68rem;color:var(--td);margin-top:2px;font-family:var(--font-mono);}
+.rtbl{width:100%;border-collapse:collapse;font-size:0.78rem;}
+.rtbl th{background:rgba(244,114,182,0.1);color:var(--mini);font-weight:800;padding:7px 11px;text-align:left;border-bottom:1px solid rgba(244,114,182,0.2);font-family:var(--font-head);}
+.rtbl td{padding:6px 11px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--td);font-family:var(--font-mono);}
 .rtbl tr:last-child td{border-bottom:none;}
-.rtbl td:first-child{font-weight:700;color:var(--mini);}
+.rtbl td:first-child{font-weight:700;color:var(--mini);font-family:var(--font-head);}
+
 /* TOAST */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#38bdf8,#818cf8);color:#0a0f1e;padding:11px 22px;border-radius:50px;font-weight:700;font-size:.88rem;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:linear-gradient(135deg,#38bdf8,#6366f1);color:#05080f;
+  padding:10px 20px;border-radius:50px;font-weight:800;font-size:0.84rem;font-family:var(--font-head);
+  z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:3px;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,0.25);border-radius:2px;}
 </style>
 </head>
 <body>
 <div class="page">
 <div class="header">
-  <span class="hi">🎰</span>
+  <span class="header-icon">🎰</span>
   <h1>Lotto Analyzer Pro</h1>
-  <p>Chi² · Z-score · Bayes · Markow · Runs Test · EMA · Autokorelacja · Rolling Window</p>
+  <p class="header-sub">Chi² · Poisson D · CV · Momentum · Last-K · Seasonal · Temporal Lag · Runs · ACF · Rolling</p>
+  <div class="version-badge">✦ v2.0 — Ortogonalne Metryki</div>
 </div>
 
 <div class="tabs-nav">
@@ -325,9 +440,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div><div class="fl">Plik z losowaniami <span style="color:var(--tm);font-weight:400;text-transform:none">(DD.MM.RRRR, RRRR-MM-DD, MM/DD/RRRR)</span></div>
       <div class="fw"><input type="file" id="lottoFile" accept=".csv,.txt" onchange="handleUpload(event,'lotto')">
       <div class="ft" id="lottoFileText">📂 Wgraj plik lotto.csv</div></div></div>
-    <div><div class="fl">Losowań do analizy <span style="color:var(--warning);font-size:.7rem">(min. 300 dla Chi², 500 dla Bayes)</span></div>
+    <div><div class="fl">Losowań do analizy <span style="color:var(--warning);font-size:.68rem">(min. 300 dla Chi², 500 dla pełnej analizy)</span></div>
       <input class="inp" type="number" id="lottoDC" value="500" min="30" max="9999"></div>
-    <div style="display:flex;flex-direction:column;gap:7px;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
       <button class="btn-a" onclick="runAnalysis('lotto')">▶ Analizuj</button>
       <button class="btn-clr" onclick="clearTab('lotto')">✕ Wyczyść</button>
     </div>
@@ -338,50 +453,63 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="loading" id="lottoLoading"><div class="loader"></div><p>Analizuję dane…</p></div>
   <div id="lottoMain" style="display:none">
     <div class="stats-row">
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#38bdf8,#818cf8)"><div class="sc-icon">🎯</div><div class="sc-val" id="l-total">—</div><div class="sc-label">Losowań</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#10b981,#38bdf8)"><div class="sc-icon">📅</div><div class="sc-val" id="l-date">—</div><div class="sc-label">Ostatnie</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#a78bfa,#f472b6)"><div class="sc-icon">χ²</div><div class="sc-val" id="l-chi">—</div><div class="sc-label">Chi² p-value</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#f59e0b,#ef4444)"><div class="sc-icon">➕</div><div class="sc-val" id="l-sum">—</div><div class="sc-label">Mediana sumy</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#2dd4bf,#38bdf8)"><div class="sc-icon">📈</div><div class="sc-val" id="l-ema">—</div><div class="sc-label">EMA trend ↑</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#38bdf8,#6366f1)"><div class="sc-icon">🎯</div><div class="sc-val" id="l-total">—</div><div class="sc-label">Losowań</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#22d3a0,#38bdf8)"><div class="sc-icon">📅</div><div class="sc-val" id="l-date">—</div><div class="sc-label">Ostatnie</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#a78bfa,#f472b6)"><div class="sc-icon">χ²</div><div class="sc-val" id="l-chi">—</div><div class="sc-label">Chi² p-val</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#f59e0b,#ef4444)"><div class="sc-icon">Σ</div><div class="sc-val" id="l-sum">—</div><div class="sc-label">Med. suma</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#2dd4bf,#38bdf8)"><div class="sc-icon">📡</div><div class="sc-val" id="l-mom">—</div><div class="sc-label">Momentum ↑</div></div>
       <div class="glass sc" style="--acc:linear-gradient(90deg,#f472b6,#a78bfa)"><div class="sc-icon">⚖️</div><div class="sc-val" id="l-oe">—</div><div class="sc-label">Najcz. P:N</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#22d3a0,#a78bfa)"><div class="sc-icon">D</div><div class="sc-val" id="l-dispersion">—</div><div class="sc-label">Poisson D</div></div>
     </div>
+
+    <div class="sh"><div class="si">🏆</div><h2>Unified Ranking — Probability Score</h2><div class="sl"></div></div>
+    <div class="agrid">
+      <div class="glass ac" style="grid-column:1/-1"><div id="l-unified"></div></div>
+    </div>
+
     <div class="sh"><div class="si">📊</div><h2>Analiza Historyczna</h2><div class="sl"></div></div>
     <div class="agrid">
-      <div class="glass ac"><div class="act"><span>🔥</span><strong>Gorące Liczby</strong><span class="badge bi">HISTORYCZNA</span><div class="tip-btn">i<div class="tip-popup">Liczby które padały najczęściej. Wysoka częstość może być losowym wahaniem lub mechanicznym biasem maszyny. Sprawdź Chi² — jeśli p&lt;0.05, odchylenia są statystycznie istotne.</div></div></div><div id="l-hot"></div></div>
-      <div class="glass ac"><div class="act"><span>❄️</span><strong>Zimne Liczby</strong><span class="badge bi">HISTORYCZNA</span><div class="tip-btn">i<div class="tip-popup">Liczby padające najrzadziej. NIE oznacza że "zaraz nadrobią" — to Gambler's Fallacy. Może wskazywać mechaniczny bias.</div></div></div><div id="l-cold"></div></div>
-      <div class="glass ac"><div class="act"><span>⏰</span><strong>Zaległe Liczby</strong><span class="badge bw">E[gap]=N/k</span><div class="tip-btn">i<div class="tip-popup">Matematycznie oczekiwana przerwa = M/k losowań. Liczby z przerwą przekraczającą μ+2σ są "statystycznie zaległe" według rozkładu geometrycznego. NIE gwarantuje pojawienia się.</div></div></div><div id="l-overdue"></div></div>
-      <div class="glass ac"><div class="act"><span>📊</span><strong>Rozkład Gap</strong><span class="badge bi">ROZKŁAD</span><div class="tip-btn">i<div class="tip-popup">Odstępy między kolejnymi liczbami w zestawie. Np. jeśli wylosowano {3,7,15}, gapy to 4,8. Rozkład symetryczny sugeruje losowość.</div></div></div><div id="l-gap"></div></div>
-      <div class="glass ac"><div class="act"><span>🌀</span><strong>Entropia Przerw</strong><span class="badge bi">RYTMICZNOŚĆ</span><div class="tip-btn">i<div class="tip-popup">Entropia Shannona przerw między pojawieniami. H=0: liczba pojawia się perfekcyjnie regularnie. H wysoka: chaotyczny rytm. Min. 3 pojawienia do obliczenia.</div></div></div><div id="l-entropy"></div></div>
-      <div class="glass ac"><div class="act"><span>🔵</span><strong>Parzyste / Nieparzyste</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-oe-chart"></div></div>
-      <div class="glass ac"><div class="act"><span>📐</span><strong>Niskie / Wysokie</strong><span class="badge bi">ROZKŁAD</span><span class="act-sub">1–24 vs 25–49</span></div><div id="l-lh-chart"></div></div>
+      <div class="glass ac"><div class="act"><span>📊</span><strong>Rozkład Gap</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-gap"></div></div>
+      <div class="glass ac"><div class="act"><span>📵</span><strong>Parzyste / Nieparzyste</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-oe-chart"></div></div>
+      <div class="glass ac"><div class="act"><span>🔍</span><strong>Niskie / Wysokie</strong><span class="badge bi">ROZKŁAD</span><span class="act-sub">1–24 vs 25–49</span></div><div id="l-lh-chart"></div></div>
       <div class="glass ac"><div class="act"><span>➕</span><strong>Analiza Sumy</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-sum-chart"></div></div>
       <div class="glass ac"><div class="act"><span>🔟</span><strong>Dziesiątki</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-dec"></div></div>
-      <div class="glass ac"><div class="act"><span>👫</span><strong>Pary Sąsiednie</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-cons"></div></div>
-      <div class="glass ac"><div class="act"><span>🔡</span><strong>Ostatnia Cyfra</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-ld"></div></div>
+      <div class="glass ac"><div class="act"><span>💫</span><strong>Pary Sąsiednie</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-cons"></div></div>
+      <div class="glass ac"><div class="act"><span>📡</span><strong>Ostatnia Cyfra</strong><span class="badge bi">ROZKŁAD</span></div><div id="l-ld"></div></div>
     </div>
 
     <div class="sh"><div class="si stat">🔬</div><h2>Zaawansowana Analiza Statystyczna</h2><div class="sl"></div></div>
     <div class="agrid">
-      <div class="glass ac"><div class="act"><span>χ²</span><strong>Test Chi-kwadrat</strong><span class="badge bstat">ISTOTNOŚĆ</span><div class="tip-btn">i<div class="tip-popup">Jedyna miara mogąca wykryć realny bias maszyny. p&lt;0.05 = statystycznie istotne odchylenie od losowości. Potrzebujesz min. 300 losowań dla mocy testu 80%.</div></div></div><div id="l-chi2"></div></div>
-      <div class="glass ac"><div class="act"><span>📏</span><strong>Z-score Odchyleń</strong><span class="badge bstat">ODCHYLENIE</span><div class="tip-btn">i<div class="tip-popup">Z=(obs-oczek)/σ. |Z|&gt;2: statystycznie istotne (p&lt;0.05). Przy 49 liczbach, 2-3 liczby z |Z|&gt;2 są normalne przez przypadek — to nie jest sygnał sam w sobie.</div></div></div><div id="l-zscore"></div></div>
-      <div class="glass ac"><div class="act"><span>🔗</span><strong>Ko-okurencja Par</strong><span class="badge bs">WSPÓŁWYSTĘPOWANIE</span><div class="tip-btn">i<div class="tip-popup">Ile razy każda para liczb padła razem w tym samym losowaniu. Oczekiwane ≈ N·k(k-1)/(M(M-1)). Wysoka nadwyżka może wskazywać mechaniczne klasterowanie.</div></div></div><div id="l-markov"></div></div>
-      <div class="glass ac"><div class="act"><span>🏃</span><strong>Runs Test</strong><span class="badge bstat">LOSOWOŚĆ SERII</span><div class="tip-btn">i<div class="tip-popup">Z&gt;+2: liczba pojawia się zbyt regularnie (rytmicznie). Z&lt;-2: pojawia się w klastrach (zbyt chaotycznie). Oba odchylenia mogą wskazywać nielosowość.</div></div></div><div id="l-runs"></div></div>
-      <div class="glass ac"><div class="act"><span>📈</span><strong>EMA Trend Częstości</strong><span class="badge bi">TREND LOKALNY</span><div class="tip-btn">i<div class="tip-popup">α=0.15 (pamięć ~5 losowań) vs α=0.05 (pamięć ~14). Trend ↑ = liczba pojawia się częściej w ostatnim czasie. Uwaga: pożyczone z finansów, brak podstaw w niezależnych losowaniach.</div></div></div><div id="l-ema-chart"></div></div>
-      <div class="glass ac"><div class="act"><span>📉</span><strong>Autokorelacja lag 1–15</strong><span class="badge bstat">PERIODYCZNOŚĆ</span><div class="tip-btn">i<div class="tip-popup">r_k: korelacja między pojawieniami w odległości k losowań. r_k≈0: brak periodyczności. |r_k|&gt;0.09 (N=500): statystycznie istotne (p&lt;0.05).</div></div></div><div id="l-acf"></div></div>
-      <div class="glass ac"><div class="act"><span>🎲</span><strong>Bayesian Posterior</strong><span class="badge bs">PRZEDZIAŁ UFNOŚCI</span><div class="tip-btn">i<div class="tip-popup">Beta(α,β) posterior — lepsza od Z-score dla małych prób. Pokazuje posterior mean i 95% credible interval dla prawdziwej częstości każdej liczby.</div></div></div><div id="l-bayes"></div></div>
-      <div class="glass ac"><div class="act"><span>📡</span><strong>Sparkline — Timeline Częstości</strong><span class="badge bi">TREND W CZASIE</span><div class="tip-btn">i<div class="tip-popup">Częstość top 8 liczb w oknach czasowych (co 50 losowań). Pomaga wykryć "dryf" maszyny — zmianę biasu w czasie, np. po serwisie.</div></div></div><div id="l-sparkline"></div></div>
-      <div class="glass ac"><div class="act"><span>🎯</span><strong>Kompozytowy Score</strong><span class="badge bs">Z+EMA+GAP+H</span><div class="tip-btn">i<div class="tip-popup">Score = Z-score×0.35 + EMA diff×0.30 + Gap×0.20 + Entropia×0.15. Łączy wszystkie metody w jeden ranking. Tak dobry jak jego składowe.</div></div></div><div id="l-composite"></div></div>
+      <div class="glass ac"><div class="act"><span>χ²</span><strong>Test Chi-kwadrat</strong><span class="badge bstat">ISTOTNOŚĆ</span>
+        <div class="tip-btn">i<div class="tip-popup">Jedyna miara mogąca wykryć realny bias maszyny. p&lt;0.05 = statystycznie istotne odchylenie od losowości. Potrzebujesz min. 300 losowań.</div></div></div><div id="l-chi2"></div></div>
+      <div class="glass ac"><div class="act"><span>🔍</span><strong>Z-score Odchyleń</strong><span class="badge bstat">ODCHYLENIE</span>
+        <div class="tip-btn">i<div class="tip-popup">Z=(obs-oczek)/σ. |Z|&gt;2: statystycznie istotne (p&lt;0.05). Przy 49 liczbach, 2-3 liczby z |Z|&gt;2 są normalne przez przypadek.</div></div></div><div id="l-zscore"></div></div>
+      <div class="glass ac"><div class="act"><span>🎲</span><strong>Poisson Dispersion D</strong><span class="badge bnew">NOWE · MECHANICZNY</span>
+        <div class="tip-btn">i<div class="tip-popup">D = Var(gap)/Mean(gap). Czyste losowanie: D ≈ M/k ≈ 8.17. D &lt;&lt; 8: zbyt regularne (bias mechaniczny). D &gt;&gt; 8: klastrowanie. Niezależne od Z-score.</div></div></div><div id="l-poisson"></div></div>
+      <div class="glass ac"><div class="act"><span>📐</span><strong>Coefficient of Variation (CV)</strong><span class="badge bnew">NOWE · STRUKTURA</span>
+        <div class="tip-btn">i<div class="tip-popup">CV = σ_gap / μ_gap. Czyste Poisson: CV ≈ 1. CV &lt; 0.8: mechaniczna regularność. CV &gt; 1.2: klastrowanie. Niezależne od Z-score (mierzy strukturę przerw, nie częstość).</div></div></div><div id="l-cv"></div></div>
+      <div class="glass ac"><div class="act"><span>📡</span><strong>Momentum Score (Triple EMA)</strong><span class="badge bnew">NOWE · TREND</span>
+        <div class="tip-btn">i<div class="tip-popup">Triple EMA crossover α=0.30/0.15/0.05. Trzy poziomy: szybki/średni/wolny. Triple bullish ↑↑↑ = maksymalny sygnał momentum. Reaguje na ostatnie 3–20 losowań.</div></div></div><div id="l-momentum"></div></div>
+      <div class="glass ac"><div class="act"><span>🔥</span><strong>Last-K Recency Bias</strong><span class="badge bnew">NOWE · RECENCY</span>
+        <div class="tip-btn">i<div class="tip-popup">Niezależna analiza freq w oknach last-10/20/50/100. Pokazuje czy liczba jest "gorąca TERAZ" (nie historycznie). Kluczowe przy rosnącej próbce.</div></div></div><div id="l-lastk"></div></div>
+      <div class="glass ac"><div class="act"><span>📅</span><strong>Seasonal Phase Analysis</strong><span class="badge bnew">NOWE · SEZONOWY</span>
+        <div class="tip-btn">i<div class="tip-popup">Podział na 4 kwartały chronologiczne, Chi² test na równomierność wewnątrz każdego kwartału. Wykrywa czy bias jest sezonowy (maszyna serwisowana co kwartał?).</div></div></div><div id="l-seasonal"></div></div>
+      <div class="glass ac"><div class="act"><span>🔗</span><strong>Temporal Lag (Markov t→t+k)</strong><span class="badge bnew">NOWE · OPÓŹNIENIE</span>
+        <div class="tip-btn">i<div class="tip-popup">Czy liczba A w losowaniu t koreluje z liczbą B w t+1, t+2, t+3? Prawdziwy opóźniony łańcuch Markowa — wykrywa mechaniczną zależność między kolejnymi losowaniami.</div></div></div><div id="l-templag"></div></div>
+      <div class="glass ac"><div class="act"><span>🔗</span><strong>Ko-okurencja Par</strong><span class="badge bs">WSPÓŁWYSTĘPOWANIE</span></div><div id="l-markov"></div></div>
+      <div class="glass ac"><div class="act"><span>🃏</span><strong>Runs Test</strong><span class="badge bstat">LOSOWOŚĆ SERII</span></div><div id="l-runs"></div></div>
+      <div class="glass ac"><div class="act"><span>📉</span><strong>Autokorelacja lag 1–15</strong><span class="badge bstat">PERIODYCZNOŚĆ</span></div><div id="l-acf"></div></div>
+      <div class="glass ac"><div class="act"><span>📡</span><strong>Sparkline — Timeline</strong><span class="badge bi">TREND W CZASIE</span></div><div id="l-sparkline"></div></div>
     </div>
 
     <div class="sh"><div class="si roll">🔄</div><h2>Rolling Window — Porównanie Okresów</h2><div class="sl"></div></div>
-    <div class="glass ac" style="margin-bottom:24px"><div id="l-rolling"></div></div>
+    <div class="glass ac" style="margin-bottom:22px"><div id="l-rolling"></div></div>
 
     <div class="sh"><div class="si">🎲</div><h2>Generator Kombinacji</h2><div class="sl"></div></div>
     <div class="gen-wrap glass" id="l-gen"></div>
-
     <div class="export-row">
       <button class="btn-exp" onclick="exportJSON('lotto')">⬇️ Eksportuj JSON</button>
-      <button class="btn-exp" onclick="exportCSV('lotto')">⬇️ Eksportuj CSV wyników</button>
+      <button class="btn-exp" onclick="exportCSV('lotto')">⬇️ Eksportuj CSV</button>
     </div>
   </div>
 </div>
@@ -391,12 +519,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="rules-card glass">
     <div class="rules-title">📋 Zasady Mini Lotto 5/42</div>
     <div class="rgrid">
-      <div class="ri"><div class="ri-icon">🎱</div><div class="ri-title">Pula</div><div class="ri-val">1 – 42</div><div class="ri-sub">Typujesz 5 liczb</div></div>
+      <div class="ri"><div class="ri-icon">🎱</div><div class="ri-title">Pula</div><div class="ri-val">1 — 42</div><div class="ri-sub">Typujesz 5 liczb</div></div>
       <div class="ri"><div class="ri-icon">💸</div><div class="ri-title">Koszt</div><div class="ri-val">2,00 zł</div><div class="ri-sub">1,60 + 0,40 dopłata</div></div>
       <div class="ri"><div class="ri-icon">📅</div><div class="ri-title">Losowania</div><div class="ri-val">Codziennie</div><div class="ri-sub">Wyniki o 22:00</div></div>
       <div class="ri"><div class="ri-icon">🏆</div><div class="ri-title">Szansa</div><div class="ri-val">1 : 850 668</div><div class="ri-sub">16× łatwiej niż Lotto</div></div>
-      <div class="ri"><div class="ri-icon">🔄</div><div class="ri-title">Kumulacja</div><div class="ri-val">Brak</div><div class="ri-sub">Pula dzielona co los.</div></div>
-      <div class="ri"><div class="ri-icon">🎰</div><div class="ri-title">Systemy</div><div class="ri-val">6–12 liczb</div><div class="ri-sub">Większe pokrycie</div></div>
     </div>
     <table class="rtbl">
       <tr><th>Stopień</th><th>Trafienia</th><th>Szansa</th><th>Pula</th></tr>
@@ -409,9 +535,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div><div class="fl">Plik z losowaniami Mini Lotto</div>
       <div class="fw mt"><input type="file" id="miniFile" accept=".csv,.txt" onchange="handleUpload(event,'mini')">
       <div class="ft mt" id="miniFileText">📂 Wgraj plik mini_lotto.csv</div></div></div>
-    <div><div class="fl">Losowań do analizy <span style="color:var(--warning);font-size:.7rem">(min. 300 dla Chi²)</span></div>
+    <div><div class="fl">Losowań do analizy</div>
       <input class="inp" type="number" id="miniDC" value="500" min="30" max="9999"></div>
-    <div style="display:flex;flex-direction:column;gap:7px;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
       <button class="btn-a mt" onclick="runAnalysis('mini')">▶ Analizuj</button>
       <button class="btn-clr" onclick="clearTab('mini')">✕ Wyczyść</button>
     </div>
@@ -424,44 +550,46 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="stats-row">
       <div class="glass sc" style="--acc:linear-gradient(90deg,#f472b6,#a78bfa)"><div class="sc-icon">🌸</div><div class="sc-val" id="m-total">—</div><div class="sc-label">Losowań</div></div>
       <div class="glass sc" style="--acc:linear-gradient(90deg,#a78bfa,#f472b6)"><div class="sc-icon">📅</div><div class="sc-val" id="m-date">—</div><div class="sc-label">Ostatnie</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#f472b6,#38bdf8)"><div class="sc-icon">χ²</div><div class="sc-val" id="m-chi">—</div><div class="sc-label">Chi² p-value</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#a78bfa,#10b981)"><div class="sc-icon">➕</div><div class="sc-val" id="m-sum">—</div><div class="sc-label">Mediana sumy</div></div>
-      <div class="glass sc" style="--acc:linear-gradient(90deg,#2dd4bf,#f472b6)"><div class="sc-icon">📈</div><div class="sc-val" id="m-ema">—</div><div class="sc-label">EMA trend ↑</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#f472b6,#38bdf8)"><div class="sc-icon">χ²</div><div class="sc-val" id="m-chi">—</div><div class="sc-label">Chi² p-val</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#a78bfa,#22d3a0)"><div class="sc-icon">Σ</div><div class="sc-val" id="m-sum">—</div><div class="sc-label">Med. suma</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#2dd4bf,#f472b6)"><div class="sc-icon">📡</div><div class="sc-val" id="m-mom">—</div><div class="sc-label">Momentum ↑</div></div>
       <div class="glass sc" style="--acc:linear-gradient(90deg,#f472b6,#f59e0b)"><div class="sc-icon">⚖️</div><div class="sc-val" id="m-oe">—</div><div class="sc-label">Najcz. P:N</div></div>
+      <div class="glass sc" style="--acc:linear-gradient(90deg,#22d3a0,#a78bfa)"><div class="sc-icon">D</div><div class="sc-val" id="m-dispersion">—</div><div class="sc-label">Poisson D</div></div>
     </div>
+    <div class="sh"><div class="si mt">🏆</div><h2>Unified Ranking — Probability Score</h2><div class="sl"></div></div>
+    <div class="agrid"><div class="glass ac" style="grid-column:1/-1"><div id="m-unified"></div></div></div>
     <div class="sh"><div class="si mt">📊</div><h2>Analiza Mini Lotto 5/42</h2><div class="sl"></div></div>
     <div class="agrid">
-      <div class="glass ac"><div class="act"><span>🔥</span><strong>Gorące Liczby</strong><span class="badge bi">HISTORYCZNA</span></div><div id="m-hot"></div></div>
-      <div class="glass ac"><div class="act"><span>❄️</span><strong>Zimne Liczby</strong><span class="badge bi">HISTORYCZNA</span></div><div id="m-cold"></div></div>
-      <div class="glass ac"><div class="act"><span>⏰</span><strong>Zaległe Liczby</strong><span class="badge bw">E[gap]=N/k</span></div><div id="m-overdue"></div></div>
       <div class="glass ac"><div class="act"><span>📊</span><strong>Rozkład Gap</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-gap"></div></div>
-      <div class="glass ac"><div class="act"><span>🌀</span><strong>Entropia Przerw</strong><span class="badge bi">RYTMICZNOŚĆ</span></div><div id="m-entropy"></div></div>
-      <div class="glass ac"><div class="act"><span>🔵</span><strong>Parzyste / Nieparzyste</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-oe-chart"></div></div>
-      <div class="glass ac"><div class="act"><span>📐</span><strong>Niskie / Wysokie</strong><span class="badge bi">ROZKŁAD</span><span class="act-sub">1–21 vs 22–42</span></div><div id="m-lh-chart"></div></div>
+      <div class="glass ac"><div class="act"><span>📵</span><strong>Parzyste / Nieparzyste</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-oe-chart"></div></div>
+      <div class="glass ac"><div class="act"><span>🔍</span><strong>Niskie / Wysokie</strong><span class="badge bi">ROZKŁAD</span><span class="act-sub">1–21 vs 22–42</span></div><div id="m-lh-chart"></div></div>
       <div class="glass ac"><div class="act"><span>➕</span><strong>Analiza Sumy</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-sum-chart"></div></div>
       <div class="glass ac"><div class="act"><span>🔟</span><strong>Dziesiątki</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-dec"></div></div>
-      <div class="glass ac"><div class="act"><span>👫</span><strong>Pary Sąsiednie</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-cons"></div></div>
-      <div class="glass ac"><div class="act"><span>🔡</span><strong>Ostatnia Cyfra</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-ld"></div></div>
+      <div class="glass ac"><div class="act"><span>💫</span><strong>Pary Sąsiednie</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-cons"></div></div>
+      <div class="glass ac"><div class="act"><span>📡</span><strong>Ostatnia Cyfra</strong><span class="badge bi">ROZKŁAD</span></div><div id="m-ld"></div></div>
     </div>
     <div class="sh"><div class="si stat">🔬</div><h2>Zaawansowana Analiza Statystyczna</h2><div class="sl"></div></div>
     <div class="agrid">
       <div class="glass ac"><div class="act"><span>χ²</span><strong>Test Chi-kwadrat</strong><span class="badge bstat">ISTOTNOŚĆ</span></div><div id="m-chi2"></div></div>
-      <div class="glass ac"><div class="act"><span>📏</span><strong>Z-score Odchyleń</strong><span class="badge bstat">ODCHYLENIE</span></div><div id="m-zscore"></div></div>
+      <div class="glass ac"><div class="act"><span>🔍</span><strong>Z-score Odchyleń</strong><span class="badge bstat">ODCHYLENIE</span></div><div id="m-zscore"></div></div>
+      <div class="glass ac"><div class="act"><span>🎲</span><strong>Poisson Dispersion D</strong><span class="badge bnew">NOWE</span></div><div id="m-poisson"></div></div>
+      <div class="glass ac"><div class="act"><span>📐</span><strong>Coefficient of Variation (CV)</strong><span class="badge bnew">NOWE</span></div><div id="m-cv"></div></div>
+      <div class="glass ac"><div class="act"><span>📡</span><strong>Momentum Score (Triple EMA)</strong><span class="badge bnew">NOWE</span></div><div id="m-momentum"></div></div>
+      <div class="glass ac"><div class="act"><span>🔥</span><strong>Last-K Recency Bias</strong><span class="badge bnew">NOWE</span></div><div id="m-lastk"></div></div>
+      <div class="glass ac"><div class="act"><span>📅</span><strong>Seasonal Phase Analysis</strong><span class="badge bnew">NOWE</span></div><div id="m-seasonal"></div></div>
+      <div class="glass ac"><div class="act"><span>🔗</span><strong>Temporal Lag (Markov t→t+k)</strong><span class="badge bnew">NOWE</span></div><div id="m-templag"></div></div>
       <div class="glass ac"><div class="act"><span>🔗</span><strong>Ko-okurencja Par</strong><span class="badge bs">WSPÓŁWYSTĘPOWANIE</span></div><div id="m-markov"></div></div>
-      <div class="glass ac"><div class="act"><span>🏃</span><strong>Runs Test</strong><span class="badge bstat">LOSOWOŚĆ SERII</span></div><div id="m-runs"></div></div>
-      <div class="glass ac"><div class="act"><span>📈</span><strong>EMA Trend Częstości</strong><span class="badge bi">TREND LOKALNY</span></div><div id="m-ema-chart"></div></div>
+      <div class="glass ac"><div class="act"><span>🃏</span><strong>Runs Test</strong><span class="badge bstat">LOSOWOŚĆ SERII</span></div><div id="m-runs"></div></div>
       <div class="glass ac"><div class="act"><span>📉</span><strong>Autokorelacja lag 1–15</strong><span class="badge bstat">PERIODYCZNOŚĆ</span></div><div id="m-acf"></div></div>
-      <div class="glass ac"><div class="act"><span>🎲</span><strong>Bayesian Posterior</strong><span class="badge bs">PRZEDZIAŁ UFNOŚCI</span></div><div id="m-bayes"></div></div>
       <div class="glass ac"><div class="act"><span>📡</span><strong>Sparkline — Timeline</strong><span class="badge bi">TREND W CZASIE</span></div><div id="m-sparkline"></div></div>
-      <div class="glass ac"><div class="act"><span>🎯</span><strong>Kompozytowy Score</strong><span class="badge bs">Z+EMA+GAP+H</span></div><div id="m-composite"></div></div>
     </div>
     <div class="sh"><div class="si roll">🔄</div><h2>Rolling Window — Porównanie Okresów</h2><div class="sl"></div></div>
-    <div class="glass ac" style="margin-bottom:24px"><div id="m-rolling"></div></div>
+    <div class="glass ac" style="margin-bottom:22px"><div id="m-rolling"></div></div>
     <div class="sh"><div class="si mt">🎲</div><h2>Generator Kombinacji</h2><div class="sl"></div></div>
     <div class="gen-wrap glass mt" id="m-gen"></div>
     <div class="export-row">
       <button class="btn-exp" onclick="exportJSON('mini')">⬇️ Eksportuj JSON</button>
-      <button class="btn-exp" onclick="exportCSV('mini')">⬇️ Eksportuj CSV wyników</button>
+      <button class="btn-exp" onclick="exportCSV('mini')">⬇️ Eksportuj CSV</button>
     </div>
   </div>
 </div>
@@ -469,33 +597,35 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // CONFIG & STATE
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 const CFG = {
   lotto:{ max:49, pick:6, lowSplit:24, sumMin:115, sumMax:185,
     decRanges:['1–9','10–19','20–29','30–39','40–49'],
-    sampleNeeds:{ ema:50, runs:100, zscore:300, chi2:500, bayes:200, markov:500 } },
-  mini: { max:42, pick:5, lowSplit:21, sumMin:80,  sumMax:135,
+    expectedD: 49/6,
+    sampleNeeds:{ runs:100, zscore:300, chi2:500, markov:500 } },
+  mini: { max:42, pick:5, lowSplit:21, sumMin:80, sumMax:135,
     decRanges:['1–9','10–19','20–29','30–39','40–42'],
-    sampleNeeds:{ ema:50, runs:100, zscore:200, chi2:400, bayes:150, markov:400 } }
+    expectedD: 42/5,
+    sampleNeeds:{ runs:100, zscore:200, chi2:400, markov:400 } }
 };
 const state = {
-  lotto:{ draws:null, analysis:null, method:'prob', rwWindow:100 },
-  mini: { draws:null, analysis:null, method:'prob', rwWindow:100 }
+  lotto:{ draws:null, analysis:null, method:'probability', rwWindow:100 },
+  mini: { draws:null, analysis:null, method:'probability', rwWindow:100 }
 };
 
 const METHOD_DESC = {
-  prob:      '🎯 <strong>Probability Weighted</strong> — pełny Unified Probability Score, losowanie ważone P(n).',
-  momentum:  '📡 <strong>Momentum</strong> — tylko liczby z triple EMA bullish, ważone intensywnością momentum.',
-  structural:'🔬 <strong>Structural</strong> — liczby z CV<1, dodatnim Runs Z i stabilną strukturą przerw.',
-  rolling:   '🔄 <strong>Adaptive Rolling</strong> — score oparty zawsze o okno last‑100, niezależnie od całkowitego N.',
-  diversity: '🎲 <strong>Diversity Max</strong> — anty‑popularne + minimalna autokorelacja czasowa.'
+  probability: '🎯 <strong>Probability Weighted</strong> — Pełny P-score (5 ortogonalnych sygnałów). Ważone losowanie proporcjonalne do score. <em>Rekomendowany.</em>',
+  momentum:    '📡 <strong>Momentum</strong> — Triple EMA crossover, tylko bullish ↑↑↑. Bardzo wysoka zmienność — reaguje na ostatnie 3–7 losowań.',
+  structural:  '🔬 <strong>Structural</strong> — CV < 1 + Runs Z > 0 + Poisson D. Niska zmienność — stabilny sygnał mechaniczny.',
+  adaptive:    '🔄 <strong>Adaptive Rolling</strong> — Zawsze last-100 niezależnie od N. Najlepszy przy podejrzeniu o zmianę maszyny.',
+  diversity:   '🎲 <strong>Diversity Max</strong> — Max temporal uncorrelation + anti-popular. Każda kombinacja maksymalnie unikalna demograficznie.'
 };
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // UTILS
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function switchTab(t){
   ['lotto','mini'].forEach(x=>{
     document.getElementById('content-'+x).classList.toggle('active',x===t);
@@ -532,20 +662,6 @@ function chi2pval(x,k){
   const h=2/(9*k),z=(Math.pow(x/k,1/3)-(1-h))/Math.sqrt(h);
   return 1-normalCDF(z);
 }
-
-function normalizeScores(map, positiveOnly=false){
-  const vals = Object.values(map).map(v=>positiveOnly?Math.max(v,0):v);
-  if (!vals.length) return {};
-  const min = Math.min(...vals);
-  const max = Math.max(...vals);
-  const res = {};
-  for (const [k,v] of Object.entries(map)) {
-    const x = positiveOnly ? Math.max(v,0) : v;
-    res[k] = max>min ? (x-min)/(max-min) : 0;
-  }
-  return res;
-}
-
 function countRuns(seq){
   let r=seq.length>0?1:0;
   for(let i=1;i<seq.length;i++)if(seq[i]!==seq[i-1])r++;
@@ -560,9 +676,9 @@ function autoDetectDate(str){
   return null;
 }
 
-// ══════════════════════════════════════
-// FILE HANDLING + DIAGNOSTIC
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
+// FILE HANDLING
+// ══════════════════════════════════════════
 function handleUpload(e,tab){
   const file=e.target.files[0];if(!file)return;
   const tId=tab==='lotto'?'lottoFileText':'miniFileText';
@@ -578,12 +694,12 @@ function handleUpload(e,tab){
       err.textContent='❌ Błąd parsowania. '+result.diagMsg;
       err.style.display='block';
       diag.style.display='block';
-      diag.innerHTML=`<div class="csv-diag-title">🔍 Diagnostyka CSV — pierwsze 3 linie:</div><pre>${result.preview}</pre><div style="color:var(--warning);font-size:.77rem;margin-top:8px">Oczekiwany format: nr,DD.MM.RRRR,l1,l2,... lub nr,RRRR-MM-DD,l1,l2,...</div>`;
+      diag.innerHTML=`<div class="csv-diag-title">🔍 Diagnostyka CSV — pierwsze 3 linie:</div><pre>${result.preview}</pre><div style="color:var(--warning);font-size:.74rem;margin-top:7px">Oczekiwany format: nr,DD.MM.RRRR,l1,l2,... lub nr,RRRR-MM-DD,l1,l2,...</div>`;
       return;
     }
     err.style.display='none';diag.style.display='none';
     state[tab].draws=result.draws;
-    badge.textContent=`✅ ${result.draws.length} losowań · Najnowsze: ${new Date(result.draws[0].drawDate).toLocaleDateString('pl-PL')} · Format daty: ${result.dateFormat}`;
+    badge.textContent=`✅ ${result.draws.length} losowań · Najnowsze: ${new Date(result.draws[0].drawDate).toLocaleDateString('pl-PL')} · Format: ${result.dateFormat}`;
     badge.style.display='block';
   };
   reader.readAsText(file,'UTF-8');
@@ -594,13 +710,11 @@ function parseCSV(text,tab){
   const preview=lines.slice(0,3).join('\n');
   const draws=[];
   let dateFormat='?';
-  // Try semicolon separator too
   for(const rawLine of lines){
     const line=rawLine.trim();
     if(!line||line.startsWith('#'))continue;
     const p=line.split(/[,;]/).map(s=>s.trim());
     if(p.length<2+cfg.pick)continue;
-    // find date field
     let drawDate=null,numStart=2;
     for(let i=0;i<Math.min(p.length,4);i++){
       const d=autoDetectDate(p[i]);
@@ -615,9 +729,9 @@ function parseCSV(text,tab){
   return{draws,preview,diagMsg:'',dateFormat};
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // MAIN ANALYSIS
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function runAnalysis(tab){
   const err=document.getElementById(tab+'Error');err.style.display='none';
   if(!state[tab].draws?.length){err.textContent='❌ Najpierw wgraj plik CSV.';err.style.display='block';return;}
@@ -635,68 +749,70 @@ function runAnalysis(tab){
 
 function analyze(draws,tab){
   const cfg=CFG[tab],N=draws.length,M=cfg.max,K=cfg.pick;
-
-  // ── PODSTAWOWA STATYSTYKA ──
-  const freqMap={},positions={},gapEnt={},gapStd={},gapMean={},gapCV={};
-  const gapList=[];
+  const freqMap={},positions={},gapStd={},gapMean={},gapVariance={};
   for(let i=1;i<=M;i++){freqMap[i]=0;positions[i]=[];}
   const oeCount={},lhCount={},sums=[],consCount=[0,0,0,0];
   const ldFreq={},decFreq={};cfg.decRanges.forEach(r=>decFreq[r]=0);
   const gapFreq={};
 
-  // ── TRIPLE EMA (momentum) ──
-  const emaFast={},emaMid={},emaSlow={};
-  for(let i=1;i<=M;i++){
-    emaFast[i]=K/M;
-    emaMid[i]=K/M;
-    emaSlow[i]=K/M;
-  }
+  // ── Triple EMA ──
+  const emaF={},emaM={},emaS={};
   const AF=0.30,AM=0.15,AS=0.05;
+  const p0=K/M;
+  for(let i=1;i<=M;i++){emaF[i]=p0;emaM[i]=p0;emaS[i]=p0;}
 
-  // Ko-okurencja (same draw) + Markov lag1 (zostawiamy) ─ oraz baza pod lag 1–3
-  const coOccur={};   
-  const markovChain={}; 
-  const markovLag={1:{},2:{},3:{}};
+  // ── Co-occurrence ──
+  const coOccurClean={};
+
+  // ── Temporal lag (lag 1,2,3) ──
+  const tLag={};// key: "a>b>lag" → count
+
+  // ── Last-K windows ──
+  const lastKWindows=[10,20,50,100];
+  const lastKFreq={};
+  for(let i=1;i<=M;i++){lastKFreq[i]={}; lastKWindows.forEach(k=>lastKFreq[i][k]=0);}
+
+  // EMA pass: chronological oldest→newest (draws sorted newest→oldest so iterate in reverse)
+  for(let di=N-1;di>=0;di--){
+    const numsEMA=draws[di].numbers;
+    const appearedEMA=new Set(numsEMA);
+    for(let n=1;n<=M;n++){
+      const x=appearedEMA.has(n)?1:0;
+      emaF[n]=AF*x+(1-AF)*emaF[n];
+      emaM[n]=AM*x+(1-AM)*emaM[n];
+      emaS[n]=AS*x+(1-AS)*emaS[n];
+    }
+  }
 
   for(let di=0;di<N;di++){
     const nums=draws[di].numbers;
     const appeared=new Set(nums);
 
-    // triple EMA
-    for(let n=1;n<=M;n++){
-      const x=appeared.has(n)?1:0;
-      emaFast[n]=AF*x+(1-AF)*emaFast[n];
-      emaMid[n] =AM*x+(1-AM)*emaMid[n];
-      emaSlow[n]=AS*x+(1-AS)*emaSlow[n];
-    }
+    // Last-K (di=0 is newest)
+    lastKWindows.forEach(k=>{
+      if(di<k) nums.forEach(n=>lastKFreq[n][k]++);
+    });
 
-    // freq + pozycje + rozkłady
     nums.forEach(n=>{
       freqMap[n]++;
       positions[n].push(di);
-      const d=n%10;ldFreq[d]=(ldFreq[d]||0)+1;
+      const d2=n%10;ldFreq[d2]=(ldFreq[d2]||0)+1;
       if(n<=9)decFreq[cfg.decRanges[0]]++;
       else if(n<=19)decFreq[cfg.decRanges[1]]++;
       else if(n<=29)decFreq[cfg.decRanges[2]]++;
       else if(n<=39)decFreq[cfg.decRanges[3]]++;
       else decFreq[cfg.decRanges[4]]++;
     });
-
     const sorted=[...nums].sort((a,b)=>a-b);
     for(let i=0;i<sorted.length-1;i++){
-      const g=sorted[i+1]-sorted[i];
-      gapFreq[g]=(gapFreq[g]||0)+1;
-      for(let j=i+1;j<sorted.length;j++){
-        const key=sorted[i]+'-'+sorted[j];
-        coOccur[key]=(coOccur[key]||0)+1;
-      }
+      const g=sorted[i+1]-sorted[i];gapFreq[g]=(gapFreq[g]||0)+1;
     }
+    // Co-occurrence
     for(let i=0;i<sorted.length-1;i++)
       for(let j=i+1;j<sorted.length;j++){
         const key=sorted[i]+'-'+sorted[j];
-        if(!coOccur[key])coOccur[key]=1;
+        coOccurClean[key]=(coOccurClean[key]||0)+1;
       }
-
     const odd=nums.filter(n=>n%2!==0).length;
     oeCount[odd+':'+(K-odd)]=(oeCount[odd+':'+(K-odd)]||0)+1;
     const low=nums.filter(n=>n<=cfg.lowSplit).length;
@@ -706,141 +822,137 @@ function analyze(draws,tab){
     for(let i=0;i<sorted.length-1;i++)if(sorted[i+1]-sorted[i]===1)pairs++;
     consCount[Math.min(pairs,3)]++;
 
-    // Markov lag 1 (stare)
-    if(di<N-1){
-      const nextNums=new Set(draws[di+1].numbers);
-      nums.forEach(cur=>{
-        nextNums.forEach(nxt=>{
-          const key=cur+'>'+nxt;
-          markovChain[key]=(markovChain[key]||0)+1;
+    // Temporal lag t→t+1, t→t+2, t→t+3
+    for(let lag=1;lag<=3;lag++){
+      if(di+lag<N){
+        const futNums=draws[di+lag].numbers;
+        nums.forEach(a=>{
+          futNums.forEach(b=>{
+            const key=`${a}>${b}>${lag}`;
+            tLag[key]=(tLag[key]||0)+1;
+          });
         });
-      });
-    }
-  }
-
-  // ── Pairwise Temporal Lag 1–3 (M6) ──
-  for(let L=1;L<=3;L++){
-    for(let di=0;di<N-L;di++){
-      const curSet=new Set(draws[di].numbers);
-      const nextSet=new Set(draws[di+L].numbers);
-      curSet.forEach(cur=>{
-        nextSet.forEach(nxt=>{
-          const key=cur+'>'+nxt;
-          markovLag[L][key]=(markovLag[L][key]||0)+1;
-        });
-      });
-    }
-  }
-  const topTemporalLag=[];
-  for(let L=1;L<=3;L++){
-    const totals={};
-    Object.entries(markovLag[L]).forEach(([key,c])=>{
-      const from=key.split('>')[0];
-      totals[from]=(totals[from]||0)+c;
-    });
-    Object.entries(markovLag[L]).forEach(([key,c])=>{
-      const from=key.split('>')[0];
-      const p=c/(totals[from]||1);
-      topTemporalLag.push({lag:L,pair:key,p:parseFloat(p.toFixed(4))});
-    });
-  }
-  topTemporalLag.sort((a,b)=>b.p-a.p);
-  const topTemporalLagTrim=topTemporalLag.slice(0,30);
-
-  // ── Co‑okurencja przestrzenna bez dubli ──
-  const coOccurClean={};
-  for(let di=0;di<N;di++){
-    const sorted=[...draws[di].numbers].sort((a,b)=>a-b);
-    for(let i=0;i<sorted.length-1;i++)
-      for(let j=i+1;j<sorted.length;j++){
-        const key=sorted[i]+'-'+sorted[j];
-        coOccurClean[key]=(coOccurClean[key]||0)+1;
       }
+    }
   }
-  const topCoOccur=Object.entries(coOccurClean).sort((a,b)=>b[1]-a[1]).slice(0,20);
 
-  // ── GAP stats + CV + Poisson D (M1, M2) ──
+  // ── Gap stats ──
   const expectedGap=M/K;
   for(let n=1;n<=M;n++){
     const pos=positions[n];
-    if(pos.length<3){
-      gapEnt[n]=null;gapStd[n]=0;gapMean[n]=expectedGap;gapCV[n]=null;
-      continue;
-    }
-    const gaps=[];
-    for(let i=0;i<pos.length-1;i++){
-      const g=pos[i+1]-pos[i];
-      gaps.push(g);
-      gapList.push(g);
-    }
-    const gc={};gaps.forEach(g=>{gc[g]=(gc[g]||0)+1;});
-    let H=0;const tot=gaps.length;
-    Object.values(gc).forEach(c=>{const p=c/tot;if(p>0)H-=p*Math.log2(p);});
-    gapEnt[n]=H;
-    const mean=gaps.reduce((a,b)=>a+b,0)/tot;
+    if(pos.length<2){gapStd[n]=0;gapMean[n]=expectedGap;gapVariance[n]=0;continue;}
+    const gaps=[];for(let i=0;i<pos.length-1;i++)gaps.push(pos[i+1]-pos[i]);
+    const mean=gaps.reduce((a,b)=>a+b,0)/gaps.length;
+    const variance=gaps.reduce((s,g)=>s+(g-mean)**2,0)/gaps.length;
     gapMean[n]=mean;
-    gapStd[n]=Math.sqrt(gaps.reduce((s,g)=>s+(g-mean)**2,0)/tot);
-    gapCV[n]=gapStd[n]/gapMean[n];
-  }
-  let dispersionGlobal=null;
-  if(gapList.length>=10){
-    const mu=gapList.reduce((a,b)=>a+b,0)/gapList.length;
-    const v=gapList.reduce((s,g)=>s+(g-mu)**2,0)/gapList.length;
-    dispersionGlobal=v/mu;
+    gapStd[n]=Math.sqrt(variance);
+    gapVariance[n]=variance;
   }
 
-  // ── CHI² (global bias częstości) ──
+  // ── CHI2 ──
   const expectedFreq=N*K/M;
   let chiStat=0;
   for(let n=1;n<=M;n++)chiStat+=(freqMap[n]-expectedFreq)**2/expectedFreq;
   const df=M-1;
   const chiPval=chi2pval(chiStat,df);
 
-  // ── Z‑score (global A) ──
+  // ── Z-SCORE ──
   const sigma=Math.sqrt(N*(K/M)*(1-K/M));
   const zScores={};
   for(let n=1;n<=M;n++)zScores[n]=parseFloat(((freqMap[n]-expectedFreq)/sigma).toFixed(3));
   const sortedZ=Object.entries(zScores).map(([n,z])=>({number:parseInt(n),z,freq:freqMap[parseInt(n)]})).sort((a,b)=>b.z-a.z);
+
+  // ── POISSON DISPERSION D = Var(gap)/Mean(gap) ──
+  const poissonD={};
+  let globalD=0,globalDcount=0;
+  for(let n=1;n<=M;n++){
+    if(positions[n].length<3){poissonD[n]=null;continue;}
+    const D=gapVariance[n]/Math.max(gapMean[n],0.001);
+    poissonD[n]=parseFloat(D.toFixed(3));
+    globalD+=D;globalDcount++;
+  }
+  const meanPoissonD=globalDcount>0?parseFloat((globalD/globalDcount).toFixed(2)):expectedGap;
+  const sortedPoissonD=Object.entries(poissonD).filter(([,v])=>v!==null)
+    .map(([n,D])=>({number:parseInt(n),D})).sort((a,b)=>a.D-b.D);
+
+  // ── CV = σ_gap / μ_gap ──
+  const cvMap={};
+  for(let n=1;n<=M;n++){
+    if(gapMean[n]<0.001){cvMap[n]=null;continue;}
+    cvMap[n]=parseFloat((gapStd[n]/gapMean[n]).toFixed(3));
+  }
+  const sortedCV=Object.entries(cvMap).filter(([,v])=>v!==null)
+    .map(([n,cv])=>({number:parseInt(n),cv})).sort((a,b)=>a.cv-b.cv);
+
+  // ── MOMENTUM SCORE (Triple EMA) ──
+  const momentumScores={};
+  const sortedMomentum=[];
+  for(let n=1;n<=M;n++){
+    const bull=(emaF[n]>emaM[n]?1:0)+(emaM[n]>emaS[n]?1:0)+(emaF[n]>emaS[n]?1:0);
+    const score=emaF[n]-emaS[n]; // net momentum
+    momentumScores[n]={fast:emaF[n],mid:emaM[n],slow:emaS[n],bull,score:parseFloat(score.toFixed(5))};
+    sortedMomentum.push({number:n,...momentumScores[n]});
+  }
+  sortedMomentum.sort((a,b)=>b.score-a.score);
+
+  // ── LAST-K RECENCY ──
+  const lastKData={};
+  for(let n=1;n<=M;n++){
+    lastKData[n]={};
+    lastKWindows.forEach(k=>{
+      const kk=Math.min(k,N);
+      const expK=kk*K/M;
+      lastKData[n][k]={freq:lastKFreq[n][k],exp:parseFloat(expK.toFixed(1)),z:parseFloat(((lastKFreq[n][k]-expK)/Math.sqrt(expK*(1-K/M))).toFixed(2))};
+    });
+  }
+  // Sort by last-20 recency
+  const sortedRecency=Object.entries(lastKData)
+    .map(([n,d])=>({number:parseInt(n),z20:d[20]?.z||0,z10:d[10]?.z||0,data:d}))
+    .sort((a,b)=>b.z20-a.z20);
+
+  // ── SEASONAL PHASE ANALYSIS ──
+  // Divide draws into 4 chronological quarters
+  const qSize=Math.floor(N/4);
+  const seasonalData=[];
+  for(let q=0;q<4;q++){
+    const start=q*qSize,end=q===3?N:(q+1)*qSize;
+    const qDraws=draws.slice(start,end); // draws sorted newest first → reversed for chronological
+    const qN=qDraws.length;
+    const qFreq={};for(let n=1;n<=M;n++)qFreq[n]=0;
+    qDraws.forEach(d=>d.numbers.forEach(n=>qFreq[n]++));
+    const qExp=qN*K/M;
+    let qChi=0;for(let n=1;n<=M;n++)qChi+=(qFreq[n]-qExp)**2/Math.max(qExp,0.001);
+    const qPval=chi2pval(qChi,M-1);
+    seasonalData.push({q:q+1,n:qN,chi:parseFloat(qChi.toFixed(2)),p:parseFloat(qPval.toFixed(4)),freq:qFreq,exp:qExp});
+  }
+
+  // ── TEMPORAL LAG TOP PAIRS ──
+  const baseExpTLag=(K/M)*(K/M); // expected P(A in t AND B in t+lag)
+  const topTLag=[];
+  for(let lag=1;lag<=3;lag++){
+    const lagEntries=Object.entries(tLag).filter(([k])=>k.endsWith('>'+lag))
+      .map(([k,cnt])=>{
+        const [a,b]=k.split('>');
+        const expCount=(N-lag)*(K/M)*(K/M);
+        const delta=cnt/Math.max(expCount,0.001);
+        return{pair:`${a}→${b}`,lag,count:cnt,exp:parseFloat(expCount.toFixed(1)),ratio:parseFloat(delta.toFixed(2))};
+      }).sort((a,b)=>b.ratio-a.ratio).slice(0,5);
+    topTLag.push(...lagEntries);
+  }
+  const topTLagSorted=topTLag.sort((a,b)=>b.ratio-a.ratio).slice(0,15);
 
   // ── RUNS TEST ──
   const runsData={};
   for(let n=1;n<=M;n++){
     const seq=draws.map(d=>d.numbers.includes(n)?1:0);
     const R=countRuns(seq),n1=seq.filter(x=>x===1).length,n0=N-n1;
-    if(n1===0||n0===0){runsData[n]={R,z:0,n1,n0,muR:n1===0?0:N};continue;}
+    if(n1===0||n0===0){runsData[n]={R,z:0,n1,n0};continue;}
     const muR=2*n1*n0/N+1;
     const sigR=Math.sqrt(2*n1*n0*(2*n1*n0-N)/(N*N*(N-1)));
     runsData[n]={R,z:sigR>0?parseFloat(((R-muR)/sigR).toFixed(3)):0,n1,n0,muR:parseFloat(muR.toFixed(1))};
   }
 
-  // ── Triple EMA Momentum (M3) + kompatybilne emaTrends/sortedEMA ──
-  const emaTrends={},sortedEMA=[],momentum={},sortedMomentum=[];
-  for(let n=1;n<=M;n++){
-    const f=emaFast[n],m=emaMid[n],s=emaSlow[n];
-    const diff=f-s;
-    const tripleBull=f>m && m>s;
-    const intensity=tripleBull?((f-m)+(m-s)):0;
-    emaTrends[n]={
-      fast:parseFloat(f.toFixed(5)),
-      mid: parseFloat(m.toFixed(5)),
-      slow:parseFloat(s.toFixed(5)),
-      diff:parseFloat(diff.toFixed(5)),
-      trend: tripleBull ? 'up' : (diff<-0.0005?'down':'flat')
-    };
-    momentum[n]={
-      fast:emaTrends[n].fast,
-      mid: emaTrends[n].mid,
-      slow:emaTrends[n].slow,
-      tripleBull,
-      intensity:parseFloat(intensity.toFixed(5))
-    };
-    sortedEMA.push({number:n,...emaTrends[n]});
-    sortedMomentum.push({number:n,...momentum[n]});
-  }
-  sortedEMA.sort((a,b)=>b.diff-a.diff);
-  sortedMomentum.sort((a,b)=>b.intensity-a.intensity);
-
-  // ── AUTOKORELACJA lag 1–15 (pattern C) ──
+  // ── AUTOCORRELATION ──
   const allAppearances=[];
   for(let di=0;di<N;di++){
     const a=[];for(let n=1;n<=M;n++)a.push(draws[di].numbers.includes(n)?1:0);
@@ -873,44 +985,7 @@ function analyze(draws,tab){
     acfPerNum[n]=parseFloat(maxR.toFixed(3));
   }
 
-  // ── Last‑K Recency Bias (M4) ──
-  const lastK={};
-  const windowsK=[10,20,50,100];
-  for(let n=1;n<=M;n++) lastK[n]={};
-  windowsK.forEach(Kw=>{
-    const wDraws=draws.slice(0,Math.min(Kw,N));
-    const wN=wDraws.length;
-    for(let n=1;n<=M;n++){
-      const hits=wDraws.filter(d=>d.numbers.includes(n)).length;
-      lastK[n][Kw]={count:hits,rate:wN?hits/wN:0};
-    }
-  });
-
-  // ── Seasonal Phase (M5) ──
-  const seasonal=[];
-  if(N>=200){
-    const qSize=Math.floor(N/4);
-    for(let q=0;q<4;q++){
-      const start=q*qSize;
-      const end=(q===3)?N:(q+1)*qSize;
-      const seg=draws.slice(start,end);
-      const Nq=seg.length;
-      if(Nq<30){seasonal.push({q:q+1,pval:1,chi:0,N:Nq});continue;}
-      const f={};for(let i=1;i<=M;i++)f[i]=0;
-      seg.forEach(d=>d.numbers.forEach(n=>f[n]++));
-      const exp=Nq*K/M;
-      let chi=0;
-      for(let i=1;i<=M;i++)chi+=(f[i]-exp)**2/exp;
-      seasonal.push({
-        q:q+1,
-        pval:parseFloat(chi2pval(chi,M-1).toFixed(4)),
-        chi:parseFloat(chi.toFixed(2)),
-        N:Nq
-      });
-    }
-  }
-
-  // ── SPARKLINE (jak było) ──
+  // ── SPARKLINE ──
   const windowSize=Math.max(50,Math.floor(N/6));
   const sparklineData={};
   const topForSpark=sortedZ.slice(0,8).map(x=>x.number);
@@ -921,169 +996,132 @@ function analyze(draws,tab){
       const wDraws=draws.slice(start,end);
       const wN=wDraws.length;
       const wFreq=wDraws.filter(d=>d.numbers.includes(n)).length;
-      const wExp=wN*K/M;
-      windows.push({freq:wFreq,exp:parseFloat(wExp.toFixed(1)),pct:parseFloat((wFreq/wN*100).toFixed(1))});
+      windows.push({freq:wFreq,exp:parseFloat((wN*K/M).toFixed(1)),pct:parseFloat((wFreq/wN*100).toFixed(1))});
     }
     sparklineData[n]=windows;
   });
 
-  // ── Strukturalny “Bayes” = Poisson / CV / Runs (zostawiamy nazwę dla kompatybilności) ──
-  const bayesian={};
-  for(let n=1;n<=M;n++){
-    bayesian[n]={
-      cv: gapCV[n],
-      meanGap: gapMean[n],
-      stdGap: gapStd[n],
-      runsZ: runsData[n]?.z || 0,
-      freq: freqMap[n]
-    };
-  }
-  const sortedBayes=Object.entries(bayesian)
-    .filter(([,b])=>b.cv!==null)
-    .map(([n,b])=>({number:parseInt(n),...b}))
-    .sort((a,b)=>a.cv-b.cv); // najniższe CV = najbardziej regularne
+  // ── UNIFIED PROBABILITY SCORE ──
+  // 5 orthogonal signals with adaptive weights based on N
+  let wA,wB,wC,wD,wE;
+  if(N<100){wA=0.00;wB=0.50;wC=0.20;wD=0.10;wE=0.20;}
+  else if(N<300){wA=0.20;wB=0.40;wC=0.20;wD=0.10;wE=0.10;}
+  else if(N<500){wA=0.30;wB=0.30;wC=0.20;wD=0.10;wE=0.10;}
+  else{wA=0.35;wB=0.25;wC=0.20;wD=0.10;wE=0.10;}
 
-  // ── OVERDUE ──
-  const overdueNumbers=[];
-  for(let n=1;n<=M;n++){
-    const lastSeen=positions[n].length>0?positions[n][0]:N;
-    const overdueness=(lastSeen-expectedGap)/Math.max(gapStd[n],1);
-    overdueNumbers.push({number:n,lastSeen,expectedGap:parseFloat(expectedGap.toFixed(1)),overdueness:parseFloat(overdueness.toFixed(2))});
-  }
-  overdueNumbers.sort((a,b)=>b.overdueness-a.overdueness);
+  const probScores={};
+  const rawScores=[];
+  const maxAbsZ=Math.max(...Object.values(zScores).map(Math.abs),0.001);
+  const maxMomScore=Math.max(...sortedMomentum.map(e=>Math.abs(e.score)),0.0001);
+  const maxCV=Math.max(...sortedCV.map(e=>e.cv),0.001);
+  const maxD=Math.max(...sortedPoissonD.map(e=>e.D),0.001);
 
-  // ── Summary ──
+  // E: Recency maxZ20 computed once, outside loop
+  const maxZ20=Math.max(...sortedRecency.map(r=>r.z20),0.001);
+
+  for(let n=1;n<=M;n++){
+    // A: Global (Z-score), normalized 0–1, positive only
+    const sA=Math.max(zScores[n]/maxAbsZ,0);
+    // B: Trend (Momentum triple EMA), normalized
+    const momRaw=(momentumScores[n]?.score||0);
+    const sB=Math.max(momRaw/maxMomScore,0);
+    // C: Structural (CV low = regular + Runs positive + Poisson D near expected)
+    const cvScore=cvMap[n]!=null?Math.max(1-cvMap[n]/Math.max(maxCV,0.001),0):0.5;
+    const runsScore=Math.min(Math.max((runsData[n]?.z||0)/3+0.5,0),1);
+    const dScore=poissonD[n]!=null?Math.max(1-Math.abs(poissonD[n]-expectedGap)/Math.max(expectedGap,1),0):0.5;
+    const sC=(cvScore+runsScore+dScore)/3;
+    // D: Pattern (ACF + seasonal)
+    const acfScore=Math.min(Math.abs(acfPerNum[n]||0)*5,1);
+    const seasonalTop=seasonalData.filter(s=>s.freq[n]>(s.exp*1.1)).length/4;
+    const sD=(acfScore+seasonalTop)/2;
+    // E: Recency (Last-K z20 normalized)
+    const sE=Math.max((lastKData[n][20]?.z||0)/Math.max(maxZ20,0.001),0);
+
+    const raw=wA*sA+wB*sB+wC*sC+wD*sD+wE*sE;
+    rawScores.push(raw);
+    probScores[n]=raw;
+  }
+
+  // Softmax normalization
+  const maxRaw=Math.max(...rawScores);
+  let expSum=0;
+  const expScores={};
+  for(let n=1;n<=M;n++){expScores[n]=Math.exp(probScores[n]-maxRaw);expSum+=expScores[n];}
+  const softmaxScores={};
+  for(let n=1;n<=M;n++)softmaxScores[n]=parseFloat((expScores[n]/expSum).toFixed(6));
+  const sortedSoftmax=Object.entries(softmaxScores).map(([n,s])=>({number:parseInt(n),score:s,
+    sA:parseFloat((Math.max(zScores[parseInt(n)]/maxAbsZ,0)).toFixed(3)),
+    sB:parseFloat((Math.max((momentumScores[parseInt(n)]?.score||0)/maxMomScore,0)).toFixed(3)),
+    sC:parseFloat(((Math.max(1-(cvMap[parseInt(n)]||1)/Math.max(maxCV,0.001),0)+Math.min(Math.max((runsData[parseInt(n)]?.z||0)/3+0.5,0),1)+Math.max(1-Math.abs((poissonD[parseInt(n)]||expectedGap)-expectedGap)/Math.max(expectedGap,1),0))/3).toFixed(3)),
+    sE:parseFloat((Math.max((lastKData[parseInt(n)][20]?.z||0)/Math.max(maxZ20,0.001),0)).toFixed(3))
+  })).sort((a,b)=>b.score-a.score);
+
+  // Derived rankings
+  const hotNumbers=Object.entries(freqMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const coldNumbers=Object.entries(freqMap).sort((a,b)=>a[1]-b[1]).slice(0,10);
+
   sums.sort((a,b)=>a-b);
   const medianSum=sums[Math.floor(sums.length/2)];
   const topOE=Object.entries(oeCount).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
-  const hotNumbers=Object.entries(freqMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const coldNumbers=Object.entries(freqMap).sort((a,b)=>a[1]-b[1]).slice(0,10);
-  const sortedEntropy=Object.entries(gapEnt).filter(([,v])=>v!==null).map(([n,h])=>({number:parseInt(n),entropy:parseFloat(h.toFixed(3))})).sort((a,b)=>b.entropy-a.entropy);
+  const topMomentumCount=sortedMomentum.filter(e=>e.bull===3).length;
+  const topMarkov=Object.entries(coOccurClean).sort((a,b)=>b[1]-a[1]).slice(0,20);
 
-  // ── Stary MarkovProb (lag1) dla UI ──
+  // Markov chain (consecutive draws)
+  const markovChain={};
+  for(let di=0;di<N-1;di++){
+    const cur=draws[di].numbers,nxt=draws[di+1].numbers;
+    const nxtSet=new Set(nxt);
+    cur.forEach(c=>{nxtSet.forEach(nx=>{const key=c+'>'+nx;markovChain[key]=(markovChain[key]||0)+1;});});
+  }
   const markovProb={};
   for(let n=1;n<=M;n++){
     const total=Object.entries(markovChain).filter(([k])=>k.startsWith(n+'>')).reduce((s,[,v])=>s+v,0);
     if(total===0)continue;
-    for(let m=1;m<=M;m++){
-      const key=n+'>'+m;
-      if(markovChain[key]) markovProb[key]=parseFloat((markovChain[key]/total).toFixed(4));
+    for(let m2=1;m2<=M;m2++){
+      const key=n+'>'+m2;
+      if(markovChain[key])markovProb[key]=parseFloat((markovChain[key]/total).toFixed(4));
     }
   }
-  const topMarkov=Object.entries(coOccurClean).sort((a,b)=>b[1]-a[1]).slice(0,20);
-
-  // ── UNIFIED PROBABILITY SCORE ──
-  // A: Global (Z)
-  const S_global={};
-  for(let n=1;n<=M;n++)S_global[n]=Math.max(zScores[n],0);
-  const Sg=normalizeScores(S_global,true);
-
-  // B: Trend (momentum)
-  const S_trend={};
-  for(let n=1;n<=M;n++){
-    S_trend[n]=momentum[n].tripleBull?momentum[n].intensity:0;
-  }
-  const St=normalizeScores(S_trend,true);
-
-  // C: Structural (CV + Runs)
-  const S_struct={};
-  for(let n=1;n<=M;n++){
-    const cv=gapCV[n];
-    const rz=runsData[n]?.z||0;
-    let s=0;
-    if(cv!==null){
-      if(cv<1)s+=(1-cv);       // nagroda za regularność
-      if(cv>1.5)s-=(cv-1.5);   // kara za mocne klastrowanie
-    }
-    if(rz>0)s+=rz*0.3;
-    S_struct[n]=s;
-  }
-  const Ss=normalizeScores(S_struct);
-
-  // D: Pattern (ACF + sezonowość)
-  const S_pattern={};
-  for(let n=1;n<=M;n++){
-    const acf=Math.abs(acfPerNum[n]||0);
-    S_pattern[n]=acf;
-  }
-  const Sp=normalizeScores(S_pattern,true);
-
-  // E: Recency (Last‑K)
-  const S_recency={};
-  for(let n=1;n<=M;n++){
-    const lk=lastK[n];
-    const v=0.4*lk[10].rate+0.3*lk[20].rate+0.2*lk[50].rate+0.1*lk[100].rate;
-    S_recency[n]=v;
-  }
-  const Sr=normalizeScores(S_recency,true);
-
-  // Wagi adaptacyjne
-  let wA,wB,wC,wD,wE;
-  if(N<100){ wA=0.00; wB=0.50; wC=0.20; wD=0.10; wE=0.20;
-  } else if(N<300){ wA=0.20; wB=0.40; wC=0.20; wD=0.10; wE=0.10;
-  } else if(N<500){ wA=0.30; wB=0.30; wC=0.20; wD=0.10; wE=0.10;
-  } else { wA=0.35; wB=0.25; wC=0.20; wD=0.10; wE=0.10; }
-
-  const unifiedRaw={},unifiedProb={};
-  for(let n=1;n<=M;n++){
-    unifiedRaw[n]=wA*Sg[n]+wB*St[n]+wC*Ss[n]+wD*Sp[n]+wE*Sr[n];
-  }
-  const maxU=Math.max(...Object.values(unifiedRaw));
-  let sumExp=0;const expU={};
-  for(let n=1;n<=M;n++){
-    const e=Math.exp(unifiedRaw[n]-maxU);
-    expU[n]=e;sumExp+=e;
-  }
-  for(let n=1;n<=M;n++){
-    unifiedProb[n]=expU[n]/sumExp;
-  }
-  const unifiedSorted=[];
-  for(let n=1;n<=M;n++){
-    unifiedSorted.push({number:n,score:unifiedRaw[n],p:unifiedProb[n]});
-  }
-  unifiedSorted.sort((a,b)=>b.p-a.p);
 
   return{
-    N,M,K,
-    chiStat:parseFloat(chiStat.toFixed(2)),chiPval:parseFloat(chiPval.toFixed(4)),df,
+    N,M,K,chiStat:parseFloat(chiStat.toFixed(2)),chiPval:parseFloat(chiPval.toFixed(4)),df,
     expectedFreq:parseFloat(expectedFreq.toFixed(2)),sigma:parseFloat(sigma.toFixed(3)),
-    medianSum,topOE,
-    hotNumbers,coldNumbers,overdueNumbers,
-    freqMap,positions,gapEnt,gapStd,gapMean,gapCV,dispersionGlobal,
+    medianSum,topOE,expectedGap,
+    hotNumbers,coldNumbers,
+    freqMap,positions,gapStd,gapMean,gapVariance,
     oeCount,lhCount,sums,consCount,ldFreq,decFreq,gapFreq,
     zScores,sortedZ,
-    emaTrends,sortedEMA,momentum,sortedMomentum,
+    momentumScores,sortedMomentum,topMomentumCount,emaF,emaM,emaS,
     runsData,
     acfMean,acfPerNum,
-    lastK,seasonal,
-    bayesian,sortedBayes,
-    coOccurClean,topCoOccur,topMarkov,markovChain,markovProb,
-    markovLag,topTemporalLag:topTemporalLagTrim,
+    poissonD,sortedPoissonD,meanPoissonD,
+    cvMap,sortedCV,
+    lastKData,sortedRecency,
+    seasonalData,
+    topTLagSorted,
+    coOccurClean,topMarkov,markovChain,markovProb,
     sparklineData,topForSpark,windowSize,
-    sortedEntropy,
-    S_global:Sg,S_trend:St,S_struct:Ss,S_pattern:Sp,S_recency:Sr,
-    unifiedRaw,unifiedProb,unifiedSorted,
-    draws
+    softmaxScores,sortedSoftmax,
+    probScores,
+    draws,wA,wB,wC,wD,wE
   };
 }
 
-// ══════════════════════════════════════
-// RENDER — MAIN DISPATCHER
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
+// RENDER DISPATCHER
+// ══════════════════════════════════════════
 function render(tab){
   const d=state[tab].analysis,isMini=tab==='mini',cfg=CFG[tab];
   const px=isMini?'m-':'l-';
-  // Stats bar
   document.getElementById(px+'total').textContent=d.N;
   document.getElementById(px+'date').textContent=new Date(d.draws[0].drawDate).toLocaleDateString('pl-PL');
   document.getElementById(px+'chi').textContent=d.chiPval<0.001?'<0.001':d.chiPval.toFixed(3);
   document.getElementById(px+'sum').textContent=d.medianSum;
-  document.getElementById(px+'ema').textContent=d.sortedEMA.filter(e=>e.trend==='up').length;
+  document.getElementById(px+'mom').textContent=d.topMomentumCount;
   document.getElementById(px+'oe').textContent=d.topOE;
-  renderHotCold(px,d,cfg,isMini);
-  renderOverdue(px,d,cfg,isMini);
+  document.getElementById(px+'dispersion').textContent=d.meanPoissonD;
+  renderUnified(px,d,cfg,isMini);
   renderGap(px,d,cfg);
-  renderEntropy(px,d,cfg,isMini);
   renderOE(px,d,cfg,isMini);
   renderLH(px,d,cfg,isMini);
   renderSumChart(px,d,cfg,isMini);
@@ -1092,88 +1130,90 @@ function render(tab){
   renderLastDigit(px,d,cfg);
   renderChi2(px,d,cfg);
   renderZScore(px,d,cfg,isMini);
+  renderPoisson(px,d,cfg,isMini);
+  renderCV(px,d,cfg,isMini);
+  renderMomentum(px,d,cfg,isMini);
+  renderLastK(px,d,cfg,isMini);
+  renderSeasonal(px,d,cfg,isMini);
+  renderTemporalLag(px,d,cfg);
   renderCoOccur(px,d,cfg,isMini);
   renderRuns(px,d,cfg,isMini);
-  renderEMA(px,d,cfg,isMini);
   renderACF(px,d,cfg);
-  renderBayes(px,d,cfg,isMini);
   renderSparkline(px,d,cfg,isMini);
-  renderComposite(px,d,cfg,isMini);
   renderRollingWindow(px,d,tab,cfg,isMini);
   renderGenerator(tab);
 }
 
-// ══════════════════════════════════════
-// HISTORICAL RENDERS
-// ══════════════════════════════════════
-function renderHotCold(px,d,cfg,isMini){
-  const bCls=isMini?'bmh':'bh';const bCls2=isMini?'bmc':'bc';
-  const exp=d.expectedFreq,sigma=d.sigma;
-  ['hot','cold'].forEach(type=>{
-    const nums=type==='hot'?d.hotNumbers:d.coldNumbers;
-    document.getElementById(px+type).innerHTML=nums.map(([n,f])=>{
-      const z=d.zScores[parseInt(n)];
-      const zCol=Math.abs(z)>2?'color:var(--warning)':Math.abs(z)>1?'color:var(--gold)':'color:var(--td)';
-      return `<div class="num-row">
-        <div class="ball ${type==='hot'?bCls:bCls2}">${n}</div>
-        <div class="ni"><div class="nim">Liczba ${n}</div><div class="nis">freq: ${f} · exp: ${exp.toFixed(1)} · <span style="${zCol}">Z=${z}</span></div></div>
-        <div class="ntags">${ballTag(parseInt(n),cfg)}</div>
-      </div>`;
-    }).join('');
-  });
-}
-function renderOverdue(px,d,cfg,isMini){
-  const bCls=isMini?'bmo':'bo';
-  document.getElementById(px+'overdue').innerHTML=d.overdueNumbers.slice(0,8).map(o=>{
-    const note=o.lastSeen===0?'<span style="color:var(--tm);font-size:.7rem"> (padła w ostatnim losowaniu)</span>':'';
-    const lvl=o.overdueness>2?'🔴':o.overdueness>1?'🟡':'🟢';
-    return `<div class="num-row">
-      <div class="ball ${bCls}">${o.number}</div>
-      <div class="ni"><div class="nim">${lvl} Zaległość: <strong>${o.overdueness.toFixed(1)}σ</strong>${note}</div>
-        <div class="nis">Ostatnio: ${o.lastSeen} los. temu · E[gap]: ${o.expectedGap}</div></div>
-      <div class="ntags">${ballTag(o.number,cfg)}</div>
+// ══════════════════════════════════════════
+// UNIFIED RANKING
+// ══════════════════════════════════════════
+function renderUnified(px,d,cfg,isMini){
+  const top=d.sortedSoftmax.slice(0,15);
+  const maxS=top[0]?.score||1;
+  const ballCls=isMini?'bmc':'bc';
+  const weights=[d.wA,d.wB,d.wC,d.wD,d.wE];
+  const labels=['Global','Momentum','Struct','Pattern','Recency'];
+  const dotColors=['#38bdf8','#22d3a0','#a78bfa','#f59e0b','#f472b6'];
+
+  let html=`<div class="ib ip" style="margin-bottom:12px">
+    Adaptive weights (N=${d.N}): 
+    ${labels.map((l,i)=>`<strong style="color:${dotColors[i]}">${l} ${Math.round(weights[i]*100)}%</strong>`).join(' · ')}
+    <br><span style="font-size:0.68rem;color:var(--tm)">Softmax-normalized probability score. Przy małej próbce ignoruje Chi²/Z-score.</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;">`;
+
+  top.forEach((item,i)=>{
+    const pct=Math.round(item.score/maxS*100);
+    const prob=(item.score*100).toFixed(3);
+    const n=item.number;
+    const freq=d.freqMap[n];
+    const bull=d.momentumScores[n]?.bull||0;
+    const momArrow=bull===3?'↑↑↑':bull===2?'↑↑':bull===1?'↑':'—';
+    const momCol=bull===3?'var(--success)':bull===2?'var(--primary)':'var(--td)';
+    const z=d.zScores[n];
+    html+=`<div class="unif-row">
+      <div style="font-size:0.68rem;color:var(--tm);width:16px;flex-shrink:0;font-family:var(--font-head)">${i+1}</div>
+      <div class="ball ${ballCls}" style="flex-shrink:0">${n}</div>
+      <div style="flex:1;padding:0 8px;min-width:0">
+        <div class="unif-score-bar">
+          <div class="unif-fill" style="width:${pct}%;background:${isMini?'linear-gradient(90deg,#f472b6,#a78bfa)':'linear-gradient(90deg,#38bdf8,#6366f1)'}">
+            ${pct}%
+          </div>
+        </div>
+        <div class="sig-lbl" style="margin-top:2px">
+          P=${prob}% · Z=${z>0?'+':''}${z} · freq=${freq}
+          <span style="color:${momCol};font-weight:700">${momArrow}</span>
+        </div>
+      </div>
+      <div class="score-seg">
+        ${[item.sA,item.sB,item.sC,item.sE].map((s,i2)=>`<div class="score-dot" style="background:${dotColors[i2]};opacity:${0.2+s*0.8}" title="${labels[i2]}=${(s*100).toFixed(0)}%"></div>`).join('')}
+      </div>
     </div>`;
-  }).join('');
+  });
+  html+=`</div>`;
+  document.getElementById(px+'unified').innerHTML=html;
 }
+
+// ══════════════════════════════════════════
+// HISTORICAL RENDERS
+// ══════════════════════════════════════════
 function renderGap(px,d,cfg){
   const maxG=Math.max(...Object.values(d.gapFreq));
   const top=Object.entries(d.gapFreq).sort((a,b)=>b[1]-a[1]).slice(0,8);
   document.getElementById(px+'gap').innerHTML=
-    `<div class="ib ic">Mediana gapu: <strong>${d.sums.length>0?'?':'—'}</strong>. Oczekiwany gap = (M-k+1)/2 ≈ ${((cfg.max-cfg.pick+1)/2).toFixed(1)}</div>`+
+    `<div class="ib ic">Oczekiwany gap = (M-k+1)/2 ≈ ${((cfg.max-cfg.pick+1)/2).toFixed(1)}</div>`+
     top.map(([g,c])=>bar('gap '+g,c/maxG*100,c,'bb')).join('');
-}
-function renderEntropy(px,d,cfg,isMini){
-  const container=document.getElementById(px+'entropy');
-  const entries=(d.unifiedSorted||[]).slice(0,12);
-  if(!entries.length){
-    container.innerHTML='<div class="ib ip">Brak danych do Unified Probability Score.</div>';
-    return;
-  }
-  const maxP=entries[0].p||1;
-  container.innerHTML=
-    `<div class=\"ib ic\">Unified Probability Score — softmax z 5 sygnałów (global, trend, struktura, pattern, recency).</div>`+
-    entries.map(e=>{
-      const pct=(e.p*100).toFixed(2);
-      const bar=Math.max(e.p/maxP*100,4);
-      return `<div class=\"sig-row\">
-        <div class=\"sig-n spos\">${e.number}</div>
-        <div style=\"flex:1;padding:0 8px\">
-          <div class=\"ubar\"><div class=\"ufill\" style=\"width:${bar}%\"></div></div>
-        </div>
-        <span style=\"font-size:.75rem;color:var(--purple);font-weight:700\">${pct}%</span>
-      </div>`;
-    }).join('');
 }
 function renderOE(px,d,cfg,isMini){
   const max=Math.max(...Object.values(d.oeCount));
   document.getElementById(px+'oe-chart').innerHTML=
-    `<div class="ib ic">Oczekiwany rozkład P:N ≈ ${cfg.pick/2}:${cfg.pick/2}. Odchylenia mogą wskazywać bias.</div>`+
+    `<div class="ib ic">Oczekiwany rozkład P:N ≈ ${cfg.pick/2}:${cfg.pick/2}.</div>`+
     Object.entries(d.oeCount).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>bar(k+' P:N',v/max*100,v,'bpk',true)).join('');
 }
 function renderLH(px,d,cfg,isMini){
   const max=Math.max(...Object.values(d.lhCount));
   document.getElementById(px+'lh-chart').innerHTML=
-    `<div class="ib ic">N=1–${cfg.lowSplit}, W=${cfg.lowSplit+1}–${cfg.max}. Oczekiwany rozkład ≈ ${Math.round(cfg.pick/2)}:${Math.floor(cfg.pick/2)}.</div>`+
+    `<div class="ib ic">N=1–${cfg.lowSplit}, W=${cfg.lowSplit+1}–${cfg.max}.</div>`+
     Object.entries(d.lhCount).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>bar(k+' N:W',v/max*100,v,'btl',true)).join('');
 }
 function renderSumChart(px,d,cfg,isMini){
@@ -1183,14 +1223,12 @@ function renderSumChart(px,d,cfg,isMini){
   const buckets={};
   s.forEach(v=>{const b=Math.floor((v-min)/bw)*bw+min;const lbl=b+'-'+(b+bw-1);buckets[lbl]=(buckets[lbl]||0)+1;});
   const maxB=Math.max(...Object.values(buckets));
-  const med=d.medianSum;
   document.getElementById(px+'sum-chart').innerHTML=
-    `<div class="sum-hl ${isMini?'shp':'shb'}">Mediana: ${med} · Zakres: ${min}–${max} · Opt. zakres: ${cfg.sumMin}–${cfg.sumMax}</div>`+
+    `<div class="sum-hl ${isMini?'shp':'shb'}">Mediana: ${d.medianSum} · Zakres: ${min}–${max} · Opt. zakres: ${cfg.sumMin}–${cfg.sumMax}</div>`+
     Object.entries(buckets).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([k,v])=>bar(k,v/maxB*100,v,isMini?'bpk':'bb',true)).join('');
 }
 function renderDecades(px,d,cfg,isMini){
   const total=Object.values(d.decFreq).reduce((a,b)=>a+b,0);
-  const max=Math.max(...Object.values(d.decFreq));
   document.getElementById(px+'dec').innerHTML=`<div class="dec-grid${cfg.pick===5?' dec4':''}">
     ${cfg.decRanges.map(r=>{const v=d.decFreq[r]||0;const pct=total>0?(v/total*100).toFixed(1):0;
       return `<div class="dc"><div class="dlab">${r}</div><div class="dval${isMini?' mt':''}">${v}</div><div class="dpct">${pct}%</div></div>`;
@@ -1207,63 +1245,183 @@ function renderLastDigit(px,d,cfg){
     Object.entries(d.ldFreq).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([k,v])=>bar('…'+k,v/max*100,v,'bg')).join('');
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // STATISTICAL RENDERS
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function renderChi2(px,d,cfg){
   const p=d.chiPval;
-  const [vrd,cls]=p<0.01?['🔴 Silny bias — p<0.01 (statystycznie istotny)','cv-alert']:
-                  p<0.05?['🟡 Umiarkowany bias — p<0.05 (marginalnie istotny)','cv-warn']:
-                         ['🟢 Brak dowodów na bias — p≥0.05','cv-ok'];
+  const [vrd,cls]=p<0.01?['🔴 Silny bias — maszyna NIE jest idealnie losowa (p<0.01)','cv-alert']:
+                  p<0.05?['🟡 Umiarkowany bias (p<0.05) — warto obserwować','cv-warn']:
+                         ['🟢 Brak dowodów na bias (p≥0.05)','cv-ok'];
   const N=d.N,sb=sampleBadge(N,cfg.sampleNeeds.chi2,'Chi²');
   document.getElementById(px+'chi2').innerHTML=
     `<div class="chi-m">
-      <div class="chi-v">χ² = ${d.chiStat}</div>
-      <div class="chi-s">df=${d.df} | p=${p<0.001?'<0.001':p.toFixed(4)} | N=${N} | H₀: rozkład jednostajny ${sb}</div>
+      <div class="chi-v">χ²=${d.chiStat}</div>
+      <div class="chi-s">df=${d.df} · p=${p<0.001?'<0.001':p.toFixed(4)} · N=${N} ${sb}</div>
       <div class="chi-verdict ${cls}">${vrd}</div>
     </div>
-    <div class="ib ip">Oczekiwana częstość: E[f] = N·k/M = ${d.expectedFreq} | σ = ${d.sigma} | df = M−1 = ${d.df}</div>
+    <div class="ib ip">E[freq]=N·k/M = ${d.expectedFreq} · σ=${d.sigma} · df=M−1=${d.df}</div>
     <div class="ib ${p<0.05?'iw':'ig'}">
-      ${p<0.05?`⚠️ Statystycznie istotne. Jednak CHI² detektuje OGÓŁEM bias, nie mówi które liczby. Sprawdź Z-score i Runs.`:
-               `✅ Brak podstaw do hipotezy nielosowości. Dalsze anomalie mogą być szumem statystycznym.`}
+      ${p<0.05?`⚠️ Przy ${N} losowaniach to odchylenie jest statystycznie istotne.`:`✅ Brak podstaw do odrzucenia hipotezy losowości.`}
     </div>`;
 }
 function renderZScore(px,d,cfg,isMini){
   const N=d.N,sb=sampleBadge(N,cfg.sampleNeeds.zscore,'Z-score');
-  const crit1=1.96,crit2=2.58;
   document.getElementById(px+'zscore').innerHTML=
-    `<div class="ib ic">Próg istotności: |Z|>1.96 (p<0.05) ⭐ |Z|>2.58 (p<0.01) ⭐⭐ ${sb}</div>
-     <div class="ib ig">σ(binomial)=${d.sigma} | Expected freq=${d.expectedFreq} per ${N} draws</div>`+
+    `<div class="ib ic">σ=${d.sigma} · Istotność: |Z|>1.96 (p<0.05) ${sb}</div>`+
     d.sortedZ.slice(0,10).map(({number,z,freq})=>{
-      const cls=Math.abs(z)>crit2?'spos':Math.abs(z)>crit1?'sig-n':'sneu';
-      const stars=Math.abs(z)>2.58?'⭐⭐':Math.abs(z)>1.96?'⭐':'';
-      const status=Math.abs(z)>crit2?'Znaczące':Math.abs(z)>crit1?'Istotne':'Typowe';
+      const cls=Math.abs(z)>2?'spos':Math.abs(z)>1?'sig-n':'sneu';
+      const stars=Math.abs(z)>3?'★★★':Math.abs(z)>2?'★★':Math.abs(z)>1?'★':'';
       return `<div class="sig-row">
         <div class="sig-n ${cls}">${number}</div>
-        <div style="flex:1;padding:0 8px">
-          <div style="font-size:.8rem;font-weight:600;color:var(--text)">Z = ${z>0?'+':''}${z.toFixed(3)} ${stars}</div>
-          <div class="sig-lbl">freq=${freq} vs exp=${d.expectedFreq} | ${status}</div>
+        <div style="flex:1;padding:0 7px">
+          <div style="font-size:0.78rem;font-weight:700;font-family:var(--font-head)">Z = ${z>0?'+':''}${z}</div>
+          <div class="sig-lbl">freq=${freq} · exp=${d.expectedFreq}</div>
+        </div>
+        <span class="sig-star">${stars}</span>
+      </div>`;
+    }).join('');
+}
+function renderPoisson(px,d,cfg,isMini){
+  const expectedD=cfg.expectedD;
+  const mean=d.meanPoissonD;
+  const devPct=((mean/expectedD-1)*100).toFixed(1);
+  const [cls,verdict]=mean<expectedD*0.7?['pdv-reg','↓ Regularność — zbyt mała wariancja przerw']:
+    mean>expectedD*1.3?['pdv-clust','↑ Klastrowanie — zbyt duża wariancja przerw']:
+    ['pdv-ok','✅ Zgodny z oczekiwaniami Poisson'];
+  document.getElementById(px+'poisson').innerHTML=
+    `<div class="pd-meter">
+      <div class="pd-val">D̄ = ${mean}</div>
+      <div class="pd-label">E[D] = M/k = ${expectedD.toFixed(2)} · odchylenie: ${devPct}%</div>
+      <div class="chi-verdict ${cls}">${verdict}</div>
+    </div>
+    <div class="ib ite">D = Var(gap)/Mean(gap). Niezależny od Z-score — mierzy strukturę przerw, nie częstość. D << E[D]: mechaniczna regularność.</div>`+
+    d.sortedPoissonD.slice(0,8).map(({number,D})=>{
+      const pct=Math.min(D/expectedD/2*100,100);
+      const col=D<expectedD*0.7?'var(--primary)':D>expectedD*1.3?'var(--warning)':'var(--success)';
+      return `<div class="sig-row">
+        <div class="sig-n ${D<expectedD*0.7?'spos':'sneu'}">${number}</div>
+        <div style="flex:1;padding:0 7px">
+          <div style="font-size:0.78rem;font-weight:700;color:${col};font-family:var(--font-head)">D = ${D}</div>
+          <div class="sig-lbl">E[D]=${expectedD.toFixed(2)} · ratio=${(D/expectedD).toFixed(2)}</div>
         </div>
       </div>`;
     }).join('');
+}
+function renderCV(px,d,cfg,isMini){
+  document.getElementById(px+'cv').innerHTML=
+    `<div class="ib ite">CV = σ_gap/μ_gap. Czyste Poisson: CV ≈ 1. CV < 0.8: mechaniczna regularność. CV > 1.2: klastrowanie. Niezależne od Z-score.</div>`+
+    d.sortedCV.slice(0,10).map(({number,cv})=>{
+      const pct=Math.min(cv/2*100,100);
+      const fillCls=cv<0.8?'cv-fill-low':cv<1.2?'cv-fill-norm':'cv-fill-high';
+      const col=cv<0.8?'var(--primary)':cv<1.2?'var(--purple)':'var(--warning)';
+      const label=cv<0.8?'↓ regularne':cv<1.2?'≈ normalne':'↑ klastrowe';
+      return `<div class="cv-row">
+        <div class="sig-n sneu" style="font-size:0.7rem;font-family:var(--font-head)">${number}</div>
+        <div class="cv-bar" style="flex:1;margin:0 8px">
+          <div class="cv-fill ${fillCls}" style="width:${pct}%"></div>
+          <div class="cv-mark" style="left:50%"></div>
+        </div>
+        <div class="cv-val" style="color:${col}">${cv}</div>
+        <div style="font-size:0.63rem;color:var(--tm);width:52px;font-family:var(--font-head)">${label}</div>
+      </div>`;
+    }).join('');
+}
+function renderMomentum(px,d,cfg,isMini){
+  const top=d.sortedMomentum.slice(0,8);
+  document.getElementById(px+'momentum').innerHTML=
+    `<div class="ib iw">⚠️ Triple EMA α=0.30/0.15/0.05. Reaguje na ostatnie 3–20 losowań. Brak podstaw teoretycznych w losowaniach.</div>`+
+    top.map(e=>{
+      const arrows=['↓','↓','↑','↑↑','↑↑↑'];
+      const cols={0:'var(--danger)',1:'var(--danger)',2:'var(--td)',3:'var(--primary)',4:'var(--success)'};
+      // bull 0–3
+      const arrowStr=e.bull===3?'↑↑↑':e.bull===2?'↑↑':e.bull===1?'↑':'—';
+      const col=e.bull===3?'var(--success)':e.bull===2?'var(--primary)':e.bull===1?'var(--td)':'var(--danger)';
+      return `<div class="mom-row">
+        <div class="ball ${isMini?'bmc':'bc'}" style="width:28px;height:28px;font-size:0.7rem">${e.number}</div>
+        <div style="flex:1;padding:0 8px">
+          <div style="font-size:0.78rem;font-weight:800;color:${col};font-family:var(--font-head)">${arrowStr} bull=${e.bull}/3</div>
+          <div class="sig-lbl">F=${(e.fast*100).toFixed(2)}% M=${(e.mid*100).toFixed(2)}% S=${(e.slow*100).toFixed(2)}%</div>
+        </div>
+        <div style="font-size:0.7rem;color:${col};font-family:var(--font-mono);font-weight:700">${e.score>0?'+':''}${(e.score*1000).toFixed(2)}‰</div>
+      </div>`;
+    }).join('');
+}
+function renderLastK(px,d,cfg,isMini){
+  const top=d.sortedRecency.slice(0,8);
+  document.getElementById(px+'lastk').innerHTML=
+    `<div class="ib ic">Niezależna analiza w oknach last-10/20/50/100. "Gorące TERAZ" vs historycznie.</div>`+
+    top.map(({number,data})=>{
+      const ballCls=isMini?'bmz':'bz';
+      return `<div class="num-row">
+        <div class="ball ${ballCls}">${number}</div>
+        <div class="ni">
+          <div class="recency-grid">
+            ${[10,20,50,100].map(k=>{
+              const kk=Math.min(k,d.N);
+              const dd=data[k]||{freq:0,exp:0,z:0};
+              const col=dd.z>1.5?'var(--success)':dd.z>0?'var(--primary)':dd.z<-1.5?'var(--danger)':'var(--td)';
+              return `<div class="rk-cell">
+                <div class="rk-label">L-${k}</div>
+                <div class="rk-val" style="color:${col}">${dd.freq}</div>
+                <div class="rk-exp">Z=${dd.z>0?'+':''}${dd.z}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+}
+function renderSeasonal(px,d,cfg,isMini){
+  const sData=d.seasonalData;
+  if(!sData||sData.length<4){document.getElementById(px+'seasonal').innerHTML='<div class="ib iw">⚠️ Za mało danych dla analizy sezonowej (min. 4 kwartały).</div>';return;}
+  document.getElementById(px+'seasonal').innerHTML=
+    `<div class="ib ip">Podział na 4 kwartały chronologiczne. Chi² wewnątrz każdego kwartału. Nierówne p-values wskazują na sezonowy bias (np. po serwisie maszyny).</div>`+
+    `<div class="season-grid">`+
+    sData.map(s=>{
+      const [vcls,col]=s.p<0.05?['cv-alert','var(--danger)']:s.p<0.1?['cv-warn','var(--warning)']:['cv-ok','var(--success)'];
+      return `<div class="sq">
+        <div class="sq-label">Q${s.q} (n=${s.n})</div>
+        <div class="sq-chi" style="color:${col}">${s.chi}</div>
+        <div class="sq-p" style="color:${col}">p=${s.p<0.001?'<0.001':s.p.toFixed(3)}</div>
+      </div>`;
+    }).join('')+`</div>`+
+    `<div class="ib ${sData.filter(s=>s.p<0.05).length>=2?'iw':'ig'}" style="margin-top:8px">
+      ${sData.filter(s=>s.p<0.05).length>=2?`⚠️ ${sData.filter(s=>s.p<0.05).length}/4 kwartały mają istotny bias. Możliwy serwis maszyny!`:'✅ Brak sezonowego biasu — rozkład stabilny w czasie.'}
+    </div>`;
+}
+function renderTemporalLag(px,d,cfg){
+  const data=d.topTLagSorted;
+  const expBase=(cfg.pick/cfg.max)*(cfg.pick/cfg.max);
+  document.getElementById(px+'templag').innerHTML=
+    `<div class="ib ip">Czy liczba A w t koreluje z B w t+lag? E[ratio]≈1. Ratio >> 1 sugeruje mechaniczną zależność między losowaniami.</div>`+
+    (data.length?data.slice(0,10).map(item=>{
+      const col=item.ratio>1.5?'var(--warning)':item.ratio>1.2?'var(--primary)':'var(--td)';
+      return `<div class="tlag-row">
+        <div class="tlag-pair">${item.pair}</div>
+        <div style="font-size:0.68rem;color:var(--tm);width:36px;font-family:var(--font-head)">lag${item.lag}</div>
+        <div style="flex:1;padding:0 7px">
+          <div class="ubar"><div class="ufill" style="width:${Math.min(item.ratio*33,100)}%;background:${item.ratio>1.5?'linear-gradient(90deg,#f59e0b,#ef4444)':'linear-gradient(90deg,#38bdf8,#6366f1)'}"></div></div>
+        </div>
+        <div class="tlag-val" style="color:${col}">${item.ratio}×</div>
+      </div>`;
+    }).join(''):'<div class="ib ig">✅ Brak silnych zależności opóźnionych.</div>');
 }
 function renderCoOccur(px,d,cfg,isMini){
   const N=d.N;
   const expCoOccur=N*cfg.pick*(cfg.pick-1)/(cfg.max*(cfg.max-1));
   const sb=sampleBadge(N,cfg.sampleNeeds.markov,'Ko-okurencja');
   document.getElementById(px+'markov').innerHTML=
-    `<div class="ib ip">Pary liczb w jednym losowaniu | Oczekiwana (uniform)≈${expCoOccur.toFixed(1)}× | ${N} draws ${sb}</div>`+
-    `<div class="ib ic">Nadwyżka >+30% może sugerować mechaniczne klasterowanie maszyny.</div>`+
+    `<div class="ib ip">Oczekiwana ko-okurencja pary ≈ ${expCoOccur.toFixed(1)} razy / ${N} losowań ${sb}</div>`+
     `<div class="mk-grid">`+
     d.topMarkov.slice(0,12).map(([pair,cnt])=>{
       const delta=cnt-expCoOccur;
       const pct=((cnt/expCoOccur-1)*100).toFixed(0);
-      const col=Math.abs(delta)>expCoOccur*0.5?'color:var(--warning)':delta>0?'color:var(--success)':'color:var(--danger)';
-      const icon=Math.abs(delta)>expCoOccur*0.5?'⚠️':delta>0?'📈':'📉';
+      const col=delta>0?'color:var(--success)':'color:var(--danger)';
       return `<div class="mk-card">
         <div class="mk-pair">${pair}</div>
         <div class="mk-prob">${cnt}×</div>
-        <div class="mk-delta" style="${col}">${icon} ${delta>0?'+':''}${pct}%</div>
+        <div class="mk-delta" style="${col}">${delta>0?'+':''}${pct}%</div>
       </div>`;
     }).join('')+`</div>`;
 }
@@ -1271,101 +1429,44 @@ function renderRuns(px,d,cfg,isMini){
   const extremes=Object.entries(d.runsData).filter(([,r])=>Math.abs(r.z)>1.5).sort((a,b)=>Math.abs(b[1].z)-Math.abs(a[1].z)).slice(0,6);
   const sb=sampleBadge(d.N,cfg.sampleNeeds.runs,'Runs');
   document.getElementById(px+'runs').innerHTML=
-    `<div class="ib ip">Runs Test: Z>+2 = zbyt regularne (rytm) | Z<-2 = klastrowanie | 0 = losowe ${sb}</div>`+
-    `<div class="ib ic">Liczba serii R vs oczekiwana μ_R; wysoki Z = zbyt mało serii, niski Z = zbyt wiele.</div>`+
+    `<div class="ib ip">Z>+2: zbyt regularne (rytmiczne). Z<-2: klastrowanie. ${sb}</div>`+
     `<div class="runs-grid">`+
     extremes.map(([n,r])=>{
       const col=r.z>2?'var(--success)':r.z<-2?'var(--danger)':'var(--td)';
-      const pattern=r.z>2?'▮▮ Muy regular':r.z<-2?'▪▫▪▫ Clustered':'▪▫▪▪▫ Random';
       return `<div class="rc">
         <div class="rc-val" style="color:${col}">${n}</div>
-        <div class="rc-lbl">Z=${r.z>0?'+':''}${r.z.toFixed(2)}</div>
-        <div class="rc-lbl">${pattern} | R=${r.R}/μ=${r.muR.toFixed(0)}</div>
+        <div class="rc-lbl">Z=${r.z>0?'+':''}${r.z}</div>
+        <div class="rc-lbl">${r.z>2?'rytmiczne':r.z<-2?'klastrowe':'normalne'}</div>
       </div>`;
     }).join('')+`</div>`+
-    (extremes.length===0?'<div class="ib ig">✅ Brak anomalii w seriach. Pojawienia są statystycznie losowe.</div>':'');
-}
-function renderEMA(px,d,cfg,isMini){
-  const up=d.sortedEMA.filter(e=>e.trend==='up').slice(0,6);
-  const dn=d.sortedEMA.filter(e=>e.trend==='down').slice(0,4);
-  const sb=sampleBadge(d.N,cfg.sampleNeeds.ema,'EMA');
-  document.getElementById(px+'ema-chart').innerHTML=
-    `<div class="ib iw">⚠️ EMA pożyczone z finansów — brak podstaw teoretycznych w losowaniach. Traktuj jako obserwację, nie predykcję. ${sb}</div>`+
-    up.map(e=>`<div class="ema-row">
-      <div class="ball bc" style="width:28px;height:28px;font-size:.72rem">${e.number}</div>
-      <div style="flex:1;padding:0 8px"><div class="trend-up">↑ Trend rosnący</div>
-        <div class="sig-lbl">Fast(α=0.30): ${(e.fast*100).toFixed(2)}% | Slow(α=0.05): ${(e.slow*100).toFixed(2)}% | Δ: +${(e.diff*1000).toFixed(1)}‰</div></div>
-    </div>`).join('')+
-    dn.map(e=>`<div class="ema-row">
-      <div class="ball bo" style="width:28px;height:28px;font-size:.72rem">${e.number}</div>
-      <div style="flex:1;padding:0 8px"><div class="trend-dn">↓ Trend malejący</div>
-        <div class="sig-lbl">Fast(α=0.30): ${(e.fast*100).toFixed(2)}% | Slow(α=0.05): ${(e.slow*100).toFixed(2)}% | Δ: ${(e.diff*1000).toFixed(1)}‰</div></div>
-    </div>`).join('')+
-    (up.length===0&&dn.length===0?'<div class="ib ig">✅ Żadna liczba nie wykazuje wyraźnego trendu. Rozkład może być stabilny.</div>':'');
+    (extremes.length===0?'<div class="ib ig">✅ Żadna liczba nie wykazuje istotnej nielosowości serii.</div>':'');
 }
 function renderACF(px,d,cfg){
   const acf=d.acfMean;
   const maxAbs=Math.max(...acf.map(Math.abs),0.01);
-  const sigLevel=parseFloat((1.96/Math.sqrt(d.N)).toFixed(3));
-  const sigBars=acf.filter(r=>Math.abs(r)>sigLevel).length;
+  const sigLevel=(1.96/Math.sqrt(d.N)).toFixed(3);
+  const sigBars=acf.filter(r=>Math.abs(r)>parseFloat(sigLevel)).length;
   document.getElementById(px+'acf').innerHTML=
-    `<div class="ib ${sigBars>2?'iw':'ig'}"><strong>Autokorelacja</strong> (PAC) lagi 1–15 | 95% próg: |r|>${sigLevel} | Istotnych: ${sigBars}/15 ${sigBars>2?'⚠️ PERIODYCZNOŚĆ':'✅ Brak'}</div>`+
-    `<div class="ib ic">r>0 = pojawienia razem | r<0 = rzadko razem | Wysokie |r| = możliwa nielosowość</div>`+
+    `<div class="ib ${sigBars>2?'iw':'ig'}">Próg istotności (95%): |r|>${sigLevel} · Istotnych lagów: ${sigBars}/15 ${sigBars>2?'⚠️ Możliwa periodyczność':'✅ Brak periodyczności'}</div>`+
     `<div class="acf-bars">`+
     acf.map((r,i)=>{
       const h=Math.abs(r)/maxAbs*100;
       const cls=r>=0?'acf-pos':'acf-neg';
-      const sig=Math.abs(r)>sigLevel;
-      return `<div class="acf-bar ${cls}" style="height:${Math.max(h,2)}%;opacity:${sig?1:0.4}" title="lag ${i+1}: r=${r.toFixed(3)}"></div>`;
+      const sig=Math.abs(r)>parseFloat(sigLevel);
+      return `<div class="acf-bar ${cls}" style="height:${Math.max(h,2)}%;opacity:${sig?1:0.4}" title="lag ${i+1}: r=${r}"></div>`;
     }).join('')+
-    `</div><div class="acf-label"><span>lag 1</span><span>lag 8</span><span>lag 15</span></div>`+
-    `<div style="margin-top:10px;font-size:.68rem;color:var(--tm);line-height:1.8;display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:3px">`+
-    acf.map((r,i)=>`<span style="color:${Math.abs(r)>sigLevel?'var(--warning)':'var(--tm)'}">lag${i+1}:${r>0?'+':''}${r.toFixed(3)}</span>`).join('')+
-    `</div>`;
-}
-function renderBayes(px,d,cfg,isMini){
-  const sb=sampleBadge(d.N,cfg.sampleNeeds.bayes,'Struktura');
-  const cont=document.getElementById(px+'bayes');
-  const cvEntries=Object.entries(d.gapCV||{})
-    .filter(([,v])=>v!==null)
-    .map(([n,cv])=>({
-      number:parseInt(n),
-      cv,
-      runsZ:d.runsData[n]?.z||0,
-      freq:d.freqMap[n]||0
-    }))
-    .sort((a,b)=>a.cv-b.cv)
-    .slice(0,10);
-
-  const D=d.dispersionGlobal;
-  const ideal=(d.M/d.K).toFixed(1);
-
-  cont.innerHTML=
-    `<div class="ib ip">Rozkład Przerw (Gap CV): D=${D?D.toFixed(2):'—'} (idealnie≈${ideal}). CV<1=regularne, CV>1=klastrowe. ${sb}</div>`+
-    cvEntries.map(e=>{
-      const statusCV=e.cv<0.8?'🟢':e.cv<1.2?'🟡':'🔴';
-      const statusRuns=e.runsZ>1.5?'▲':e.runsZ<-1.5?'▼':'→';
-      return `<div class="ema-row">
-        <div class="sig-n ${e.cv<1?'spos':'sneg'}">${e.number}</div>
-        <div style="flex:1;font-size:.78rem;">
-          <div style="color:var(--text);font-weight:600">${statusCV} CV=${e.cv.toFixed(2)} ${statusRuns} RunsZ=${e.runsZ.toFixed(2)}</div>
-          <div style="color:var(--tm);font-size:.73rem">freq=${e.freq} · ${e.cv<1?'regularny':'klasterowy'} rozkład przerw</div>
-        </div>
-      </div>`;
-    }).join('');
+    `</div><div class="acf-label"><span>lag 1</span><span>8</span><span>15</span></div>`;
 }
 function renderSparkline(px,d,cfg,isMini){
-  const data=d.sparklineData;
-  const nums=d.topForSpark;
+  const data=d.sparklineData,nums=d.topForSpark;
   document.getElementById(px+'sparkline').innerHTML=
     `<div class="ib ic">Okno: ${d.windowSize} losowań · ${Math.ceil(d.N/d.windowSize)} okien · Wykrywa "dryf" maszyny w czasie</div>`+
     `<div class="sparkline-wrap">`+
     nums.map(n=>{
       const windows=data[n];if(!windows?.length)return '';
       const vals=windows.map(w=>w.freq);
-      const maxV=Math.max(...vals,1);
-      const minV=Math.min(...vals);
-      const W=200,H=32,pad=4;
+      const maxV=Math.max(...vals,1),minV=Math.min(...vals);
+      const W=200,H=30,pad=4;
       const pts=vals.map((v,i)=>{
         const x=pad+i*(W-2*pad)/Math.max(vals.length-1,1);
         const y=H-pad-(v-minV)/(maxV-minV||1)*(H-2*pad);
@@ -1377,40 +1478,15 @@ function renderSparkline(px,d,cfg,isMini){
         <div class="spark-num ${isMini?'cb mt':'cb'}">${n}</div>
         <svg class="spark-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
           <polyline points="${pts}" fill="none" stroke="${isMini?'#f472b6':'#38bdf8'}" stroke-width="1.5"/>
-          <line x1="${pad}" x2="${pad}" y1="${pad}" y2="${H-pad}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-          <line x1="${W-pad}" x2="${W-pad}" y1="${pad}" y2="${H-pad}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
         </svg>
         <div class="spark-label"><span class="${trend}">${trendTxt}</span> Z=${d.zScores[n]>0?'+':''}${d.zScores[n]}</div>
       </div>`;
     }).join('')+`</div>`;
 }
-function renderComposite(px,d,cfg,isMini){
-  const top=(d.unifiedSorted||[]).slice(0,12);
-  if(!top.length){
-    document.getElementById(px+'composite').innerHTML=
-      `<div class=\"ib ip\">Unified Probability Score — brak danych.</div>`;
-    return;
-  }
-  const maxP=top[0].p||1;
-  document.getElementById(px+'composite').innerHTML=
-      `<div class=\"ib ip\"><strong>Unified Probability Score</strong> — komponenty: Z-score, EMA momentum, CV przerw, ACF, Recency | Wagi adaptacyjne na podstawie N | Suma=1.</div>`+
-      `<div class=\"ib ic\">Każda liczba ma %: wyższa = lepiej spełnia kryteria wielowymiarowe (ale NIE gwarancja!).</div>`+
-    top.map((item,idx)=>{
-      const pct=Math.round(item.p/maxP*100);
-      const pctReal=Math.round(item.p*10000)/100;
-      return `<div class=\"sig-row\">
-        <div class=\"sig-n spos\">#${idx+1}</div>
-        <div style=\"flex:1;padding:0 8px\">\n          <div style=\"font-weight:600;color:var(--text)\">${item.number}</div>
-          <div class=\"ubar\"><div class=\"ufill\" style=\"width:${pct}%\"></div></div>
-        </div>
-        <span style=\"font-size:.73rem;color:var(--purple);font-weight:700\">${pctReal}%</span>
-      </div>`;
-    }).join('');
-}
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // ROLLING WINDOW
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function renderRollingWindow(px,d,tab,cfg,isMini){
   const el=document.getElementById(px+'rolling');
   el.innerHTML=`
@@ -1422,19 +1498,15 @@ function renderRollingWindow(px,d,tab,cfg,isMini){
         <option value="150">150 losowań</option>
         <option value="200">200 losowań</option>
       </select>
-      <button class="btn-a${isMini?' mt':''}" style="padding:8px 16px;font-size:.82rem" onclick="computeRW('${tab}')">🔄 Porównaj</button>
+      <button class="btn-a${isMini?' mt':''}" style="padding:7px 14px;font-size:0.78rem" onclick="computeRW('${tab}')">🔄 Porównaj</button>
     </div>
     <div id="${px}rw-result"></div>`;
 }
 function computeRW(tab){
   const d=state[tab].analysis;if(!d)return;
-  const isMini=tab==='mini';
-  const px=isMini?'m-':'l-';
-  const cfg=CFG[tab];
+  const isMini=tab==='mini',px=isMini?'m-':'l-',cfg=CFG[tab];
   const w=parseInt(document.getElementById(px+'rwSel').value);
   if(d.N<w*2){document.getElementById(px+'rw-result').innerHTML=`<div class="ib ired">❌ Za mało danych. Potrzebujesz min. ${w*2} losowań dla okna ${w}.</div>`;return;}
-  const sigma=d.sigma;
-  const exp=d.expectedFreq;
   const results=[];
   for(let n=1;n<=d.M;n++){
     const recentDraws=d.draws.slice(0,w);
@@ -1443,25 +1515,22 @@ function computeRW(tab){
     const freqO=oldDraws.filter(dr=>dr.numbers.includes(n)).length;
     const expW=w*cfg.pick/cfg.max;
     const sigW=Math.sqrt(w*(cfg.pick/cfg.max)*(1-cfg.pick/cfg.max));
-    const zR=(freqR-expW)/sigW;
-    const zO=(freqO-expW)/sigW;
-    const deltaZ=zR-zO;
-    results.push({n,freqR,freqO,zR:parseFloat(zR.toFixed(2)),zO:parseFloat(zO.toFixed(2)),deltaZ:parseFloat(deltaZ.toFixed(2))});
+    const zR=(freqR-expW)/sigW,zO=(freqO-expW)/sigW;
+    results.push({n,freqR,freqO,zR:parseFloat(zR.toFixed(2)),zO:parseFloat(zO.toFixed(2)),deltaZ:parseFloat((zR-zO).toFixed(2))});
   }
   results.sort((a,b)=>Math.abs(b.deltaZ)-Math.abs(a.deltaZ));
   const top=results.slice(0,12);
   const maxDelta=Math.max(...top.map(r=>Math.abs(r.deltaZ)),0.1);
   document.getElementById(px+'rw-result').innerHTML=
     `<div class="ib ig">✅ Porównanie: ostatnie ${w} vs poprzednie ${w} losowań · Duże ΔZ sugeruje zmianę biasu maszyny w czasie.</div>`+
-    `<div style="font-size:.75rem;color:var(--td);margin-bottom:10px">Format: Z(nowe) | Z(stare) → ΔZ</div>`+
     top.map(r=>{
       const col=r.deltaZ>0?'delta-pos':r.deltaZ<0?'delta-neg':'delta-neu';
       const bar_pct=Math.abs(r.deltaZ)/maxDelta*100;
       return `<div class="delta-row">
         <div class="sig-n ${r.deltaZ>1?'spos':r.deltaZ<-1?'sneg':'sneu'}">${r.n}</div>
-        <div style="flex:1;padding:0 9px">
+        <div style="flex:1;padding:0 8px">
           <div class="ubar">
-            <div style="height:100%;width:${bar_pct}%;background:${r.deltaZ>0?'linear-gradient(90deg,#10b981,#38bdf8)':'linear-gradient(90deg,#f43f5e,#f59e0b)'};border-radius:2px"></div>
+            <div style="height:100%;width:${bar_pct}%;background:${r.deltaZ>0?'linear-gradient(90deg,#22d3a0,#38bdf8)':'linear-gradient(90deg,#f43f5e,#f59e0b)'};border-radius:2px"></div>
           </div>
           <div class="sig-lbl">Z_nowe=${r.zR>0?'+':''}${r.zR} · Z_stare=${r.zO>0?'+':''}${r.zO} · freq: ${r.freqR}→${r.freqO}</div>
         </div>
@@ -1470,27 +1539,22 @@ function computeRW(tab){
     }).join('');
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // GENERATOR
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function renderGenerator(tab){
   const isMini=tab==='mini',px=isMini?'m-':'l-',cfg=CFG[tab];
-  document.getElementById(px.slice(0,-1)+'-gen').innerHTML=`
+  const genEl=document.getElementById(px+'gen');
+  if(!genEl){console.error('Generator element not found: '+px+'gen');return;}
+  genEl.innerHTML=`
     <div class="gen-title${isMini?' mt':''}">✨ Generator Kombinacji</div>
-    <div class="sh" style="margin-bottom:20px;"><div class="si${isMini?' mt':''}">📊</div><h2>Dashboard Metod Generacji</h2><div class="sl"></div></div>
-    <div class="agrid" style="margin-bottom:24px;">
-      ${Object.entries(METHOD_DESC).map(([k,desc])=>`
-        <div class="glass ac">
-          <div class="act"><span>${k==='prob'?'🎯':k==='momentum'?'📡':k==='structural'?'🔬':k==='rolling'?'🔄':'🎲'}</span><strong>${k==='prob'?'Probability Weighted':k==='momentum'?'Momentum':k==='structural'?'Structural':k==='rolling'?'Adaptive Rolling':'Diversity Max'}</strong></div>
-          <div class="ib ig">${desc}</div>
-        </div>
-      `).join('')}
-    </div>
     <div class="mrow" id="${px}methods">
       ${Object.entries(METHOD_DESC).map(([k,desc])=>`
-        <button class="mbtn${k==='prob'?(isMini?' am':' al'):''}" onclick="selMethod('${tab}','${k}',this)">${k==='prob'?'🎯 Probability Weighted':k==='momentum'?'📡 Momentum':k==='structural'?'🔬 Structural':k==='rolling'?'🔄 Adaptive Rolling':k==='diversity'?'🎲 Diversity Max':'Unknown'}</button>`).join('')}
+        <button class="mbtn${k==='probability'?(isMini?' am':' al'):''}" onclick="selMethod('${tab}','${k}',this)">${
+          k==='probability'?'🎯 Probability':k==='momentum'?'📡 Momentum':k==='structural'?'🔬 Structural':k==='adaptive'?'🔄 Adaptive':'🎲 Diversity'
+        }</button>`).join('')}
     </div>
-    <div class="ib ip" id="${px}method-desc">${METHOD_DESC['prob']}</div>
+    <div class="ib ip" id="${px}method-desc">${METHOD_DESC['probability']}</div>
     <div class="fbox">
       <div class="ftitle">🎛 Filtry Statystyczne</div>
       <div class="fgrid">
@@ -1500,19 +1564,26 @@ function renderGenerator(tab){
         <div class="chk${isMini?' mt':''}"><input type="checkbox" id="${px}fCons"><label for="${px}fCons">Min. 1 para sąsiednia</label></div>
         <div class="chk${isMini?' mt':''}"><input type="checkbox" id="${px}fLD"><label for="${px}fLD">Brak 3+ tej samej cyfry</label></div>
         <div class="chk${isMini?' mt':''}"><input type="checkbox" id="${px}fDec"><label for="${px}fDec">Brak 4+ z tej samej dziesiątki</label></div>
+        <div class="chk${isMini?' mt':''}"><input type="checkbox" id="${px}fMomentum"><label for="${px}fMomentum">Min. 2 bull ↑↑</label></div>
       </div>
       <div class="fsel-g">
         <div><div class="fl">Układ P:N</div>
           <select id="${px}oeRatio">
             <option value="any">Dowolny</option>
-            ${isMini?'<option value="3:2" selected>3P:2N</option><option value="2:3">2P:3N</option><option value="4:1">4P:1N</option><option value="1:4">1P:4N</option>':
-                     '<option value="3:3" selected>3P:3N</option><option value="2:4">2P:4N</option><option value="4:2">4P:2N</option><option value="1:5">1P:5N</option>'}
+            ${isMini?'<option value="3:2" selected>3P:2N</option><option value="2:3">2P:3N</option><option value="4:1">4P:1N</option>':
+                     '<option value="3:3" selected>3P:3N</option><option value="2:4">2P:4N</option><option value="4:2">4P:2N</option>'}
           </select></div>
         <div><div class="fl">Układ N:W</div>
           <select id="${px}lhRatio">
             <option value="any" selected>Dowolny</option>
             ${isMini?'<option value="3:2">3N:2W</option><option value="2:3">2N:3W</option>':
                      '<option value="3:3">3N:3W</option><option value="2:4">2N:4W</option><option value="4:2">4N:2W</option>'}
+          </select></div>
+        <div><div class="fl">Poisson D</div>
+          <select id="${px}fPoissonD">
+            <option value="any">Dowolny</option>
+            <option value="low">D < E[D] (regularne)</option>
+            <option value="normal">D ≈ E[D] (normalne)</option>
           </select></div>
       </div>
       <div class="sr">
@@ -1522,7 +1593,7 @@ function renderGenerator(tab){
         <input type="number" id="${px}sMax" value="${cfg.sumMax}">
       </div>
       <div class="threshold-wrap">
-        <label>Composite score ≥</label>
+        <label>P-score ≥</label>
         <input type="range" id="${px}threshold" min="0" max="100" value="0" oninput="document.getElementById('${px}thVal').textContent=this.value+'%'">
         <span class="threshold-val" id="${px}thVal">0%</span>
       </div>
@@ -1554,97 +1625,58 @@ function selMethod(tab,method,btn){
   document.getElementById(px+'method-desc').innerHTML=METHOD_DESC[method]||'';
 }
 
-// ══════════════════════════════════════
-// SOURCE POOL (w/ greedy Markov)
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
+// GENERATOR SOURCE POOLS
+// ══════════════════════════════════════════
 function getSource(tab){
-  const d=state[tab].analysis;
-  if(!d)return null;
-  const M=d.M;
+  const d=state[tab].analysis,m=state[tab].method,cfg=CFG[tab];
+  const px=tab==='lotto'?'l-':'m-';
+  const threshold=parseInt(document.getElementById(px+'threshold')?.value||0)/100;
+  const maxScore=d.sortedSoftmax[0]?.score||1;
 
-  if(state[tab].method==='prob'){
-    return Object.entries(d.unifiedProb).map(([n,p])=>({
-      number:parseInt(n),weight:p
-    }));
+  if(m==='probability'){
+    // Softmax weighted
+    return Object.entries(d.softmaxScores)
+      .filter(([n,s])=>s/maxScore>=threshold)
+      .map(([n,s])=>({number:parseInt(n),weight:Math.max(s,0.0001)}));
   }
-
-  if(state[tab].method==='momentum'){
-    const arr=[];
-    for(let n=1;n<=M;n++){
-      const mo=d.momentum[n];
-      if(mo?.tripleBull && mo.intensity>0){
-        arr.push({number:n,weight:mo.intensity});
-      }
-    }
-    return arr;
+  if(m==='momentum'){
+    // Triple bull only
+    return d.sortedMomentum.filter(e=>e.bull>=2).slice(0,20)
+      .map(e=>({number:e.number,weight:Math.max(e.score+0.001,0.001)}));
   }
-
-  if(state[tab].method==='structural'){
-    const arr=[];
-    for(let n=1;n<=M;n++){
-      const cv=d.gapCV[n];
-      if(cv===null)continue;
+  if(m==='structural'){
+    // CV < 1 AND Runs z > 0 AND Poisson D ≤ E[D]
+    const expD=cfg.expectedD;
+    const pool=[];
+    for(let n=1;n<=cfg.max;n++){
+      const cv=d.cvMap[n]||1;
       const rz=d.runsData[n]?.z||0;
-      if(cv<1 && rz>0){
-        const w=(1-cv)+rz;
-        if(w>0)arr.push({number:n,weight:w});
+      const pD=d.poissonD[n]||expD;
+      if(cv<1.0&&rz>0&&pD<=expD*1.2){
+        const score=(1-cv)*(rz/3+1)*(1-Math.abs(pD-expD)/expD);
+        pool.push({number:n,weight:Math.max(score,0.001)});
       }
     }
-    return arr;
+    if(pool.length<cfg.pick)return d.sortedSoftmax.slice(0,20).map(e=>({number:e.number,weight:e.score}));
+    return pool;
   }
-
-  if(state[tab].method==='rolling'){
-    const N=d.N;
-    const K=Math.min(100,N);
-    const recent=d.draws.slice(0,K);
-    const hits={};for(let n=1;n<=M;n++)hits[n]=0;
-    recent.forEach(dr=>dr.numbers.forEach(n=>hits[n]++));
-    return Object.entries(hits)
-      .filter(([,c])=>c>0)
-      .map(([n,c])=>({number:parseInt(n),weight:c}));
+  if(m==='adaptive'){
+    // Always last-100 recency
+    return d.sortedRecency.slice(0,20).map(e=>({number:e.number,weight:Math.max(e.z20+2,0.1)}));
   }
-
-  if(state[tab].method==='diversity'){
-    const arr=[];
-    for(let n=1;n<=M;n++){
-      const freq=d.freqMap[n]||0;
+  if(m==='diversity'){
+    // Max temporal uncorrelation + anti-popular (avoid birthday numbers 1-31)
+    const weights=[];
+    for(let n=1;n<=cfg.max;n++){
       const acf=Math.abs(d.acfPerNum[n]||0);
-      const antiPop=1/(1+freq);
-      const antiACF=1-acf;
-      const w=antiPop*antiACF;
-      arr.push({number:n,weight:w});
+      const antiPop=n>31?1.3:n>12?1.0:0.6;
+      const z20=d.lastKData[n][20]?.z||0;
+      weights.push({number:n,weight:Math.max((1-acf)*antiPop*(z20+2),0.001)});
     }
-    return arr;
+    return weights;
   }
-
-  return null;
-}
-
-// Greedy Markov combo builder
-function buildMarkovCombo(d,cfg){
-  const M=cfg.max,K=cfg.pick;
-  // Start with highest composite score number
-  const start=d.sortedComposite[Math.floor(Math.random()*5)].number;
-  const combo=new Set([start]);
-  while(combo.size<K){
-    // find best next number by P(next | any in combo)
-    const scores={};
-    for(let n=1;n<=M;n++){
-      if(combo.has(n))continue;
-      let score=0;
-      combo.forEach(c=>{
-        const key=c+'>'+n;
-        score+=d.markovProb[key]||0;
-      });
-      scores[n]=score+(d.compositeScores[n]||0)*0.3; // slight composite bias
-    }
-    const best=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-    // Pick from top 5 with randomness
-    const pool=best.slice(0,8);
-    const picked=pool[Math.floor(Math.random()*pool.length)];
-    combo.add(parseInt(picked[0]));
-  }
-  return [...combo];
+  return d.sortedSoftmax.map(e=>({number:e.number,weight:e.score}));
 }
 
 function weightedSample(weights,n){
@@ -1652,6 +1684,7 @@ function weightedSample(weights,n){
   const result=[];
   while(result.length<n&&pool.length>0){
     const total=pool.reduce((s,w)=>s+w.weight,0);
+    if(total<=0)break;
     let r=Math.random()*total,idx=pool.length-1;
     for(let i=0;i<pool.length;i++){r-=pool[i].weight;if(r<=0){idx=i;break;}}
     result.push(pool[idx].number);pool.splice(idx,1);
@@ -1659,11 +1692,12 @@ function weightedSample(weights,n){
   return result;
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // FILTERS
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function passesFilters(combo,tab){
   const cfg=CFG[tab],px=tab==='lotto'?'l-':'m-';
+  const d=state[tab].analysis;
   const sorted=[...combo].sort((a,b)=>a-b);
   const sum=combo.reduce((a,b)=>a+b,0);
   const odd=combo.filter(n=>n%2!==0).length;
@@ -1686,7 +1720,7 @@ function passesFilters(combo,tab){
     if(!has)return false;
   }
   if(document.getElementById(px+'fLD').checked){
-    const dc={};combo.forEach(n=>{const d=n%10;dc[d]=(dc[d]||0)+1;});
+    const dc={};combo.forEach(n=>{const d2=n%10;dc[d2]=(dc[d2]||0)+1;});
     if(Math.max(...Object.values(dc))>=3)return false;
   }
   if(document.getElementById(px+'fDec').checked){
@@ -1694,40 +1728,43 @@ function passesFilters(combo,tab){
     combo.forEach(n=>{if(n<=9)dc[0]++;else if(n<=19)dc[1]++;else if(n<=29)dc[2]++;else if(n<=39)dc[3]++;else dc[4]++;});
     if(Math.max(...dc)>=4)return false;
   }
+  if(document.getElementById(px+'fMomentum')?.checked){
+    const minBull=combo.filter(n=>(d.momentumScores[n]?.bull||0)>=2).length;
+    if(minBull<Math.min(2,cfg.pick))return false;
+  }
   const lhEl=document.getElementById(px+'lhRatio');
   if(lhEl&&lhEl.value!=='any'){const[rl,rh]=lhEl.value.split(':').map(Number);if(low!==rl||(cfg.pick-low)!==rh)return false;}
+  // Poisson D filter
+  const pdEl=document.getElementById(px+'fPoissonD');
+  if(pdEl&&pdEl.value!=='any'){
+    const expD=cfg.expectedD;
+    const avgD=combo.reduce((s,n)=>s+(d.poissonD[n]||expD),0)/combo.length;
+    if(pdEl.value==='low'&&avgD>=expD)return false;
+    if(pdEl.value==='normal'&&Math.abs(avgD-expD)>expD*0.3)return false;
+  }
   return true;
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // GENERATE
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function generateCombos(tab){
   if(!state[tab].analysis){toast('❌ Najpierw wykonaj analizę.');return;}
-  const cfg=CFG[tab],d=state[tab].analysis,m=state[tab].method;
+  const cfg=CFG[tab],d=state[tab].analysis;
   const px=tab==='lotto'?'l-':'m-';
-  const count=Math.min(parseInt(document.getElementById(px+'count').value)||6,50);
+  const countEl=document.getElementById(px+'count');
+  if(!countEl){toast('❌ Błąd UI — odśwież analizę.');return;}
+  const count=Math.min(parseInt(countEl.value)||6,50);
+  // Get source pool ONCE outside loop
+  const source=getSource(tab);
+  if(!source||source.length<cfg.pick){
+    toast(`⚠️ Za mało liczb w puli (${source?.length||0}). Zmień metodę lub złagódź filtry threshold.`);return;
+  }
   const combos=[],seen=new Set();
   let attempts=0;
-  while(combos.length<count&&attempts<count*5000){
+  while(combos.length<count&&attempts<count*10000){
     attempts++;
-    let combo;
-    if(m==='markov'){
-      combo=buildMarkovCombo(d,cfg);
-    } else {
-      const source=getSource(tab);
-      if(!source||source.length===0){toast('❌ Za mało danych w puli.');return;}
-      const isWeighted=source[0]&&typeof source[0]==='object';
-      if(!isWeighted&&source.length<cfg.pick){toast('❌ Za mało liczb w puli.');return;}
-      if(isWeighted){combo=weightedSample(source,cfg.pick);}
-      else{
-        combo=[];const used=new Set();let t=0;
-        while(combo.length<cfg.pick&&t<500){t++;
-          const n=source[Math.floor(Math.random()*source.length)];
-          if(!used.has(n)){combo.push(n);used.add(n);}
-        }
-      }
-    }
+    const combo=weightedSample(source,cfg.pick);
     if(!combo||combo.length!==cfg.pick)continue;
     if(combo.some(n=>n<1||n>cfg.max||!Number.isInteger(n)))continue;
     combo.sort((a,b)=>a-b);
@@ -1741,37 +1778,39 @@ function generateCombos(tab){
   saveHistory(combos,tab);
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // RENDER COMBOS
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 function renderCombos(combos,tab){
   const isMini=tab==='mini',px=tab==='lotto'?'l-':'m-',cfg=CFG[tab],d=state[tab].analysis;
-  const maxP=Math.max(...Object.values(d.unifiedProb||{1:1}));
   document.getElementById(px+'combo-grid').innerHTML=combos.map((combo,i)=>{
     const sum=combo.reduce((a,b)=>a+b,0);
     const odd=combo.filter(n=>n%2!==0).length;
     const low=combo.filter(n=>n<=cfg.lowSplit).length;
-    const meanP=combo.reduce((s,n)=>s+(d.unifiedProb[n]||0),0)/combo.length;
-    const scorePct=Math.round(meanP/maxP*100);
+    const cs=combo.reduce((s,n)=>s+(d.softmaxScores[n]||0),0)/combo.length;
+    const maxS=d.sortedSoftmax[0]?.score||1;
+    const csPct=Math.round(cs/maxS*100);
+    const bull3count=combo.filter(n=>(d.momentumScores[n]?.bull||0)===3).length;
+    // Uniqueness heuristic
     const uq=combo.reduce((s,n)=>s+(n>31?1.2:n>12?1.0:0.7),0)/combo.length/1.2;
     const uqPct=Math.round(uq*100);
-    return `<div class=\"ccard${isMini?' mt':''}\">
-      <div class=\"cidx\">Kombinacja ${i+1}</div>
-      <div class=\"cballs\">${combo.map(n=>`<div class=\"cb${isMini?' mt':''}\">${n}</div>`).join('')}</div>
-      <div class=\"cmeta\"><span>Σ ${sum}</span><span>${odd}P:${cfg.pick-odd}N</span><span>${low}N:${cfg.pick-low}W</span></div>
-      <div class=\"cscore\">🎯 Unified: ${scorePct}%</div>
-      <div class=\"ubar\"><div class=\"ufill\" style=\"width:${scorePct}%\"></div></div>
-      <div class=\"cun\">Unikalność (heurystyka): ${uqPct}%</div>
-      <div class=\"ubar\"><div class=\"ufill ufill-u\" style=\"width:${uqPct}%\"></div></div>
-      <button class=\"btn-cp1${isMini?' mt':''}\" onclick=\"copySingle('${combo.join(', ')}')\">📋 Kopiuj</button>
+    return `<div class="ccard${isMini?' mt':''}">
+      <div class="cidx">Kombinacja ${i+1}</div>
+      <div class="cballs">${combo.map(n=>`<div class="cb${isMini?' mt':''}">${n}</div>`).join('')}</div>
+      <div class="cmeta"><span>Σ${sum}</span><span>${odd}P:${cfg.pick-odd}N</span><span>${low}N:${cfg.pick-low}W</span><span>↑↑↑×${bull3count}</span></div>
+      <div class="cscore">🎯 P-score: ${csPct}%</div>
+      <div class="ubar"><div class="ufill" style="width:${csPct}%"></div></div>
+      <div class="cun">Unikalność: ${uqPct}%</div>
+      <div class="ubar"><div class="ufill ufill-u" style="width:${uqPct}%"></div></div>
+      <button class="btn-cp1${isMini?' mt':''}" onclick="copySingle('${combo.join(', ')}')">📋 Kopiuj</button>
     </div>`;
   }).join('');
   document.getElementById(px+'combo-section').style.display='block';
 }
 
-// ══════════════════════════════════════
-// COPY
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
+// COPY + HISTORY + EXPORT + CLEAR
+// ══════════════════════════════════════════
 function copySingle(text){navigator.clipboard.writeText(text).then(()=>toast('✅ Skopiowano!'));}
 function copyAllCombos(tab){
   const px=tab==='lotto'?'l-':'m-';
@@ -1779,12 +1818,8 @@ function copyAllCombos(tab){
   const text=Array.from(cards).map(c=>Array.from(c.querySelectorAll('.cb')).map(b=>b.textContent).join(', ')).join('\n');
   navigator.clipboard.writeText(text).then(()=>toast('✅ Skopiowano wszystkie!'));
 }
-
-// ══════════════════════════════════════
-// HISTORY (localStorage)
-// ══════════════════════════════════════
 function saveHistory(combos,tab){
-  const key='lotto_hist_'+tab;
+  const key='lotto_hist_v2_'+tab;
   let hist=JSON.parse(localStorage.getItem(key)||'[]');
   const entry={ts:new Date().toLocaleString('pl-PL'),combos:combos.map(c=>c.join(','))};
   hist.unshift(entry);hist=hist.slice(0,10);
@@ -1793,7 +1828,7 @@ function saveHistory(combos,tab){
 }
 function loadHistory(tab){
   const px=tab==='lotto'?'l-':'m-';
-  const key='lotto_hist_'+tab;
+  const key='lotto_hist_v2_'+tab;
   const hist=JSON.parse(localStorage.getItem(key)||'[]');
   const wrap=document.getElementById(px+'hist-wrap');
   if(!wrap)return;
@@ -1801,67 +1836,60 @@ function loadHistory(tab){
   wrap.style.display='block';
   document.getElementById(px+'hist-list').innerHTML=hist.map(h=>
     `<div class="hist-item">
-      <div><div class="hist-nums">${h.combos.join(' | ')}</div><div style="font-size:.68rem;color:var(--tm);margin-top:2px">${h.ts}</div></div>
+      <div><div class="hist-nums">${h.combos.join(' | ')}</div><div style="font-size:0.65rem;color:var(--tm);margin-top:2px">${h.ts}</div></div>
       <button class="btn-cp1" onclick="navigator.clipboard.writeText('${h.combos.join('\\n')}').then(()=>toast('✅'))">📋</button>
     </div>`
   ).join('');
 }
 function clearHistory(tab){
-  localStorage.removeItem('lotto_hist_'+tab);
+  localStorage.removeItem('lotto_hist_v2_'+tab);
   const px=tab==='lotto'?'l-':'m-';
   const wrap=document.getElementById(px+'hist-wrap');
   if(wrap)wrap.style.display='none';
   toast('🗑️ Historia wyczyszczona');
 }
-
-// ══════════════════════════════════════
-// EXPORT
-// ══════════════════════════════════════
 function exportJSON(tab){
   const d=state[tab].analysis;if(!d){toast('❌ Brak danych do eksportu.');return;}
-  const payload={
-    tab,N:d.N,date:new Date().toISOString(),
+  const payload={tab,N:d.N,date:new Date().toISOString(),
     chi2:{stat:d.chiStat,pval:d.chiPval,df:d.df},
-    topHot:d.hotNumbers.slice(0,10).map(([n,f])=>({n,f,z:d.zScores[parseInt(n)]})),
-    topCold:d.coldNumbers.slice(0,10).map(([n,f])=>({n,f,z:d.zScores[parseInt(n)]})),
+    meanPoissonD:d.meanPoissonD,
+    sortedSoftmax:d.sortedSoftmax.slice(0,15),
+    sortedMomentum:d.sortedMomentum.slice(0,15).map(e=>({n:e.number,bull:e.bull,score:e.score})),
+    sortedCV:d.sortedCV.slice(0,15),
+    sortedPoissonD:d.sortedPoissonD.slice(0,15),
     sortedZ:d.sortedZ.slice(0,15),
-    sortedComposite:d.unifiedSorted.slice(0,15),
-    sortedBayes:d.sortedBayes.slice(0,15),
     acfMean:d.acfMean,
-    emaTrends:d.sortedEMA.slice(0,15)
+    seasonalData:d.seasonalData
   };
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download=`lotto_analysis_${tab}_${new Date().toISOString().slice(0,10)}.json`;
+  a.download=`lotto_analysis_v2_${tab}_${new Date().toISOString().slice(0,10)}.json`;
   a.click();toast('✅ Eksport JSON gotowy');
 }
 function exportCSV(tab){
   const d=state[tab].analysis;if(!d){toast('❌ Brak danych do eksportu.');return;}
-  const rows=[['Liczba','Freq','ExpFreq','ZScore','UnifiedProb','CVgap','ACFmaxR','EMATrend']];
+  const rows=[['Liczba','Freq','ExpFreq','ZScore','SoftmaxScore','MomentumBull','PoissonD','CV','RunsZ','ACFmax','RecencyZ20','SeasonalBias']];
   for(let n=1;n<=d.M;n++){
     rows.push([
-      n,
-      d.freqMap[n],
-      d.expectedFreq,
-      d.zScores[n],
-      (d.unifiedProb[n]||0).toFixed(6),
-      d.gapCV[n]!=null?d.gapCV[n].toFixed(3):'',
+      n,d.freqMap[n],d.expectedFreq,d.zScores[n],
+      (d.softmaxScores[n]||0).toFixed(6),
+      d.momentumScores[n]?.bull||0,
+      (d.poissonD[n]||'').toString(),
+      (d.cvMap[n]||'').toString(),
+      (d.runsData[n]?.z||0).toFixed(3),
       (d.acfPerNum[n]||0).toFixed(3),
-      d.emaTrends[n]?.trend||''
+      (d.lastKData[n][20]?.z||0).toFixed(2),
+      d.seasonalData.filter(s=>s.freq[n]>(s.exp*1.1)).length
     ]);
   }
   const csv=rows.map(r=>r.join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download=`lotto_results_${tab}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.download=`lotto_results_v2_${tab}_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();toast('✅ Eksport CSV gotowy');
 }
-
-// ══════════════════════════════════════
-// CLEAR
-// ══════════════════════════════════════
 function clearTab(tab){
-  state[tab].draws=null;state[tab].analysis=null;state[tab].method='composite';
+  state[tab].draws=null;state[tab].analysis=null;state[tab].method='probability';
   ['Main','Loading','Error','Badge'].forEach(s=>{
     const el=document.getElementById(tab+s);if(el)el.style.display='none';
   });
